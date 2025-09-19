@@ -992,3 +992,306 @@ class BusinessSearchPhase5Test(APITestCase):
         self.assertEqual(metadata["radius_expanded"], True)
         self.assertGreater(metadata["radius_used"], 5.0)  # Should expand beyond 5
         self.assertIn("geo", metadata["filters_applied"])
+
+
+class BusinessSearchPhase6Test(APITestCase):
+    """Test cases for Phase 6 - Enhanced response format and metadata"""
+
+    def setUp(self):
+        """Set up test data for Phase 6"""
+        self.search_url = reverse('business-search')
+        
+        # Clear existing businesses to isolate our tests
+        Business.objects.all().delete()
+        
+        # Create test businesses for comprehensive metadata testing
+        self.ca_coffee = Business.objects.create(
+            name="CA Coffee Shop",
+            city="Los Angeles",
+            state="CA",
+            latitude=Decimal("34.0522"),
+            longitude=Decimal("-118.2437")
+        )
+        
+        self.ny_coffee = Business.objects.create(
+            name="NY Coffee Bar",
+            city="New York",
+            state="NY",
+            latitude=Decimal("40.7589"),
+            longitude=Decimal("-73.9851")
+        )
+        
+        self.tx_restaurant = Business.objects.create(
+            name="TX Restaurant",
+            city="Austin",
+            state="TX",
+            latitude=Decimal("30.2672"),
+            longitude=Decimal("-97.7431")
+        )
+
+    def test_comprehensive_metadata_structure(self):
+        """Test that response contains all expected metadata fields"""
+        data = {
+            "locations": [{"lat": 34.0522, "lng": -118.2437}],
+            "radius_miles": 50,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Check main response structure
+        self.assertIn("results", response.data)
+        self.assertIn("search_metadata", response.data)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Check all required metadata fields
+        required_fields = [
+            "total_count", "total_found", "radius_used", "radius_expanded",
+            "filters_applied", "search_locations"
+        ]
+        for field in required_fields:
+            self.assertIn(field, metadata, f"Missing required field: {field}")
+        
+        # Check geo-specific fields
+        self.assertIn("radius_requested", metadata)
+        
+        # Check data types
+        self.assertIsInstance(metadata["total_count"], int)
+        self.assertIsInstance(metadata["total_found"], int)
+        self.assertIsInstance(metadata["radius_used"], float)
+        self.assertIsInstance(metadata["radius_expanded"], bool)
+        self.assertIsInstance(metadata["filters_applied"], list)
+        self.assertIsInstance(metadata["search_locations"], list)
+
+    def test_search_locations_summary_state(self):
+        """Test search_locations summary for state-based searches"""
+        data = {
+            "locations": [{"state": "CA"}, {"state": "NY"}],
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        locations = metadata["search_locations"]
+        
+        self.assertEqual(len(locations), 2)
+        
+        # Check state location format
+        state_locations = [loc for loc in locations if loc["type"] == "state"]
+        self.assertEqual(len(state_locations), 2)
+        
+        states = {loc["state"] for loc in state_locations}
+        self.assertEqual(states, {"CA", "NY"})
+
+    def test_search_locations_summary_geo(self):
+        """Test search_locations summary for geo-based searches"""
+        data = {
+            "locations": [
+                {"lat": 34.0522, "lng": -118.2437},
+                {"lat": 40.7589, "lng": -73.9851}
+            ],
+            "radius_miles": 50
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        locations = metadata["search_locations"]
+        
+        self.assertEqual(len(locations), 2)
+        
+        # Check geo location format
+        geo_locations = [loc for loc in locations if loc["type"] == "geo"]
+        self.assertEqual(len(geo_locations), 2)
+        
+        # Check coordinates are properly formatted
+        for geo_loc in geo_locations:
+            self.assertIn("lat", geo_loc)
+            self.assertIn("lng", geo_loc)
+            self.assertIsInstance(geo_loc["lat"], float)
+            self.assertIsInstance(geo_loc["lng"], float)
+
+    def test_search_locations_summary_mixed(self):
+        """Test search_locations summary for mixed state/geo searches"""
+        data = {
+            "locations": [
+                {"state": "TX"},
+                {"lat": 34.0522, "lng": -118.2437}
+            ],
+            "radius_miles": 1000
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        locations = metadata["search_locations"]
+        
+        self.assertEqual(len(locations), 2)
+        
+        # Should have one state and one geo location
+        types = [loc["type"] for loc in locations]
+        self.assertIn("state", types)
+        self.assertIn("geo", types)
+
+    def test_radius_expansion_sequence_tracking(self):
+        """Test that radius_expansion_sequence is properly tracked"""
+        data = {
+            "locations": [{"lat": 37.0, "lng": -116.0}],  # Nevada desert
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        if metadata["radius_expanded"]:
+            # Should have radius_expansion_sequence
+            self.assertIn("radius_expansion_sequence", metadata)
+            sequence = metadata["radius_expansion_sequence"]
+            
+            # Should start with requested radius
+            self.assertEqual(sequence[0], 1.0)
+            
+            # Should be in ascending order
+            self.assertEqual(sequence, sorted(sequence))
+            
+            # Final radius should match radius_used
+            self.assertEqual(sequence[-1], metadata["radius_used"])
+
+    def test_filters_applied_tracking(self):
+        """Test that filters_applied correctly tracks all applied filters"""
+        # Test with all three filter types
+        data = {
+            "locations": [
+                {"state": "CA"},
+                {"lat": 40.7589, "lng": -73.9851}
+            ],
+            "radius_miles": 50,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        filters = metadata["filters_applied"]
+        
+        # Should include all three filter types
+        self.assertIn("text", filters)
+        self.assertIn("state", filters)
+        self.assertIn("geo", filters)
+
+    def test_total_count_vs_total_found(self):
+        """Test the distinction between total_count and total_found"""
+        # This test assumes we might have pagination in the future
+        data = {
+            "locations": [{"state": "CA"}]
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        results = response.data["results"]
+        
+        # total_count should match actual returned results
+        self.assertEqual(metadata["total_count"], len(results))
+        
+        # total_found should be >= total_count (could be more if pagination)
+        self.assertGreaterEqual(metadata["total_found"], metadata["total_count"])
+
+    def test_radius_metadata_only_for_geo_searches(self):
+        """Test that radius metadata only appears for geo searches"""
+        # State-only search
+        data = {
+            "locations": [{"state": "CA"}],
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Should not have radius-specific fields
+        self.assertNotIn("radius_requested", metadata)
+        self.assertNotIn("radius_expansion_sequence", metadata)
+        
+        # But should have radius_used and radius_expanded (default values)
+        self.assertIn("radius_used", metadata)
+        self.assertIn("radius_expanded", metadata)
+
+    def test_readme_example_1_comprehensive_metadata(self):
+        """Test comprehensive metadata for README Example 1"""
+        data = {
+            "locations": [
+                {"state": "NY"},
+                {"state": "CA"},
+                {"lat": 34.052235, "lng": -118.243683}
+            ],
+            "text": "coffee",
+            "radius_miles": 50
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Check comprehensive structure
+        self.assertIn("total_count", metadata)
+        self.assertIn("total_found", metadata)
+        self.assertIn("radius_requested", metadata)
+        self.assertEqual(metadata["radius_requested"], 50.0)
+        
+        # Should have all three filter types
+        filters = metadata["filters_applied"]
+        self.assertIn("text", filters)
+        self.assertIn("state", filters)
+        self.assertIn("geo", filters)
+        
+        # Should have 3 search locations (2 states + 1 geo)
+        locations = metadata["search_locations"]
+        self.assertEqual(len(locations), 3)
+        
+        # Check location types
+        types = [loc["type"] for loc in locations]
+        self.assertEqual(types.count("state"), 2)
+        self.assertEqual(types.count("geo"), 1)
+
+    def test_readme_example_2_comprehensive_metadata(self):
+        """Test comprehensive metadata for README Example 2"""
+        data = {
+            "locations": [{"lat": 37.9290, "lng": -116.7510}],
+            "radius_miles": 5
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Should show radius expansion
+        self.assertEqual(metadata["radius_requested"], 5.0)
+        self.assertGreater(metadata["radius_used"], 5.0)
+        self.assertEqual(metadata["radius_expanded"], True)
+        
+        # Should have expansion sequence
+        self.assertIn("radius_expansion_sequence", metadata)
+        sequence = metadata["radius_expansion_sequence"]
+        self.assertEqual(sequence[0], 5.0)  # Started with 5
+        self.assertGreater(len(sequence), 1)  # Expanded through multiple radii
+        
+        # Should have single geo location
+        locations = metadata["search_locations"]
+        self.assertEqual(len(locations), 1)
+        self.assertEqual(locations[0]["type"], "geo")
+        self.assertEqual(locations[0]["lat"], 37.9290)
+        self.assertEqual(locations[0]["lng"], -116.7510)

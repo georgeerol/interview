@@ -63,8 +63,9 @@ class BusinessViewSet(viewsets.ModelViewSet):
 		
 		# Phase 4 & 5: Handle geo-location filtering with radius expansion
 		final_businesses = []
-		radius_used = radius_miles
+		radius_used = radius_miles if radius_miles is not None else 50.0  # Default for state-only searches
 		radius_expanded = False
+		radii_tried = []
 		
 		if geo_locations:
 			filters_applied.append("geo")
@@ -75,7 +76,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
 				base_businesses = base_businesses.filter(name__icontains=text)
 			
 			# Phase 5: Use radius expansion for geo locations
-			geo_businesses, radius_used, radius_expanded = expand_radius_search_multiple_locations(
+			geo_businesses, radius_used, radius_expanded, radii_tried = expand_radius_search_multiple_locations(
 				base_businesses, 
 				geo_locations, 
 				radius_miles
@@ -104,14 +105,43 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			# No geo locations, use existing state/text filtered results
 			business_list = list(businesses[:100])  # Limit to 100 for now
 		
+		# Phase 6: Build comprehensive search metadata
+		total_found = len(final_businesses) if geo_locations else len(list(businesses))
+		
+		# Build search locations summary
+		search_locations_summary = []
+		for loc in locations:
+			if "state" in loc:
+				search_locations_summary.append({
+					"type": "state",
+					"state": loc["state"]
+				})
+			elif "lat" in loc and "lng" in loc:
+				search_locations_summary.append({
+					"type": "geo",
+					"lat": float(loc["lat"]),
+					"lng": float(loc["lng"])
+				})
+		
+		# Build metadata
+		search_metadata = {
+			"total_count": len(business_list),
+			"total_found": min(total_found, 100),  # Cap at 100 for now
+			"radius_used": float(radius_used),
+			"radius_expanded": radius_expanded,
+			"filters_applied": filters_applied,
+			"search_locations": search_locations_summary
+		}
+		
+		# Add radius-specific metadata if geo search was performed
+		if geo_locations:
+			search_metadata["radius_requested"] = float(radius_miles)
+			if radii_tried:
+				search_metadata["radius_expansion_sequence"] = radii_tried
+		
 		return Response({
 			"results": BusinessSerializer(business_list, many=True).data,
-			"search_metadata": {
-				"total_count": len(business_list),
-				"radius_used": radius_used,
-				"radius_expanded": radius_expanded,
-				"filters_applied": filters_applied
-			}
+			"search_metadata": search_metadata
 		}, status=status.HTTP_200_OK)
 
 

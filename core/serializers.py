@@ -111,9 +111,43 @@ class BusinessSerializer(serializers.ModelSerializer):
 		]
 
 
+class SearchMetadataSerializer(serializers.Serializer):
+	"""Serializer for detailed search metadata"""
+	total_count = serializers.IntegerField(help_text="Number of businesses returned")
+	total_found = serializers.IntegerField(help_text="Total businesses found before pagination")
+	radius_requested = serializers.DecimalField(
+		max_digits=6, decimal_places=2, required=False,
+		help_text="Originally requested radius in miles"
+	)
+	radius_used = serializers.DecimalField(
+		max_digits=6, decimal_places=2,
+		help_text="Actual radius used in miles"
+	)
+	radius_expanded = serializers.BooleanField(
+		help_text="Whether radius was expanded from original request"
+	)
+	radius_expansion_sequence = serializers.ListField(
+		child=serializers.DecimalField(max_digits=6, decimal_places=2),
+		required=False,
+		help_text="Sequence of radii tried during expansion"
+	)
+	filters_applied = serializers.ListField(
+		child=serializers.CharField(),
+		help_text="List of filters applied: text, state, geo"
+	)
+	search_locations = serializers.ListField(
+		child=serializers.DictField(),
+		help_text="Summary of locations searched"
+	)
+	performance = serializers.DictField(
+		required=False,
+		help_text="Search performance metrics"
+	)
+
+
 class BusinessSearchResponseSerializer(serializers.Serializer):
-	"""Serializer for business search response with metadata"""
+	"""Serializer for business search response with comprehensive metadata"""
 	results = BusinessSerializer(many=True)
-	search_metadata = serializers.DictField()
+	search_metadata = SearchMetadataSerializer()
 
 

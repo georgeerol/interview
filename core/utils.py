@@ -114,7 +114,7 @@ def validate_coordinates(lat: Union[float, Decimal], lon: Union[float, Decimal])
 
 def expand_radius_search(businesses, search_lat: Union[float, Decimal], 
                         search_lng: Union[float, Decimal], 
-                        initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool]:
+                        initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool, List[float]]:
     """
     Perform radius expansion search according to the sequence [1, 5, 10, 25, 50, 100, 500].
     
@@ -127,30 +127,32 @@ def expand_radius_search(businesses, search_lat: Union[float, Decimal],
         initial_radius: Initial radius to try first
         
     Returns:
-        Tuple of (matching_businesses, actual_radius_used, was_expanded)
+        Tuple of (matching_businesses, actual_radius_used, was_expanded, radii_tried)
     """
     initial_radius = float(initial_radius)
+    radii_tried = [initial_radius]
     
     # First try the requested radius
     results = get_businesses_within_radius(businesses, search_lat, search_lng, initial_radius)
     if results:
-        return results, initial_radius, False
+        return results, initial_radius, False, radii_tried
     
     # If no results, try expansion sequence
     for radius in RADIUS_EXPANSION_SEQUENCE:
         if radius <= initial_radius:
             continue  # Skip radii smaller than or equal to what we already tried
             
+        radii_tried.append(float(radius))
         results = get_businesses_within_radius(businesses, search_lat, search_lng, radius)
         if results:
-            return results, float(radius), True
+            return results, float(radius), True, radii_tried
     
     # No results found even at max radius
-    return [], 500.0, True
+    return [], 500.0, True, radii_tried
 
 
 def expand_radius_search_multiple_locations(businesses, geo_locations: List[dict], 
-                                          initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool]:
+                                          initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool, List[float]]:
     """
     Perform radius expansion search for multiple geo locations.
     
@@ -163,9 +165,10 @@ def expand_radius_search_multiple_locations(businesses, geo_locations: List[dict
         initial_radius: Initial radius to try first
         
     Returns:
-        Tuple of (matching_businesses, actual_radius_used, was_expanded)
+        Tuple of (matching_businesses, actual_radius_used, was_expanded, radii_tried)
     """
     initial_radius = float(initial_radius)
+    radii_tried = [initial_radius]
     
     # First try the requested radius for all locations
     all_results = []
@@ -186,13 +189,14 @@ def expand_radius_search_multiple_locations(businesses, geo_locations: List[dict
             if business.id not in seen_ids:
                 seen_ids.add(business.id)
                 unique_results.append(business)
-        return unique_results, initial_radius, False
+        return unique_results, initial_radius, False, radii_tried
     
     # If no results, try expansion sequence
     for radius in RADIUS_EXPANSION_SEQUENCE:
         if radius <= initial_radius:
             continue  # Skip radii smaller than or equal to what we already tried
             
+        radii_tried.append(float(radius))
         all_results = []
         for geo_location in geo_locations:
             search_lat = geo_location["lat"]
@@ -211,7 +215,7 @@ def expand_radius_search_multiple_locations(businesses, geo_locations: List[dict
                 if business.id not in seen_ids:
                     seen_ids.add(business.id)
                     unique_results.append(business)
-            return unique_results, float(radius), True
+            return unique_results, float(radius), True, radii_tried
     
     # No results found even at max radius
-    return [], 500.0, True
+    return [], 500.0, True, radii_tried
