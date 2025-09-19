@@ -61,19 +61,55 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			businesses = businesses.filter(state__in=state_codes)
 			filters_applied.append("state")
 		
-		# Phase 4 will handle geo locations, for now just note if they exist
+		# Phase 4: Handle geo-location filtering
+		final_businesses = []
+		
 		if geo_locations:
-			filters_applied.append("geo")  # Will be implemented in Phase 4
-		
-		# For Phase 3, we only handle state and text filtering
-		# Geo filtering will be added in Phase 4
-		if geo_locations and not state_locations:
-			# If only geo locations provided, we'll need Phase 4 logic
-			# For now, return empty results with a note
-			businesses = Business.objects.none()
-		
-		# Get results and prepare response
-		business_list = list(businesses[:100])  # Limit to 100 for now
+			filters_applied.append("geo")
+			
+			# Start with all businesses for geo filtering (apply text filter if needed)
+			base_businesses = Business.objects.all()
+			if text:
+				base_businesses = base_businesses.filter(name__icontains=text)
+			
+			# For each geo location, find businesses within radius
+			geo_businesses = []
+			for geo_location in geo_locations:
+				search_lat = geo_location["lat"]
+				search_lng = geo_location["lng"]
+				
+				# Get businesses within radius for this geo location
+				businesses_in_radius = get_businesses_within_radius(
+					base_businesses, 
+					search_lat, 
+					search_lng, 
+					radius_miles
+				)
+				
+				geo_businesses.extend(businesses_in_radius)
+			
+			# Combine state-filtered and geo-filtered results (OR logic)
+			if state_locations:
+				# Add state-filtered businesses to geo results
+				state_businesses = list(businesses)  # Already filtered by state and text
+				final_businesses = geo_businesses + state_businesses
+			else:
+				# Only geo filtering
+				final_businesses = geo_businesses
+			
+			# Remove duplicates while preserving order
+			seen_ids = set()
+			unique_businesses = []
+			for business in final_businesses:
+				if business.id not in seen_ids:
+					seen_ids.add(business.id)
+					unique_businesses.append(business)
+			
+			business_list = unique_businesses[:100]  # Limit to 100
+			
+		else:
+			# No geo locations, use existing state/text filtered results
+			business_list = list(businesses[:100])  # Limit to 100 for now
 		
 		return Response({
 			"results": BusinessSerializer(business_list, many=True).data,
@@ -81,8 +117,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
 				"total_count": len(business_list),
 				"radius_used": radius_miles,
 				"radius_expanded": False,
-				"filters_applied": filters_applied,
-				"note": "Geo-location filtering will be implemented in Phase 4" if geo_locations else None
+				"filters_applied": filters_applied
 			}
 		}, status=status.HTTP_200_OK)
 
