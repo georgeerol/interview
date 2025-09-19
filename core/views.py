@@ -6,7 +6,7 @@ from django.db.models import Q
 
 from .models import Business
 from .serializers import BusinessSerializer, BusinessSearchRequestSerializer
-from .utils import get_businesses_within_radius
+from .utils import get_businesses_within_radius, expand_radius_search_multiple_locations
 
 
 class BusinessViewSet(viewsets.ModelViewSet):
@@ -61,8 +61,10 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			businesses = businesses.filter(state__in=state_codes)
 			filters_applied.append("state")
 		
-		# Phase 4: Handle geo-location filtering
+		# Phase 4 & 5: Handle geo-location filtering with radius expansion
 		final_businesses = []
+		radius_used = radius_miles
+		radius_expanded = False
 		
 		if geo_locations:
 			filters_applied.append("geo")
@@ -72,21 +74,12 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			if text:
 				base_businesses = base_businesses.filter(name__icontains=text)
 			
-			# For each geo location, find businesses within radius
-			geo_businesses = []
-			for geo_location in geo_locations:
-				search_lat = geo_location["lat"]
-				search_lng = geo_location["lng"]
-				
-				# Get businesses within radius for this geo location
-				businesses_in_radius = get_businesses_within_radius(
-					base_businesses, 
-					search_lat, 
-					search_lng, 
-					radius_miles
-				)
-				
-				geo_businesses.extend(businesses_in_radius)
+			# Phase 5: Use radius expansion for geo locations
+			geo_businesses, radius_used, radius_expanded = expand_radius_search_multiple_locations(
+				base_businesses, 
+				geo_locations, 
+				radius_miles
+			)
 			
 			# Combine state-filtered and geo-filtered results (OR logic)
 			if state_locations:
@@ -115,8 +108,8 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			"results": BusinessSerializer(business_list, many=True).data,
 			"search_metadata": {
 				"total_count": len(business_list),
-				"radius_used": radius_miles,
-				"radius_expanded": False,
+				"radius_used": radius_used,
+				"radius_expanded": radius_expanded,
 				"filters_applied": filters_applied
 			}
 		}, status=status.HTTP_200_OK)

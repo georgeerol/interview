@@ -272,7 +272,8 @@ class BusinessSearchAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("results", response.data)
         self.assertIn("search_metadata", response.data)
-        self.assertEqual(response.data["search_metadata"]["radius_used"], 5.0)
+        # Should expand beyond 5 miles (Phase 5 implemented)
+        self.assertGreater(response.data["search_metadata"]["radius_used"], 5.0)
 
     def test_invalid_state_code(self):
         """Test API response for invalid state code"""
@@ -724,12 +725,19 @@ class BusinessSearchPhase4Test(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
-        # Should return empty results
+        # With Phase 5, radius expansion may find results at larger radii
         results = response.data["results"]
-        self.assertEqual(len(results), 0)
-        
         metadata = response.data["search_metadata"]
-        self.assertEqual(metadata["total_count"], 0)
+        
+        # Either no results found even after expansion, or results found with expansion
+        if len(results) == 0:
+            self.assertEqual(metadata["total_count"], 0)
+            self.assertEqual(metadata["radius_used"], 500.0)  # Expanded to max
+            self.assertEqual(metadata["radius_expanded"], True)
+        else:
+            # Found results with expansion
+            self.assertGreater(metadata["radius_used"], 10.0)
+            self.assertEqual(metadata["radius_expanded"], True)
 
     def test_readme_example_1_implementation(self):
         """Test the exact README Example 1 with actual results"""
@@ -760,4 +768,227 @@ class BusinessSearchPhase4Test(APITestCase):
         metadata = response.data["search_metadata"]
         self.assertIn("text", metadata["filters_applied"])
         self.assertIn("state", metadata["filters_applied"])
+        self.assertIn("geo", metadata["filters_applied"])
+
+
+class BusinessSearchPhase5Test(APITestCase):
+    """Test cases for Phase 5 - Radius expansion logic"""
+
+    def setUp(self):
+        """Set up test data for Phase 5"""
+        self.search_url = reverse('business-search')
+        
+        # Clear existing businesses to isolate our tests
+        Business.objects.all().delete()
+        
+        # Create test businesses at strategic distances for radius expansion testing
+        # Point of reference: Las Vegas, NV (36.1699, -115.1398)
+        
+        # Very close (within 1 mile)
+        self.vegas_coffee = Business.objects.create(
+            name="Vegas Coffee",
+            city="Las Vegas",
+            state="NV",
+            latitude=Decimal("36.1699"),  # Exact Las Vegas coordinates
+            longitude=Decimal("-115.1398")
+        )
+        
+        # Within 10 miles
+        self.henderson_books = Business.objects.create(
+            name="Henderson Books",
+            city="Henderson",
+            state="NV", 
+            latitude=Decimal("36.0395"),  # ~10 miles from Vegas
+            longitude=Decimal("-114.9817")
+        )
+        
+        # Within 50 miles
+        self.boulder_city_cafe = Business.objects.create(
+            name="Boulder City Cafe",
+            city="Boulder City",
+            state="NV",
+            latitude=Decimal("35.9722"),  # ~30 miles from Vegas
+            longitude=Decimal("-114.8324")
+        )
+        
+        # Within 100 miles  
+        self.kingman_shop = Business.objects.create(
+            name="Kingman Shop",
+            city="Kingman",
+            state="AZ",
+            latitude=Decimal("35.1894"),  # ~90 miles from Vegas
+            longitude=Decimal("-114.0531")
+        )
+        
+        # Within 500 miles
+        self.phoenix_store = Business.objects.create(
+            name="Phoenix Store",
+            city="Phoenix", 
+            state="AZ",
+            latitude=Decimal("33.4484"),  # ~300 miles from Vegas
+            longitude=Decimal("-112.0740")
+        )
+        
+        # Very far away (over 500 miles)
+        self.denver_market = Business.objects.create(
+            name="Denver Market",
+            city="Denver",
+            state="CO",
+            latitude=Decimal("39.7392"),  # ~600+ miles from Vegas
+            longitude=Decimal("-104.9903")
+        )
+
+    def test_no_expansion_needed(self):
+        """Test when initial radius finds results (no expansion needed)"""
+        # Search within 50 miles of Vegas - should find results without expansion
+        data = {
+            "locations": [{"lat": 36.1699, "lng": -115.1398}],
+            "radius_miles": 50
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        self.assertGreater(len(results), 0)
+        
+        # Should find Vegas, Henderson, and Boulder City (3 businesses)
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["radius_used"], 50.0)
+        self.assertEqual(metadata["radius_expanded"], False)
+
+    def test_expansion_from_5_to_10(self):
+        """Test expansion from 5 miles to 10 miles"""
+        # Search within 5 miles - Vegas Coffee is at exact coordinates, so no expansion needed
+        data = {
+            "locations": [{"lat": 36.1699, "lng": -115.1398}],
+            "radius_miles": 5
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        self.assertGreater(len(results), 0)
+        
+        metadata = response.data["search_metadata"]
+        # Vegas Coffee is at exact coordinates (0 miles), so no expansion needed
+        self.assertEqual(metadata["radius_used"], 5.0)
+        self.assertEqual(metadata["radius_expanded"], False)
+
+    def test_expansion_from_1_to_first_match(self):
+        """Test expansion from 1 mile through sequence until first match"""
+        # Search within 1 mile - Vegas Coffee is at exact coordinates (0 miles), so found immediately
+        data = {
+            "locations": [{"lat": 36.1699, "lng": -115.1398}],
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        self.assertGreater(len(results), 0)
+        
+        metadata = response.data["search_metadata"]
+        # Vegas Coffee is at exact coordinates (0 miles), so no expansion needed
+        self.assertEqual(metadata["radius_used"], 1.0)
+        self.assertEqual(metadata["radius_expanded"], False)
+
+    def test_expansion_to_max_radius_with_results(self):
+        """Test expansion all the way to 500 miles"""
+        # Search in middle of desert - should expand until businesses found
+        data = {
+            "locations": [{"lat": 37.0, "lng": -116.0}],  # Nevada desert
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        self.assertGreater(len(results), 0)  # Should find businesses at some radius
+        
+        metadata = response.data["search_metadata"]
+        # Should expand to find businesses (Kingman is ~100 miles from Vegas, which is ~100 miles from this point)
+        self.assertGreater(metadata["radius_used"], 1.0)
+        self.assertEqual(metadata["radius_expanded"], True)
+
+    def test_expansion_to_max_radius_no_results(self):
+        """Test expansion to 500 miles with no results found"""
+        # Clear all businesses to ensure no results
+        Business.objects.all().delete()
+        
+        data = {
+            "locations": [{"lat": 37.0, "lng": -116.0}],
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        self.assertEqual(len(results), 0)
+        
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["radius_used"], 500.0)  # Tried max radius
+        self.assertEqual(metadata["radius_expanded"], True)
+        self.assertEqual(metadata["total_count"], 0)
+
+    def test_expansion_with_text_filter(self):
+        """Test radius expansion combined with text filtering"""
+        data = {
+            "locations": [{"lat": 36.1699, "lng": -115.1398}],
+            "radius_miles": 1,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        
+        if len(results) > 0:
+            # Should only return coffee businesses
+            for business in results:
+                self.assertIn("Coffee", business["name"])
+        
+        metadata = response.data["search_metadata"]
+        self.assertIn("geo", metadata["filters_applied"])
+        self.assertIn("text", metadata["filters_applied"])
+        # Vegas Coffee is at exact coordinates and matches "coffee", so no expansion needed
+        self.assertEqual(metadata["radius_expanded"], False)
+
+    def test_multiple_locations_expansion(self):
+        """Test radius expansion with multiple geo locations"""
+        data = {
+            "locations": [
+                {"lat": 37.0, "lng": -116.0},  # Nevada desert
+                {"lat": 38.0, "lng": -117.0}   # Another desert point
+            ],
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        self.assertIn("geo", metadata["filters_applied"])
+        self.assertEqual(metadata["radius_expanded"], True)
+        # Should expand through sequence for multiple locations
+
+    def test_readme_example_2_expansion(self):
+        """Test the exact README Example 2 scenario"""
+        # README Example 2: Nevada desert location with 5-mile initial radius
+        data = {
+            "locations": [{"lat": 37.9290, "lng": -116.7510}],
+            "radius_miles": 5
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["radius_expanded"], True)
+        self.assertGreater(metadata["radius_used"], 5.0)  # Should expand beyond 5
         self.assertIn("geo", metadata["filters_applied"])

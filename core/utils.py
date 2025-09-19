@@ -3,7 +3,9 @@ Utility functions for business search functionality
 """
 import math
 from decimal import Decimal
-from typing import Union
+from typing import Union, List, Tuple, Optional
+
+from .constants import RADIUS_EXPANSION_SEQUENCE
 
 
 def haversine_distance(lat1: Union[float, Decimal], lon1: Union[float, Decimal], 
@@ -108,3 +110,108 @@ def validate_coordinates(lat: Union[float, Decimal], lon: Union[float, Decimal])
         return -90 <= lat <= 90 and -180 <= lon <= 180
     except (ValueError, TypeError):
         return False
+
+
+def expand_radius_search(businesses, search_lat: Union[float, Decimal], 
+                        search_lng: Union[float, Decimal], 
+                        initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool]:
+    """
+    Perform radius expansion search according to the sequence [1, 5, 10, 25, 50, 100, 500].
+    
+    If no results are found within the initial radius, expand incrementally through the 
+    sequence until matches are found or max radius (500) is reached.
+    
+    Args:
+        businesses: QuerySet or iterable of Business objects to search
+        search_lat, search_lng: Search point coordinates
+        initial_radius: Initial radius to try first
+        
+    Returns:
+        Tuple of (matching_businesses, actual_radius_used, was_expanded)
+    """
+    initial_radius = float(initial_radius)
+    
+    # First try the requested radius
+    results = get_businesses_within_radius(businesses, search_lat, search_lng, initial_radius)
+    if results:
+        return results, initial_radius, False
+    
+    # If no results, try expansion sequence
+    for radius in RADIUS_EXPANSION_SEQUENCE:
+        if radius <= initial_radius:
+            continue  # Skip radii smaller than or equal to what we already tried
+            
+        results = get_businesses_within_radius(businesses, search_lat, search_lng, radius)
+        if results:
+            return results, float(radius), True
+    
+    # No results found even at max radius
+    return [], 500.0, True
+
+
+def expand_radius_search_multiple_locations(businesses, geo_locations: List[dict], 
+                                          initial_radius: Union[float, Decimal]) -> Tuple[List, float, bool]:
+    """
+    Perform radius expansion search for multiple geo locations.
+    
+    Tries initial radius for all locations first. If no results found anywhere,
+    expands radius incrementally until matches are found or max radius reached.
+    
+    Args:
+        businesses: QuerySet or iterable of Business objects to search
+        geo_locations: List of {"lat": X, "lng": Y} dictionaries
+        initial_radius: Initial radius to try first
+        
+    Returns:
+        Tuple of (matching_businesses, actual_radius_used, was_expanded)
+    """
+    initial_radius = float(initial_radius)
+    
+    # First try the requested radius for all locations
+    all_results = []
+    for geo_location in geo_locations:
+        search_lat = geo_location["lat"]
+        search_lng = geo_location["lng"]
+        
+        location_results = get_businesses_within_radius(
+            businesses, search_lat, search_lng, initial_radius
+        )
+        all_results.extend(location_results)
+    
+    # Remove duplicates
+    if all_results:
+        seen_ids = set()
+        unique_results = []
+        for business in all_results:
+            if business.id not in seen_ids:
+                seen_ids.add(business.id)
+                unique_results.append(business)
+        return unique_results, initial_radius, False
+    
+    # If no results, try expansion sequence
+    for radius in RADIUS_EXPANSION_SEQUENCE:
+        if radius <= initial_radius:
+            continue  # Skip radii smaller than or equal to what we already tried
+            
+        all_results = []
+        for geo_location in geo_locations:
+            search_lat = geo_location["lat"]
+            search_lng = geo_location["lng"]
+            
+            location_results = get_businesses_within_radius(
+                businesses, search_lat, search_lng, radius
+            )
+            all_results.extend(location_results)
+        
+        # Remove duplicates
+        if all_results:
+            seen_ids = set()
+            unique_results = []
+            for business in all_results:
+                if business.id not in seen_ids:
+                    seen_ids.add(business.id)
+                    unique_results.append(business)
+            return unique_results, float(radius), True
+    
+    # No results found even at max radius
+    return [], 500.0, True
