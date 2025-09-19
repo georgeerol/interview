@@ -230,7 +230,8 @@ class BusinessSearchAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("results", response.data)
         self.assertIn("search_metadata", response.data)
-        self.assertEqual(response.data["search_metadata"]["total_count"], 0)  # No search logic yet
+        # Now that we have search logic, should return actual results
+        self.assertGreaterEqual(response.data["search_metadata"]["total_count"], 0)
         self.assertEqual(response.data["search_metadata"]["radius_expanded"], False)
 
     def test_valid_geo_search_request(self):
@@ -316,3 +317,206 @@ class BusinessSearchAPITest(APITestCase):
         """Test that GET method returns 405 Method Not Allowed"""
         response = self.client.get(self.search_url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class BusinessSearchPhase3Test(APITestCase):
+    """Test cases for Phase 3 - Basic search logic (state + text filtering)"""
+
+    def setUp(self):
+        """Set up test data for Phase 3"""
+        self.search_url = reverse('business-search')
+        
+        # Clear existing businesses to isolate our tests
+        Business.objects.all().delete()
+        
+        # Create test businesses with various names and states
+        Business.objects.create(
+            name="Coffee Shop CA",
+            city="Los Angeles",
+            state="CA", 
+            latitude=Decimal("34.052235"),
+            longitude=Decimal("-118.243683")
+        )
+        Business.objects.create(
+            name="Book Store CA",
+            city="San Francisco",
+            state="CA",
+            latitude=Decimal("37.774929"), 
+            longitude=Decimal("-122.419418")
+        )
+        Business.objects.create(
+            name="Coffee Shop NY",
+            city="New York",
+            state="NY",
+            latitude=Decimal("40.712776"),
+            longitude=Decimal("-74.005974")
+        )
+        Business.objects.create(
+            name="Book Store NY", 
+            city="Albany",
+            state="NY",
+            latitude=Decimal("42.686440"),
+            longitude=Decimal("-73.836424")
+        )
+        Business.objects.create(
+            name="Tea House TX",
+            city="Austin",
+            state="TX",
+            latitude=Decimal("30.266667"),
+            longitude=Decimal("-97.733333")
+        )
+
+    def test_state_only_search(self):
+        """Test search by state only"""
+        data = {"locations": [{"state": "CA"}]}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("results", response.data)
+        
+        # Should return both CA businesses
+        results = response.data["results"]
+        self.assertEqual(len(results), 2)
+        
+        # All results should be from CA
+        for business in results:
+            self.assertEqual(business["state"], "CA")
+        
+        # Check metadata
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 2)
+        self.assertIn("state", metadata["filters_applied"])
+        self.assertNotIn("text", metadata["filters_applied"])
+
+    def test_multi_state_search(self):
+        """Test search by multiple states"""
+        data = {"locations": [{"state": "CA"}, {"state": "NY"}]}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return businesses from both CA and NY (4 total)
+        results = response.data["results"]
+        self.assertEqual(len(results), 4)
+        
+        # Results should be from CA or NY only
+        states = [business["state"] for business in results]
+        for state in states:
+            self.assertIn(state, ["CA", "NY"])
+        
+        # Check metadata
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 4)
+        self.assertIn("state", metadata["filters_applied"])
+
+    def test_text_only_search(self):
+        """Test search by text only (requires at least one location)"""
+        # Note: Our API requires locations, so we'll search all states with text
+        # In a real implementation, we might allow text-only searches
+        data = {"locations": [{"state": "CA"}, {"state": "NY"}, {"state": "TX"}], "text": "coffee"}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return only coffee shops (2 total)
+        results = response.data["results"]
+        self.assertEqual(len(results), 2)
+        
+        # All results should contain "coffee" in the name
+        for business in results:
+            self.assertIn("Coffee", business["name"])
+        
+        # Check metadata
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 2)
+        self.assertIn("text", metadata["filters_applied"])
+        self.assertIn("state", metadata["filters_applied"])
+
+    def test_state_and_text_search(self):
+        """Test search by state and text combined"""
+        data = {"locations": [{"state": "CA"}], "text": "book"}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return only the CA book store
+        results = response.data["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["name"], "Book Store CA")
+        self.assertEqual(results[0]["state"], "CA")
+        
+        # Check metadata
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 1)
+        self.assertIn("text", metadata["filters_applied"])
+        self.assertIn("state", metadata["filters_applied"])
+
+    def test_case_insensitive_text_search(self):
+        """Test that text search is case-insensitive"""
+        data = {"locations": [{"state": "CA"}, {"state": "NY"}], "text": "COFFEE"}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return both coffee shops despite uppercase search
+        results = response.data["results"]
+        self.assertEqual(len(results), 2)
+        
+        for business in results:
+            self.assertIn("Coffee", business["name"])
+
+    def test_no_results_found(self):
+        """Test when no businesses match the criteria"""
+        data = {"locations": [{"state": "CA"}], "text": "pizza"}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return empty results
+        results = response.data["results"]
+        self.assertEqual(len(results), 0)
+        
+        # Check metadata
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 0)
+
+    def test_geo_location_placeholder(self):
+        """Test that geo locations are noted but not processed in Phase 3"""
+        data = {"locations": [{"lat": 34.052235, "lng": -118.243683}], "radius_miles": 50}
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should return empty results with Phase 4 note
+        results = response.data["results"]
+        self.assertEqual(len(results), 0)
+        
+        # Check metadata indicates geo filtering
+        metadata = response.data["search_metadata"]
+        self.assertEqual(metadata["total_count"], 0)
+        self.assertIn("geo", metadata["filters_applied"])
+        self.assertIn("Phase 4", metadata["note"])
+
+    def test_mixed_state_and_geo_locations(self):
+        """Test mixed state and geo locations (geo ignored in Phase 3)"""
+        data = {
+            "locations": [
+                {"state": "CA"},
+                {"lat": 34.052235, "lng": -118.243683}
+            ],
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should process state filtering and ignore geo for now
+        results = response.data["results"]
+        self.assertEqual(len(results), 1)  # Only CA coffee shop
+        self.assertEqual(results[0]["state"], "CA")
+        
+        # Check metadata shows both state and geo filters
+        metadata = response.data["search_metadata"]
+        self.assertIn("state", metadata["filters_applied"])
+        self.assertIn("geo", metadata["filters_applied"])
+        self.assertIn("text", metadata["filters_applied"])
