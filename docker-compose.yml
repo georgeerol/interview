@@ -1,0 +1,11 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=rejigg_interview.settings
+
+

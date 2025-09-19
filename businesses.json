@@ -1,0 +1,3502 @@
+[
+  {
+    "name": "Acme Books & Co",
+    "city": "Lexington",
+    "state": "KY",
+    "latitude": 37.955205,
+    "longitude": -85.784707
+  },
+  {
+    "name": "Acme Books & Co",
+    "city": "New York",
+    "state": "NY",
+    "latitude": 41.786905,
+    "longitude": -74.467748
+  },
+  {
+    "name": "Acme Books & Co",
+    "city": "Providence",
+    "state": "RI",
+    "latitude": 42.457515,
+    "longitude": -69.967985
+  },
+  {
+    "name": "Acme Books Collective",
+    "city": "South Bend",
+    "state": "IN",
+    "latitude": 41.440969,
+    "longitude": -86.716358
+  },
+  {
+    "name": "Acme Books Collective",
+    "city": "Cheyenne",
+    "state": "WY",
+    "latitude": 41.502085,
+    "longitude": -105.345527
+  },
+  {
+    "name": "Acme Books Inc",
+    "city": "Fort Worth",
+    "state": "TX",
+    "latitude": 33.395359,
+    "longitude": -96.656043
+  },
+  {
+    "name": "Acme Books Inc",
+    "city": "Oakland",
+    "state": "CA",
+    "latitude": 37.344822,
+    "longitude": -121.193788
+  },
+  {
+    "name": "Acme Books LLC",
+    "city": "Denver",
+    "state": "CO",
+    "latitude": 39.800457,
+    "longitude": -105.160864
+  },
+  {
+    "name": "Acme Books LLC",
+    "city": "Honolulu",
+    "state": "HI",
+    "latitude": 21.561968,
+    "longitude": -157.801249
+  },
+  {
+    "name": "Acme Books LLC",
+    "city": "Nashville",
+    "state": "TN",
+    "latitude": 36.172004,
+    "longitude": -86.315646
+  },
+  {
+    "name": "Acme Books Partners",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "latitude": 29.297305,
+    "longitude": -91.84658
+  },
+  {
+    "name": "Acme Books Partners",
+    "city": "Toledo",
+    "state": "OH",
+    "latitude": 41.958766,
+    "longitude": -85.375914
+  },
+  {
+    "name": "Acme Books Studio",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "latitude": 36.747101,
+    "longitude": -75.267209
+  },
+  {
+    "name": "Acme Books Studio",
+    "city": "Duluth",
+    "state": "MN",
+    "latitude": 46.092942,
+    "longitude": -92.048061
+  },
+  {
+    "name": "Acme Books Studio",
+    "city": "Columbia",
+    "state": "SC",
+    "latitude": 33.769428,
+    "longitude": -81.97048
+  },
+  {
+    "name": "Acme Books Works",
+    "city": "Reno",
+    "state": "NV",
+    "latitude": 39.99199,
+    "longitude": -118.029778
+  },
+  {
+    "name": "Acme Books Works",
+    "city": "Columbus",
+    "state": "OH",
+    "latitude": 39.875735,
+    "longitude": -82.92783
+  },
+  {
+    "name": "Acme Coffee & Co",
+    "city": "Los Angeles",
+    "state": "CA",
+    "latitude": 34.052235,
+    "longitude": -118.243683
+  },
+  {
+    "name": "Acme Coffee & Co",
+    "city": "Chattanooga",
+    "state": "TN",
+    "latitude": 35.072227,
+    "longitude": -85.172018
+  },
+  {
+    "name": "Acme Coffee & Co",
+    "city": "Chicago",
+    "state": "IL",
+    "latitude": 41.671054,
+    "longitude": -87.490804
+  },
+  {
+    "name": "Acme Coffee Collective",
+    "city": "Provo",
+    "state": "UT",
+    "latitude": 40.988084,
+    "longitude": -112.225327
+  },
+  {
+    "name": "Acme Coffee Collective",
+    "city": "Peoria",
+    "state": "IL",
+    "latitude": 41.358836,
+    "longitude": -88.627595
+  },
+  {
+    "name": "Acme Coffee Collective",
+    "city": "Lincoln",
+    "state": "NE",
+    "latitude": 40.194908,
+    "longitude": -95.506579
+  },
+  {
+    "name": "Acme Coffee Inc",
+    "city": "Pasadena",
+    "state": "CA",
+    "latitude": 33.210471,
+    "longitude": -117.057651
+  },
+  {
+    "name": "Acme Coffee Inc",
+    "city": "Oklahoma City",
+    "state": "OK",
+    "latitude": 34.266559,
+    "longitude": -98.435938
+  },
+  {
+    "name": "Acme Coffee LLC",
+    "city": "Phoenix",
+    "state": "AZ",
+    "latitude": 33.247869,
+    "longitude": -111.259753
+  },
+  {
+    "name": "Acme Coffee LLC",
+    "city": "Sacramento",
+    "state": "CA",
+    "latitude": 37.757683,
+    "longitude": -121.546823
+  },
+  {
+    "name": "Acme Coffee Partners",
+    "city": "Worcester",
+    "state": "MA",
+    "latitude": 42.403608,
+    "longitude": -72.121623
+  },
+  {
+    "name": "Acme Coffee Partners",
+    "city": "Montgomery",
+    "state": "AL",
+    "latitude": 32.751523,
+    "longitude": -86.166943
+  },
+  {
+    "name": "Acme Coffee Studio",
+    "city": "Durham",
+    "state": "NC",
+    "latitude": 36.014481,
+    "longitude": -80.311693
+  },
+  {
+    "name": "Acme Coffee Studio",
+    "city": "Burlington",
+    "state": "VT",
+    "latitude": 45.70741,
+    "longitude": -73.583219
+  },
+  {
+    "name": "Acme Coffee Works",
+    "city": "Madison",
+    "state": "WI",
+    "latitude": 42.65311,
+    "longitude": -89.250833
+  },
+  {
+    "name": "Acme Coffee Works",
+    "city": "Henderson",
+    "state": "NV",
+    "latitude": 35.779175,
+    "longitude": -115.579809
+  },
+  {
+    "name": "Acme Coffee Works",
+    "city": "Cleveland",
+    "state": "OH",
+    "latitude": 41.997176,
+    "longitude": -82.286747
+  },
+  {
+    "name": "Acme Pharmacy & Co",
+    "city": "San Diego",
+    "state": "CA",
+    "latitude": 32.15804,
+    "longitude": -117.058173
+  },
+  {
+    "name": "Acme Pharmacy & Co",
+    "city": "Buffalo",
+    "state": "NY",
+    "latitude": 42.626245,
+    "longitude": -79.734304
+  },
+  {
+    "name": "Acme Pharmacy Collective",
+    "city": "Missoula",
+    "state": "MT",
+    "latitude": 45.742103,
+    "longitude": -112.718817
+  },
+  {
+    "name": "Acme Pharmacy Collective",
+    "city": "Cedar Rapids",
+    "state": "IA",
+    "latitude": 41.909692,
+    "longitude": -91.737907
+  },
+  {
+    "name": "Acme Pharmacy Inc",
+    "city": "Dallas",
+    "state": "TX",
+    "latitude": 32.590956,
+    "longitude": -97.060772
+  },
+  {
+    "name": "Acme Pharmacy Inc",
+    "city": "San Mateo",
+    "state": "CA",
+    "latitude": 37.805248,
+    "longitude": -122.735988
+  },
+  {
+    "name": "Acme Pharmacy Inc",
+    "city": "Kansas City",
+    "state": "MO",
+    "latitude": 39.577132,
+    "longitude": -94.308582
+  },
+  {
+    "name": "Acme Pharmacy LLC",
+    "city": "Jersey City",
+    "state": "NJ",
+    "latitude": 39.633063,
+    "longitude": -74.573031
+  },
+  {
+    "name": "Acme Pharmacy LLC",
+    "city": "Washington",
+    "state": "DC",
+    "latitude": 39.058181,
+    "longitude": -78.663705
+  },
+  {
+    "name": "Acme Pharmacy Partners",
+    "city": "Tallahassee",
+    "state": "FL",
+    "latitude": 31.027181,
+    "longitude": -83.791574
+  },
+  {
+    "name": "Acme Pharmacy Partners",
+    "city": "Allentown",
+    "state": "PA",
+    "latitude": 40.288407,
+    "longitude": -74.470459
+  },
+  {
+    "name": "Acme Pharmacy Partners",
+    "city": "Fayetteville",
+    "state": "AR",
+    "latitude": 35.137996,
+    "longitude": -94.349729
+  },
+  {
+    "name": "Acme Pharmacy Studio",
+    "city": "Sioux Falls",
+    "state": "SD",
+    "latitude": 43.674159,
+    "longitude": -96.712654
+  },
+  {
+    "name": "Acme Pharmacy Studio",
+    "city": "Savannah",
+    "state": "GA",
+    "latitude": 32.11243,
+    "longitude": -80.803178
+  },
+  {
+    "name": "Acme Pharmacy Works",
+    "city": "Detroit",
+    "state": "MI",
+    "latitude": 43.244917,
+    "longitude": -83.595438
+  },
+  {
+    "name": "Acme Pharmacy Works",
+    "city": "Salem",
+    "state": "OR",
+    "latitude": 45.605905,
+    "longitude": -121.762268
+  },
+  {
+    "name": "Blue Bakery & Co",
+    "city": "Las Vegas",
+    "state": "NV",
+    "latitude": 36.196349,
+    "longitude": -115.097136
+  },
+  {
+    "name": "Blue Bakery & Co",
+    "city": "Albany",
+    "state": "NY",
+    "latitude": 42.551833,
+    "longitude": -73.588775
+  },
+  {
+    "name": "Blue Bakery & Co",
+    "city": "Seattle",
+    "state": "WA",
+    "latitude": 47.358684,
+    "longitude": -122.509274
+  },
+  {
+    "name": "Blue Bakery Corner",
+    "city": "Billings",
+    "state": "MT",
+    "latitude": 46.621375,
+    "longitude": -107.981921
+  },
+  {
+    "name": "Blue Bakery Corner",
+    "city": "Wichita",
+    "state": "KS",
+    "latitude": 37.50744,
+    "longitude": -96.053168
+  },
+  {
+    "name": "Blue Bakery Corner",
+    "city": "Louisville",
+    "state": "KY",
+    "latitude": 37.111621,
+    "longitude": -85.667538
+  },
+  {
+    "name": "Blue Bakery Group",
+    "city": "Palo Alto",
+    "state": "CA",
+    "latitude": 36.109627,
+    "longitude": -122.381882
+  },
+  {
+    "name": "Blue Bakery Group",
+    "city": "St. Louis",
+    "state": "MO",
+    "latitude": 38.627003,
+    "longitude": -90.199402
+  },
+  {
+    "name": "Blue Bakery LLC",
+    "city": "Charlotte",
+    "state": "NC",
+    "latitude": 34.525365,
+    "longitude": -80.511681
+  },
+  {
+    "name": "Blue Bakery LLC",
+    "city": "Riverside",
+    "state": "CA",
+    "latitude": 33.484597,
+    "longitude": -118.232528
+  },
+  {
+    "name": "Blue Bakery Lab",
+    "city": "Charleston",
+    "state": "SC",
+    "latitude": 33.733325,
+    "longitude": -80.77051
+  },
+  {
+    "name": "Blue Bakery Lab",
+    "city": "Dover",
+    "state": "DE",
+    "latitude": 40.141247,
+    "longitude": -74.414592
+  },
+  {
+    "name": "Blue Bakery Partners",
+    "city": "Syracuse",
+    "state": "NY",
+    "latitude": 43.364445,
+    "longitude": -76.197123
+  },
+  {
+    "name": "Blue Bakery Partners",
+    "city": "Albuquerque",
+    "state": "NM",
+    "latitude": 35.230686,
+    "longitude": -106.150431
+  },
+  {
+    "name": "Blue Bakery Works",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "latitude": 41.902603,
+    "longitude": -84.136
+  },
+  {
+    "name": "Blue Bakery Works",
+    "city": "Spokane",
+    "state": "WA",
+    "latitude": 47.901504,
+    "longitude": -118.231807
+  },
+  {
+    "name": "Blue Bakery Works",
+    "city": "Richmond",
+    "state": "VA",
+    "latitude": 38.236417,
+    "longitude": -77.261868
+  },
+  {
+    "name": "Blue Market & Co",
+    "city": "Rochester",
+    "state": "NY",
+    "latitude": 43.93858,
+    "longitude": -78.588962
+  },
+  {
+    "name": "Blue Market & Co",
+    "city": "Houston",
+    "state": "TX",
+    "latitude": 30.72117,
+    "longitude": -94.592301
+  },
+  {
+    "name": "Blue Market & Co",
+    "city": "Newark",
+    "state": "NJ",
+    "latitude": 40.254072,
+    "longitude": -72.601425
+  },
+  {
+    "name": "Blue Market Corner",
+    "city": "Green Bay",
+    "state": "WI",
+    "latitude": 44.659097,
+    "longitude": -88.630502
+  },
+  {
+    "name": "Blue Market Corner",
+    "city": "Des Moines",
+    "state": "IA",
+    "latitude": 42.163281,
+    "longitude": -93.553621
+  },
+  {
+    "name": "Blue Market Group",
+    "city": "Tulsa",
+    "state": "OK",
+    "latitude": 36.089347,
+    "longitude": -94.884837
+  },
+  {
+    "name": "Blue Market Group",
+    "city": "Sunnyvale",
+    "state": "CA",
+    "latitude": 36.369529,
+    "longitude": -121.828358
+  },
+  {
+    "name": "Blue Market LLC",
+    "city": "Philadelphia",
+    "state": "PA",
+    "latitude": 40.136325,
+    "longitude": -75.21805
+  },
+  {
+    "name": "Blue Market LLC",
+    "city": "Fresno",
+    "state": "CA",
+    "latitude": 36.869185,
+    "longitude": -119.444857
+  },
+  {
+    "name": "Blue Market LLC",
+    "city": "Indianapolis",
+    "state": "IN",
+    "latitude": 39.4419,
+    "longitude": -85.815794
+  },
+  {
+    "name": "Blue Market Lab",
+    "city": "Atlanta",
+    "state": "GA",
+    "latitude": 33.194822,
+    "longitude": -84.04857
+  },
+  {
+    "name": "Blue Market Lab",
+    "city": "Manchester",
+    "state": "NH",
+    "latitude": 42.527011,
+    "longitude": -72.216234
+  },
+  {
+    "name": "Blue Market Lab",
+    "city": "Tampa",
+    "state": "FL",
+    "latitude": 28.4527,
+    "longitude": -83.240829
+  },
+  {
+    "name": "Blue Market Partners",
+    "city": "Little Rock",
+    "state": "AR",
+    "latitude": 34.483145,
+    "longitude": -93.87548
+  },
+  {
+    "name": "Blue Market Partners",
+    "city": "Grand Rapids",
+    "state": "MI",
+    "latitude": 44.279652,
+    "longitude": -86.499105
+  },
+  {
+    "name": "Blue Market Works",
+    "city": "Eugene",
+    "state": "OR",
+    "latitude": 44.036163,
+    "longitude": -123.053112
+  },
+  {
+    "name": "Blue Market Works",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "latitude": 40.304614,
+    "longitude": -80.060806
+  },
+  {
+    "name": "Blue Salon & Co",
+    "city": "Boston",
+    "state": "MA",
+    "latitude": 41.91884,
+    "longitude": -71.622671
+  },
+  {
+    "name": "Blue Salon & Co",
+    "city": "Hartford",
+    "state": "CT",
+    "latitude": 42.128084,
+    "longitude": -73.515576
+  },
+  {
+    "name": "Blue Salon Corner",
+    "city": "Omaha",
+    "state": "NE",
+    "latitude": 41.242503,
+    "longitude": -95.939199
+  },
+  {
+    "name": "Blue Salon Corner",
+    "city": "Springfield",
+    "state": "MO",
+    "latitude": 37.210672,
+    "longitude": -93.455829
+  },
+  {
+    "name": "Blue Salon Group",
+    "city": "El Paso",
+    "state": "TX",
+    "latitude": 31.834394,
+    "longitude": -106.867261
+  },
+  {
+    "name": "Blue Salon Group",
+    "city": "Berkeley",
+    "state": "CA",
+    "latitude": 38.320206,
+    "longitude": -122.27909
+  },
+  {
+    "name": "Blue Salon Group",
+    "city": "Saint Paul",
+    "state": "MN",
+    "latitude": 45.087207,
+    "longitude": -92.314118
+  },
+  {
+    "name": "Blue Salon LLC",
+    "city": "San Jose",
+    "state": "CA",
+    "latitude": 36.981564,
+    "longitude": -123.325624
+  },
+  {
+    "name": "Blue Salon LLC",
+    "city": "Portland",
+    "state": "OR",
+    "latitude": 46.649976,
+    "longitude": -123.642128
+  },
+  {
+    "name": "Blue Salon Lab",
+    "city": "Portland",
+    "state": "ME",
+    "latitude": 43.749905,
+    "longitude": -70.052041
+  },
+  {
+    "name": "Blue Salon Lab",
+    "city": "Jacksonville",
+    "state": "FL",
+    "latitude": 30.127003,
+    "longitude": -81.41936
+  },
+  {
+    "name": "Blue Salon Partners",
+    "city": "Birmingham",
+    "state": "AL",
+    "latitude": 33.542977,
+    "longitude": -85.890663
+  },
+  {
+    "name": "Blue Salon Partners",
+    "city": "Dayton",
+    "state": "OH",
+    "latitude": 38.907428,
+    "longitude": -83.890424
+  },
+  {
+    "name": "Blue Salon Partners",
+    "city": "Salt Lake City",
+    "state": "UT",
+    "latitude": 40.275281,
+    "longitude": -113.038946
+  },
+  {
+    "name": "Blue Salon Works",
+    "city": "Cincinnati",
+    "state": "OH",
+    "latitude": 40.013665,
+    "longitude": -83.854859
+  },
+  {
+    "name": "Blue Salon Works",
+    "city": "Bozeman",
+    "state": "MT",
+    "latitude": 45.355317,
+    "longitude": -109.455619
+  },
+  {
+    "name": "Bright Deli Collective",
+    "city": "Lansing",
+    "state": "MI",
+    "latitude": 43.035819,
+    "longitude": -84.891793
+  },
+  {
+    "name": "Bright Deli Collective",
+    "city": "Missoula",
+    "state": "MT",
+    "latitude": 47.271982,
+    "longitude": -113.537438
+  },
+  {
+    "name": "Bright Deli Corner",
+    "city": "Iowa City",
+    "state": "IA",
+    "latitude": 42.631665,
+    "longitude": -91.749915
+  },
+  {
+    "name": "Bright Deli Corner",
+    "city": "San Diego",
+    "state": "CA",
+    "latitude": 33.135722,
+    "longitude": -115.949993
+  },
+  {
+    "name": "Bright Deli Corner",
+    "city": "Buffalo",
+    "state": "NY",
+    "latitude": 41.90008,
+    "longitude": -77.916165
+  },
+  {
+    "name": "Bright Deli Inc",
+    "city": "Dallas",
+    "state": "TX",
+    "latitude": 32.286258,
+    "longitude": -96.010215
+  },
+  {
+    "name": "Bright Deli Inc",
+    "city": "San Mateo",
+    "state": "CA",
+    "latitude": 36.695829,
+    "longitude": -122.782861
+  },
+  {
+    "name": "Bright Deli LLC",
+    "city": "Austin",
+    "state": "TX",
+    "latitude": 30.375897,
+    "longitude": -97.697017
+  },
+  {
+    "name": "Bright Deli LLC",
+    "city": "Jersey City",
+    "state": "NJ",
+    "latitude": 40.690165,
+    "longitude": -73.739871
+  },
+  {
+    "name": "Bright Deli LLC",
+    "city": "Washington",
+    "state": "DC",
+    "latitude": 38.562131,
+    "longitude": -76.986001
+  },
+  {
+    "name": "Bright Deli Lab",
+    "city": "Tallahassee",
+    "state": "FL",
+    "latitude": 30.892692,
+    "longitude": -85.645865
+  },
+  {
+    "name": "Bright Deli Lab",
+    "city": "Allentown",
+    "state": "PA",
+    "latitude": 41.969001,
+    "longitude": -75.226974
+  },
+  {
+    "name": "Bright Deli Studio",
+    "city": "Baltimore",
+    "state": "MD",
+    "latitude": 38.742776,
+    "longitude": -76.677368
+  },
+  {
+    "name": "Bright Deli Studio",
+    "city": "Sioux Falls",
+    "state": "SD",
+    "latitude": 43.448163,
+    "longitude": -97.639142
+  },
+  {
+    "name": "Bright Deli Studio",
+    "city": "Savannah",
+    "state": "GA",
+    "latitude": 32.808391,
+    "longitude": -81.429497
+  },
+  {
+    "name": "Bright Deli Works",
+    "city": "Fort Collins",
+    "state": "CO",
+    "latitude": 39.289314,
+    "longitude": -104.332821
+  },
+  {
+    "name": "Bright Deli Works",
+    "city": "Detroit",
+    "state": "MI",
+    "latitude": 42.287316,
+    "longitude": -83.123317
+  },
+  {
+    "name": "Bright Outfitters Collective",
+    "city": "Santa Fe",
+    "state": "NM",
+    "latitude": 36.159819,
+    "longitude": -105.081359
+  },
+  {
+    "name": "Bright Outfitters Collective",
+    "city": "South Bend",
+    "state": "IN",
+    "latitude": 41.031596,
+    "longitude": -85.313137
+  },
+  {
+    "name": "Bright Outfitters Collective",
+    "city": "Cheyenne",
+    "state": "WY",
+    "latitude": 40.199745,
+    "longitude": -105.496219
+  },
+  {
+    "name": "Bright Outfitters Corner",
+    "city": "Lexington",
+    "state": "KY",
+    "latitude": 37.958155,
+    "longitude": -84.46907
+  },
+  {
+    "name": "Bright Outfitters Corner",
+    "city": "New York",
+    "state": "NY",
+    "latitude": 40.606219,
+    "longitude": -74.233142
+  },
+  {
+    "name": "Bright Outfitters Inc",
+    "city": "Long Beach",
+    "state": "CA",
+    "latitude": 32.80063,
+    "longitude": -119.181805
+  },
+  {
+    "name": "Bright Outfitters Inc",
+    "city": "Fort Worth",
+    "state": "TX",
+    "latitude": 33.385863,
+    "longitude": -98.808245
+  },
+  {
+    "name": "Bright Outfitters LLC",
+    "city": "Denver",
+    "state": "CO",
+    "latitude": 39.071831,
+    "longitude": -105.160184
+  },
+  {
+    "name": "Bright Outfitters LLC",
+    "city": "Honolulu",
+    "state": "HI",
+    "latitude": 21.275125,
+    "longitude": -158.711937
+  },
+  {
+    "name": "Bright Outfitters Lab",
+    "city": "Trenton",
+    "state": "NJ",
+    "latitude": 40.441745,
+    "longitude": -74.618289
+  },
+  {
+    "name": "Bright Outfitters Lab",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "latitude": 30.371756,
+    "longitude": -90.777927
+  },
+  {
+    "name": "Bright Outfitters Studio",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "latitude": 37.965088,
+    "longitude": -76.066139
+  },
+  {
+    "name": "Bright Outfitters Studio",
+    "city": "Duluth",
+    "state": "MN",
+    "latitude": 47.131217,
+    "longitude": -90.370227
+  },
+  {
+    "name": "Bright Outfitters Works",
+    "city": "Minneapolis",
+    "state": "MN",
+    "latitude": 44.839384,
+    "longitude": -93.802788
+  },
+  {
+    "name": "Bright Outfitters Works",
+    "city": "Reno",
+    "state": "NV",
+    "latitude": 39.965518,
+    "longitude": -120.18499
+  },
+  {
+    "name": "Bright Outfitters Works",
+    "city": "Columbus",
+    "state": "OH",
+    "latitude": 40.421016,
+    "longitude": -82.422142
+  },
+  {
+    "name": "Bright Pharmacy Collective",
+    "city": "Provo",
+    "state": "UT",
+    "latitude": 39.261499,
+    "longitude": -112.975511
+  },
+  {
+    "name": "Bright Pharmacy Collective",
+    "city": "Peoria",
+    "state": "IL",
+    "latitude": 40.725383,
+    "longitude": -89.652857
+  },
+  {
+    "name": "Bright Pharmacy Corner",
+    "city": "Los Angeles",
+    "state": "CA",
+    "latitude": 33.922046,
+    "longitude": -118.870108
+  },
+  {
+    "name": "Bright Pharmacy Corner",
+    "city": "Chattanooga",
+    "state": "TN",
+    "latitude": 35.624233,
+    "longitude": -85.676094
+  },
+  {
+    "name": "Bright Pharmacy Inc",
+    "city": "Memphis",
+    "state": "TN",
+    "latitude": 35.333988,
+    "longitude": -90.274207
+  },
+  {
+    "name": "Bright Pharmacy Inc",
+    "city": "Pasadena",
+    "state": "CA",
+    "latitude": 34.467264,
+    "longitude": -117.903852
+  },
+  {
+    "name": "Bright Pharmacy Inc",
+    "city": "Oklahoma City",
+    "state": "OK",
+    "latitude": 35.310046,
+    "longitude": -96.944612
+  },
+  {
+    "name": "Bright Pharmacy LLC",
+    "city": "New Haven",
+    "state": "CT",
+    "latitude": 41.603172,
+    "longitude": -74.381792
+  },
+  {
+    "name": "Bright Pharmacy LLC",
+    "city": "Phoenix",
+    "state": "AZ",
+    "latitude": 34.691972,
+    "longitude": -112.013187
+  },
+  {
+    "name": "Bright Pharmacy LLC",
+    "city": "Sacramento",
+    "state": "CA",
+    "latitude": 38.829041,
+    "longitude": -119.780193
+  },
+  {
+    "name": "Bright Pharmacy Lab",
+    "city": "Orlando",
+    "state": "FL",
+    "latitude": 28.185285,
+    "longitude": -80.699358
+  },
+  {
+    "name": "Bright Pharmacy Lab",
+    "city": "Worcester",
+    "state": "MA",
+    "latitude": 41.487382,
+    "longitude": -72.119754
+  },
+  {
+    "name": "Bright Pharmacy Lab",
+    "city": "Montgomery",
+    "state": "AL",
+    "latitude": 32.434972,
+    "longitude": -87.402836
+  },
+  {
+    "name": "Bright Pharmacy Studio",
+    "city": "Bismarck",
+    "state": "ND",
+    "latitude": 46.806704,
+    "longitude": -100.635747
+  },
+  {
+    "name": "Bright Pharmacy Studio",
+    "city": "Durham",
+    "state": "NC",
+    "latitude": 35.782046,
+    "longitude": -78.840904
+  },
+  {
+    "name": "Bright Pharmacy Works",
+    "city": "Madison",
+    "state": "WI",
+    "latitude": 43.532074,
+    "longitude": -88.227564
+  },
+  {
+    "name": "Bright Pharmacy Works",
+    "city": "Henderson",
+    "state": "NV",
+    "latitude": 35.229304,
+    "longitude": -114.093019
+  },
+  {
+    "name": "Golden Bakery & Co",
+    "city": "Boston",
+    "state": "MA",
+    "latitude": 42.421126,
+    "longitude": -71.11149
+  },
+  {
+    "name": "Golden Bakery & Co",
+    "city": "Hartford",
+    "state": "CT",
+    "latitude": 41.900503,
+    "longitude": -72.497085
+  },
+  {
+    "name": "Golden Bakery & Co",
+    "city": "Miami",
+    "state": "FL",
+    "latitude": 25.605321,
+    "longitude": -79.902607
+  },
+  {
+    "name": "Golden Bakery Corner",
+    "city": "Omaha",
+    "state": "NE",
+    "latitude": 41.693129,
+    "longitude": -97.046633
+  },
+  {
+    "name": "Golden Bakery Corner",
+    "city": "Springfield",
+    "state": "MO",
+    "latitude": 38.230366,
+    "longitude": -92.951031
+  },
+  {
+    "name": "Golden Bakery Corner",
+    "city": "Knoxville",
+    "state": "TN",
+    "latitude": 35.923717,
+    "longitude": -82.473518
+  },
+  {
+    "name": "Golden Bakery Group",
+    "city": "Berkeley",
+    "state": "CA",
+    "latitude": 37.544168,
+    "longitude": -120.584883
+  },
+  {
+    "name": "Golden Bakery Group",
+    "city": "Saint Paul",
+    "state": "MN",
+    "latitude": 44.92476,
+    "longitude": -93.089915
+  },
+  {
+    "name": "Golden Bakery Inc",
+    "city": "Portland",
+    "state": "OR",
+    "latitude": 45.729024,
+    "longitude": -121.603588
+  },
+  {
+    "name": "Golden Bakery Inc",
+    "city": "Santa Monica",
+    "state": "CA",
+    "latitude": 33.237996,
+    "longitude": -117.961671
+  },
+  {
+    "name": "Golden Bakery Lab",
+    "city": "Jacksonville",
+    "state": "FL",
+    "latitude": 29.700231,
+    "longitude": -82.855023
+  },
+  {
+    "name": "Golden Bakery Lab",
+    "city": "Stamford",
+    "state": "CT",
+    "latitude": 41.998969,
+    "longitude": -74.790907
+  },
+  {
+    "name": "Golden Bakery Partners",
+    "city": "Dayton",
+    "state": "OH",
+    "latitude": 39.748982,
+    "longitude": -84.643209
+  },
+  {
+    "name": "Golden Bakery Partners",
+    "city": "Salt Lake City",
+    "state": "UT",
+    "latitude": 41.208381,
+    "longitude": -112.048499
+  },
+  {
+    "name": "Golden Bakery Studio",
+    "city": "Cincinnati",
+    "state": "OH",
+    "latitude": 38.758118,
+    "longitude": -84.035256
+  },
+  {
+    "name": "Golden Bakery Studio",
+    "city": "Bozeman",
+    "state": "MT",
+    "latitude": 45.13433,
+    "longitude": -111.47675
+  },
+  {
+    "name": "Golden Bakery Studio",
+    "city": "Raleigh",
+    "state": "NC",
+    "latitude": 35.981594,
+    "longitude": -79.514348
+  },
+  {
+    "name": "Golden Garage & Co",
+    "city": "Houston",
+    "state": "TX",
+    "latitude": 29.281456,
+    "longitude": -94.887583
+  },
+  {
+    "name": "Golden Garage & Co",
+    "city": "Newark",
+    "state": "NJ",
+    "latitude": 40.120364,
+    "longitude": -74.741605
+  },
+  {
+    "name": "Golden Garage Corner",
+    "city": "Des Moines",
+    "state": "IA",
+    "latitude": 41.572586,
+    "longitude": -93.570173
+  },
+  {
+    "name": "Golden Garage Corner",
+    "city": "San Francisco",
+    "state": "CA",
+    "latitude": 37.616553,
+    "longitude": -122.439796
+  },
+  {
+    "name": "Golden Garage Group",
+    "city": "Tulsa",
+    "state": "OK",
+    "latitude": 35.809224,
+    "longitude": -96.128416
+  },
+  {
+    "name": "Golden Garage Group",
+    "city": "Sunnyvale",
+    "state": "CA",
+    "latitude": 37.403793,
+    "longitude": -122.635804
+  },
+  {
+    "name": "Golden Garage Group",
+    "city": "Milwaukee",
+    "state": "WI",
+    "latitude": 43.624987,
+    "longitude": -88.033852
+  },
+  {
+    "name": "Golden Garage Inc",
+    "city": "Fresno",
+    "state": "CA",
+    "latitude": 35.533337,
+    "longitude": -119.477505
+  },
+  {
+    "name": "Golden Garage Inc",
+    "city": "Indianapolis",
+    "state": "IN",
+    "latitude": 39.185963,
+    "longitude": -87.730083
+  },
+  {
+    "name": "Golden Garage Lab",
+    "city": "Manchester",
+    "state": "NH",
+    "latitude": 43.189794,
+    "longitude": -71.578735
+  },
+  {
+    "name": "Golden Garage Lab",
+    "city": "Tampa",
+    "state": "FL",
+    "latitude": 28.154529,
+    "longitude": -82.180139
+  },
+  {
+    "name": "Golden Garage Partners",
+    "city": "Little Rock",
+    "state": "AR",
+    "latitude": 35.541401,
+    "longitude": -92.239425
+  },
+  {
+    "name": "Golden Garage Partners",
+    "city": "Grand Rapids",
+    "state": "MI",
+    "latitude": 43.121074,
+    "longitude": -84.439356
+  },
+  {
+    "name": "Golden Garage Partners",
+    "city": "Boise",
+    "state": "ID",
+    "latitude": 42.67276,
+    "longitude": -115.640594
+  },
+  {
+    "name": "Golden Garage Studio",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "latitude": 41.031987,
+    "longitude": -81.17428
+  },
+  {
+    "name": "Golden Garage Studio",
+    "city": "Fargo",
+    "state": "ND",
+    "latitude": 47.986513,
+    "longitude": -96.166574
+  },
+  {
+    "name": "Golden Grill & Co",
+    "city": "Albany",
+    "state": "NY",
+    "latitude": 41.994902,
+    "longitude": -74.924153
+  },
+  {
+    "name": "Golden Grill & Co",
+    "city": "Seattle",
+    "state": "WA",
+    "latitude": 48.366486,
+    "longitude": -123.721599
+  },
+  {
+    "name": "Golden Grill & Co",
+    "city": "Anchorage",
+    "state": "AK",
+    "latitude": 62.39137,
+    "longitude": -148.634059
+  },
+  {
+    "name": "Golden Grill Corner",
+    "city": "Wichita",
+    "state": "KS",
+    "latitude": 37.235945,
+    "longitude": -97.577287
+  },
+  {
+    "name": "Golden Grill Corner",
+    "city": "Louisville",
+    "state": "KY",
+    "latitude": 38.358464,
+    "longitude": -86.521225
+  },
+  {
+    "name": "Golden Grill Group",
+    "city": "St. Louis",
+    "state": "MO",
+    "latitude": 39.542133,
+    "longitude": -90.015246
+  },
+  {
+    "name": "Golden Grill Group",
+    "city": "Colorado Springs",
+    "state": "CO",
+    "latitude": 38.908043,
+    "longitude": -103.486375
+  },
+  {
+    "name": "Golden Grill Inc",
+    "city": "Charlotte",
+    "state": "NC",
+    "latitude": 35.198915,
+    "longitude": -81.106582
+  },
+  {
+    "name": "Golden Grill Inc",
+    "city": "Riverside",
+    "state": "CA",
+    "latitude": 34.291894,
+    "longitude": -117.517908
+  },
+  {
+    "name": "Golden Grill Inc",
+    "city": "San Antonio",
+    "state": "TX",
+    "latitude": 29.674445,
+    "longitude": -98.065648
+  },
+  {
+    "name": "Golden Grill Lab",
+    "city": "Charleston",
+    "state": "SC",
+    "latitude": 33.019857,
+    "longitude": -79.211614
+  },
+  {
+    "name": "Golden Grill Lab",
+    "city": "Dover",
+    "state": "DE",
+    "latitude": 38.532017,
+    "longitude": -74.955535
+  },
+  {
+    "name": "Golden Grill Lab",
+    "city": "New Orleans",
+    "state": "LA",
+    "latitude": 29.28535,
+    "longitude": -90.738494
+  },
+  {
+    "name": "Golden Grill Partners",
+    "city": "Albuquerque",
+    "state": "NM",
+    "latitude": 33.731176,
+    "longitude": -106.481155
+  },
+  {
+    "name": "Golden Grill Partners",
+    "city": "Fort Wayne",
+    "state": "IN",
+    "latitude": 41.074498,
+    "longitude": -85.157474
+  },
+  {
+    "name": "Golden Grill Studio",
+    "city": "Spokane",
+    "state": "WA",
+    "latitude": 47.704172,
+    "longitude": -117.372686
+  },
+  {
+    "name": "Golden Grill Studio",
+    "city": "Richmond",
+    "state": "VA",
+    "latitude": 37.46711,
+    "longitude": -77.237776
+  },
+  {
+    "name": "Grand Books Collective",
+    "city": "Fort Wayne",
+    "state": "IN",
+    "latitude": 41.017933,
+    "longitude": -84.608218
+  },
+  {
+    "name": "Grand Books Collective",
+    "city": "Billings",
+    "state": "MT",
+    "latitude": 45.264086,
+    "longitude": -108.438905
+  },
+  {
+    "name": "Grand Books Corner",
+    "city": "Louisville",
+    "state": "KY",
+    "latitude": 37.632961,
+    "longitude": -84.765523
+  },
+  {
+    "name": "Grand Books Corner",
+    "city": "Las Vegas",
+    "state": "NV",
+    "latitude": 35.156432,
+    "longitude": -115.71005
+  },
+  {
+    "name": "Grand Books Corner",
+    "city": "Albany",
+    "state": "NY",
+    "latitude": 42.884228,
+    "longitude": -75.401992
+  },
+  {
+    "name": "Grand Books Inc",
+    "city": "San Antonio",
+    "state": "TX",
+    "latitude": 29.32964,
+    "longitude": -99.450766
+  },
+  {
+    "name": "Grand Books Inc",
+    "city": "Palo Alto",
+    "state": "CA",
+    "latitude": 38.341304,
+    "longitude": -122.550483
+  },
+  {
+    "name": "Grand Books LLC",
+    "city": "Seattle",
+    "state": "WA",
+    "latitude": 47.485787,
+    "longitude": -122.258533
+  },
+  {
+    "name": "Grand Books LLC",
+    "city": "Anchorage",
+    "state": "AK",
+    "latitude": 61.073691,
+    "longitude": -150.313109
+  },
+  {
+    "name": "Grand Books LLC",
+    "city": "Charlotte",
+    "state": "NC",
+    "latitude": 35.463665,
+    "longitude": -81.178724
+  },
+  {
+    "name": "Grand Books Partners",
+    "city": "New Orleans",
+    "state": "LA",
+    "latitude": 30.400045,
+    "longitude": -88.692906
+  },
+  {
+    "name": "Grand Books Partners",
+    "city": "Syracuse",
+    "state": "NY",
+    "latitude": 41.895628,
+    "longitude": -75.095441
+  },
+  {
+    "name": "Grand Books Studio",
+    "city": "Richmond",
+    "state": "VA",
+    "latitude": 37.989586,
+    "longitude": -77.868915
+  },
+  {
+    "name": "Grand Books Studio",
+    "city": "Rapid City",
+    "state": "SD",
+    "latitude": 44.60386,
+    "longitude": -102.623435
+  },
+  {
+    "name": "Grand Books Studio",
+    "city": "Charleston",
+    "state": "SC",
+    "latitude": 32.422548,
+    "longitude": -79.08476
+  },
+  {
+    "name": "Grand Books Works",
+    "city": "Colorado Springs",
+    "state": "CO",
+    "latitude": 39.388105,
+    "longitude": -106.524179
+  },
+  {
+    "name": "Grand Books Works",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "latitude": 42.366347,
+    "longitude": -83.722683
+  },
+  {
+    "name": "Grand Outfitters Collective",
+    "city": "Salt Lake City",
+    "state": "UT",
+    "latitude": 39.928434,
+    "longitude": -112.140984
+  },
+  {
+    "name": "Grand Outfitters Collective",
+    "city": "Springfield",
+    "state": "IL",
+    "latitude": 39.769002,
+    "longitude": -90.911688
+  },
+  {
+    "name": "Grand Outfitters Collective",
+    "city": "Omaha",
+    "state": "NE",
+    "latitude": 42.310706,
+    "longitude": -96.28131
+  },
+  {
+    "name": "Grand Outfitters Corner",
+    "city": "Knoxville",
+    "state": "TN",
+    "latitude": 36.009968,
+    "longitude": -84.030091
+  },
+  {
+    "name": "Grand Outfitters Corner",
+    "city": "Boston",
+    "state": "MA",
+    "latitude": 42.568883,
+    "longitude": -70.978364
+  },
+  {
+    "name": "Grand Outfitters Inc",
+    "city": "Santa Monica",
+    "state": "CA",
+    "latitude": 35.306867,
+    "longitude": -118.540469
+  },
+  {
+    "name": "Grand Outfitters Inc",
+    "city": "El Paso",
+    "state": "TX",
+    "latitude": 32.117769,
+    "longitude": -104.884787
+  },
+  {
+    "name": "Grand Outfitters LLC",
+    "city": "Miami",
+    "state": "FL",
+    "latitude": 26.354642,
+    "longitude": -80.594629
+  },
+  {
+    "name": "Grand Outfitters LLC",
+    "city": "San Jose",
+    "state": "CA",
+    "latitude": 37.905306,
+    "longitude": -121.155331
+  },
+  {
+    "name": "Grand Outfitters Partners",
+    "city": "Stamford",
+    "state": "CT",
+    "latitude": 40.803677,
+    "longitude": -73.440716
+  },
+  {
+    "name": "Grand Outfitters Partners",
+    "city": "Birmingham",
+    "state": "AL",
+    "latitude": 33.330587,
+    "longitude": -87.200894
+  },
+  {
+    "name": "Grand Outfitters Studio",
+    "city": "Raleigh",
+    "state": "NC",
+    "latitude": 34.992308,
+    "longitude": -77.645857
+  },
+  {
+    "name": "Grand Outfitters Studio",
+    "city": "Portland",
+    "state": "ME",
+    "latitude": 42.584673,
+    "longitude": -71.117579
+  },
+  {
+    "name": "Grand Outfitters Works",
+    "city": "Saint Paul",
+    "state": "MN",
+    "latitude": 45.324857,
+    "longitude": -92.812184
+  },
+  {
+    "name": "Grand Outfitters Works",
+    "city": "Tucson",
+    "state": "AZ",
+    "latitude": 32.087856,
+    "longitude": -110.362569
+  },
+  {
+    "name": "Grand Outfitters Works",
+    "city": "Cincinnati",
+    "state": "OH",
+    "latitude": 38.451983,
+    "longitude": -84.527864
+  },
+  {
+    "name": "Grand Pharmacy Collective",
+    "city": "Boise",
+    "state": "ID",
+    "latitude": 45.029601,
+    "longitude": -116.059129
+  },
+  {
+    "name": "Grand Pharmacy Collective",
+    "city": "Green Bay",
+    "state": "WI",
+    "latitude": 44.524878,
+    "longitude": -87.913112
+  },
+  {
+    "name": "Grand Pharmacy Corner",
+    "city": "San Francisco",
+    "state": "CA",
+    "latitude": 38.232295,
+    "longitude": -122.031859
+  },
+  {
+    "name": "Grand Pharmacy Corner",
+    "city": "Rochester",
+    "state": "NY",
+    "latitude": 42.922528,
+    "longitude": -76.75614
+  },
+  {
+    "name": "Grand Pharmacy Inc",
+    "city": "Indianapolis",
+    "state": "IN",
+    "latitude": 39.755132,
+    "longitude": -85.800777
+  },
+  {
+    "name": "Grand Pharmacy Inc",
+    "city": "Irvine",
+    "state": "CA",
+    "latitude": 33.300539,
+    "longitude": -117.73996
+  },
+  {
+    "name": "Grand Pharmacy Inc",
+    "city": "Tulsa",
+    "state": "OK",
+    "latitude": 35.946693,
+    "longitude": -96.56442
+  },
+  {
+    "name": "Grand Pharmacy LLC",
+    "city": "Newark",
+    "state": "NJ",
+    "latitude": 41.244455,
+    "longitude": -72.815915
+  },
+  {
+    "name": "Grand Pharmacy LLC",
+    "city": "Philadelphia",
+    "state": "PA",
+    "latitude": 38.985999,
+    "longitude": -74.119979
+  },
+  {
+    "name": "Grand Pharmacy LLC",
+    "city": "Fresno",
+    "state": "CA",
+    "latitude": 35.628234,
+    "longitude": -120.793028
+  },
+  {
+    "name": "Grand Pharmacy Partners",
+    "city": "Tampa",
+    "state": "FL",
+    "latitude": 27.799609,
+    "longitude": -83.241014
+  },
+  {
+    "name": "Grand Pharmacy Partners",
+    "city": "Harrisburg",
+    "state": "PA",
+    "latitude": 41.017255,
+    "longitude": -77.356134
+  },
+  {
+    "name": "Grand Pharmacy Partners",
+    "city": "Little Rock",
+    "state": "AR",
+    "latitude": 35.331965,
+    "longitude": -91.390307
+  },
+  {
+    "name": "Grand Pharmacy Studio",
+    "city": "Fargo",
+    "state": "ND",
+    "latitude": 46.800206,
+    "longitude": -96.916225
+  },
+  {
+    "name": "Grand Pharmacy Studio",
+    "city": "Atlanta",
+    "state": "GA",
+    "latitude": 33.881774,
+    "longitude": -84.616318
+  },
+  {
+    "name": "Grand Pharmacy Works",
+    "city": "Milwaukee",
+    "state": "WI",
+    "latitude": 42.106771,
+    "longitude": -88.335074
+  },
+  {
+    "name": "Grand Pharmacy Works",
+    "city": "Eugene",
+    "state": "OR",
+    "latitude": 44.147959,
+    "longitude": -124.612561
+  },
+  {
+    "name": "Green Bakery & Co",
+    "city": "New York",
+    "state": "NY",
+    "latitude": 40.655771,
+    "longitude": -74.019266
+  },
+  {
+    "name": "Green Bakery & Co",
+    "city": "Providence",
+    "state": "RI",
+    "latitude": 41.813806,
+    "longitude": -71.645463
+  },
+  {
+    "name": "Green Bakery & Co",
+    "city": "Denver",
+    "state": "CO",
+    "latitude": 40.016557,
+    "longitude": -105.098273
+  },
+  {
+    "name": "Green Bakery Corner",
+    "city": "Cheyenne",
+    "state": "WY",
+    "latitude": 40.266122,
+    "longitude": -104.415308
+  },
+  {
+    "name": "Green Bakery Corner",
+    "city": "Topeka",
+    "state": "KS",
+    "latitude": 38.477396,
+    "longitude": -96.793888
+  },
+  {
+    "name": "Green Bakery Corner",
+    "city": "Lexington",
+    "state": "KY",
+    "latitude": 38.838148,
+    "longitude": -85.575232
+  },
+  {
+    "name": "Green Bakery Group",
+    "city": "Oakland",
+    "state": "CA",
+    "latitude": 38.924814,
+    "longitude": -123.255162
+  },
+  {
+    "name": "Green Bakery Group",
+    "city": "Minneapolis",
+    "state": "MN",
+    "latitude": 44.988434,
+    "longitude": -93.251208
+  },
+  {
+    "name": "Green Bakery Inc",
+    "city": "Nashville",
+    "state": "TN",
+    "latitude": 36.498655,
+    "longitude": -87.637511
+  },
+  {
+    "name": "Green Bakery Inc",
+    "city": "Long Beach",
+    "state": "CA",
+    "latitude": 34.630306,
+    "longitude": -117.954009
+  },
+  {
+    "name": "Green Bakery Lab",
+    "city": "Columbia",
+    "state": "SC",
+    "latitude": 33.753687,
+    "longitude": -79.618904
+  },
+  {
+    "name": "Green Bakery Lab",
+    "city": "Trenton",
+    "state": "NJ",
+    "latitude": 38.90429,
+    "longitude": -74.705146
+  },
+  {
+    "name": "Green Bakery Partners",
+    "city": "Toledo",
+    "state": "OH",
+    "latitude": 41.433975,
+    "longitude": -83.202749
+  },
+  {
+    "name": "Green Bakery Partners",
+    "city": "Santa Fe",
+    "state": "NM",
+    "latitude": 35.289379,
+    "longitude": -106.193055
+  },
+  {
+    "name": "Green Bakery Works",
+    "city": "Columbus",
+    "state": "OH",
+    "latitude": 40.451549,
+    "longitude": -83.052093
+  },
+  {
+    "name": "Green Bakery Works",
+    "city": "Tacoma",
+    "state": "WA",
+    "latitude": 47.438025,
+    "longitude": -121.58984
+  },
+  {
+    "name": "Green Bakery Works",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "latitude": 36.234156,
+    "longitude": -75.511015
+  },
+  {
+    "name": "Green Garage & Co",
+    "city": "Chicago",
+    "state": "IL",
+    "latitude": 42.500294,
+    "longitude": -87.61283
+  },
+  {
+    "name": "Green Garage & Co",
+    "city": "New Haven",
+    "state": "CT",
+    "latitude": 41.45984,
+    "longitude": -71.965118
+  },
+  {
+    "name": "Green Garage Corner",
+    "city": "Lincoln",
+    "state": "NE",
+    "latitude": 40.839085,
+    "longitude": -96.720769
+  },
+  {
+    "name": "Green Garage Corner",
+    "city": "Los Angeles",
+    "state": "CA",
+    "latitude": 34.148417,
+    "longitude": -118.113091
+  },
+  {
+    "name": "Green Garage Group",
+    "city": "Oklahoma City",
+    "state": "OK",
+    "latitude": 35.639652,
+    "longitude": -97.145585
+  },
+  {
+    "name": "Green Garage Group",
+    "city": "Santa Clara",
+    "state": "CA",
+    "latitude": 37.015451,
+    "longitude": -121.558735
+  },
+  {
+    "name": "Green Garage Group",
+    "city": "Madison",
+    "state": "WI",
+    "latitude": 42.589786,
+    "longitude": -89.835812
+  },
+  {
+    "name": "Green Garage Inc",
+    "city": "Sacramento",
+    "state": "CA",
+    "latitude": 39.624437,
+    "longitude": -120.689307
+  },
+  {
+    "name": "Green Garage Inc",
+    "city": "Memphis",
+    "state": "TN",
+    "latitude": 34.742596,
+    "longitude": -88.502352
+  },
+  {
+    "name": "Green Garage Lab",
+    "city": "Burlington",
+    "state": "VT",
+    "latitude": 44.294928,
+    "longitude": -73.284136
+  },
+  {
+    "name": "Green Garage Lab",
+    "city": "Orlando",
+    "state": "FL",
+    "latitude": 28.551643,
+    "longitude": -81.724876
+  },
+  {
+    "name": "Green Garage Partners",
+    "city": "Montgomery",
+    "state": "AL",
+    "latitude": 31.829102,
+    "longitude": -86.963028
+  },
+  {
+    "name": "Green Garage Partners",
+    "city": "Akron",
+    "state": "OH",
+    "latitude": 41.553978,
+    "longitude": -82.534619
+  },
+  {
+    "name": "Green Garage Partners",
+    "city": "Provo",
+    "state": "UT",
+    "latitude": 41.1921,
+    "longitude": -111.224878
+  },
+  {
+    "name": "Green Garage Works",
+    "city": "Cleveland",
+    "state": "OH",
+    "latitude": 40.472035,
+    "longitude": -81.367627
+  },
+  {
+    "name": "Green Garage Works",
+    "city": "Bismarck",
+    "state": "ND",
+    "latitude": 46.267422,
+    "longitude": -102.295692
+  },
+  {
+    "name": "Green Market & Co",
+    "city": "Buffalo",
+    "state": "NY",
+    "latitude": 42.772905,
+    "longitude": -77.426287
+  },
+  {
+    "name": "Green Market & Co",
+    "city": "Austin",
+    "state": "TX",
+    "latitude": 29.091077,
+    "longitude": -97.560452
+  },
+  {
+    "name": "Green Market & Co",
+    "city": "Jersey City",
+    "state": "NJ",
+    "latitude": 40.238974,
+    "longitude": -75.635654
+  },
+  {
+    "name": "Green Market Corner",
+    "city": "Cedar Rapids",
+    "state": "IA",
+    "latitude": 42.170079,
+    "longitude": -91.07662
+  },
+  {
+    "name": "Green Market Corner",
+    "city": "Iowa City",
+    "state": "IA",
+    "latitude": 41.187807,
+    "longitude": -91.052939
+  },
+  {
+    "name": "Green Market Group",
+    "city": "Kansas City",
+    "state": "MO",
+    "latitude": 38.526257,
+    "longitude": -95.488032
+  },
+  {
+    "name": "Green Market Group",
+    "city": "Fort Collins",
+    "state": "CO",
+    "latitude": 41.212787,
+    "longitude": -106.160896
+  },
+  {
+    "name": "Green Market Inc",
+    "city": "Washington",
+    "state": "DC",
+    "latitude": 38.790461,
+    "longitude": -76.824228
+  },
+  {
+    "name": "Green Market Inc",
+    "city": "Bakersfield",
+    "state": "CA",
+    "latitude": 35.077568,
+    "longitude": -119.163145
+  },
+  {
+    "name": "Green Market Inc",
+    "city": "Dallas",
+    "state": "TX",
+    "latitude": 32.839592,
+    "longitude": -97.308101
+  },
+  {
+    "name": "Green Market Lab",
+    "city": "Savannah",
+    "state": "GA",
+    "latitude": 32.300403,
+    "longitude": -81.797532
+  },
+  {
+    "name": "Green Market Lab",
+    "city": "Wilmington",
+    "state": "DE",
+    "latitude": 40.485907,
+    "longitude": -75.418656
+  },
+  {
+    "name": "Green Market Lab",
+    "city": "Tallahassee",
+    "state": "FL",
+    "latitude": 30.529533,
+    "longitude": -83.278692
+  },
+  {
+    "name": "Green Market Partners",
+    "city": "Fayetteville",
+    "state": "AR",
+    "latitude": 37.15918,
+    "longitude": -93.166113
+  },
+  {
+    "name": "Green Market Partners",
+    "city": "Lansing",
+    "state": "MI",
+    "latitude": 42.732535,
+    "longitude": -84.555535
+  },
+  {
+    "name": "Green Market Works",
+    "city": "Salem",
+    "state": "OR",
+    "latitude": 44.935964,
+    "longitude": -123.095645
+  },
+  {
+    "name": "Green Market Works",
+    "city": "Baltimore",
+    "state": "MD",
+    "latitude": 39.437449,
+    "longitude": -76.691031
+  },
+  {
+    "name": "Prime Books & Co",
+    "city": "Knoxville",
+    "state": "TN",
+    "latitude": 36.708129,
+    "longitude": -83.045518
+  },
+  {
+    "name": "Prime Books & Co",
+    "city": "Boston",
+    "state": "MA",
+    "latitude": 41.785045,
+    "longitude": -69.727606
+  },
+  {
+    "name": "Prime Books & Co",
+    "city": "Hartford",
+    "state": "CT",
+    "latitude": 40.557154,
+    "longitude": -73.142019
+  },
+  {
+    "name": "Prime Books Collective",
+    "city": "Springfield",
+    "state": "IL",
+    "latitude": 40.203733,
+    "longitude": -89.51698
+  },
+  {
+    "name": "Prime Books Collective",
+    "city": "Omaha",
+    "state": "NE",
+    "latitude": 41.252035,
+    "longitude": -95.203008
+  },
+  {
+    "name": "Prime Books Group",
+    "city": "El Paso",
+    "state": "TX",
+    "latitude": 30.893732,
+    "longitude": -106.46362
+  },
+  {
+    "name": "Prime Books Group",
+    "city": "Berkeley",
+    "state": "CA",
+    "latitude": 37.618532,
+    "longitude": -123.475449
+  },
+  {
+    "name": "Prime Books LLC",
+    "city": "Miami",
+    "state": "FL",
+    "latitude": 25.809221,
+    "longitude": -80.023056
+  },
+  {
+    "name": "Prime Books LLC",
+    "city": "San Jose",
+    "state": "CA",
+    "latitude": 37.101718,
+    "longitude": -121.710147
+  },
+  {
+    "name": "Prime Books LLC",
+    "city": "Portland",
+    "state": "OR",
+    "latitude": 45.242842,
+    "longitude": -123.077242
+  },
+  {
+    "name": "Prime Books Partners",
+    "city": "Birmingham",
+    "state": "AL",
+    "latitude": 34.770051,
+    "longitude": -87.246635
+  },
+  {
+    "name": "Prime Books Partners",
+    "city": "Dayton",
+    "state": "OH",
+    "latitude": 40.441585,
+    "longitude": -82.566285
+  },
+  {
+    "name": "Prime Books Studio",
+    "city": "Raleigh",
+    "state": "NC",
+    "latitude": 35.462071,
+    "longitude": -79.254819
+  },
+  {
+    "name": "Prime Books Studio",
+    "city": "Portland",
+    "state": "ME",
+    "latitude": 44.15406,
+    "longitude": -70.961693
+  },
+  {
+    "name": "Prime Books Studio",
+    "city": "Jacksonville",
+    "state": "FL",
+    "latitude": 31.036936,
+    "longitude": -81.157099
+  },
+  {
+    "name": "Prime Books Works",
+    "city": "Tucson",
+    "state": "AZ",
+    "latitude": 32.222607,
+    "longitude": -110.974709
+  },
+  {
+    "name": "Prime Books Works",
+    "city": "Cincinnati",
+    "state": "OH",
+    "latitude": 39.132972,
+    "longitude": -84.656198
+  },
+  {
+    "name": "Prime Coffee & Co",
+    "city": "San Francisco",
+    "state": "CA",
+    "latitude": 37.764257,
+    "longitude": -122.40705
+  },
+  {
+    "name": "Prime Coffee & Co",
+    "city": "Rochester",
+    "state": "NY",
+    "latitude": 43.048791,
+    "longitude": -77.709002
+  },
+  {
+    "name": "Prime Coffee & Co",
+    "city": "Houston",
+    "state": "TX",
+    "latitude": 29.847802,
+    "longitude": -95.634853
+  },
+  {
+    "name": "Prime Coffee Collective",
+    "city": "Boise",
+    "state": "ID",
+    "latitude": 43.336568,
+    "longitude": -115.047851
+  },
+  {
+    "name": "Prime Coffee Collective",
+    "city": "Green Bay",
+    "state": "WI",
+    "latitude": 43.517987,
+    "longitude": -88.125357
+  },
+  {
+    "name": "Prime Coffee Collective",
+    "city": "Des Moines",
+    "state": "IA",
+    "latitude": 41.409833,
+    "longitude": -95.093986
+  },
+  {
+    "name": "Prime Coffee Group",
+    "city": "Irvine",
+    "state": "CA",
+    "latitude": 33.748655,
+    "longitude": -119.407945
+  },
+  {
+    "name": "Prime Coffee Group",
+    "city": "Tulsa",
+    "state": "OK",
+    "latitude": 37.564154,
+    "longitude": -96.309471
+  },
+  {
+    "name": "Prime Coffee LLC",
+    "city": "Philadelphia",
+    "state": "PA",
+    "latitude": 39.629005,
+    "longitude": -76.007561
+  },
+  {
+    "name": "Prime Coffee LLC",
+    "city": "Fresno",
+    "state": "CA",
+    "latitude": 37.382561,
+    "longitude": -120.460644
+  },
+  {
+    "name": "Prime Coffee Partners",
+    "city": "Harrisburg",
+    "state": "PA",
+    "latitude": 40.33046,
+    "longitude": -76.514676
+  },
+  {
+    "name": "Prime Coffee Partners",
+    "city": "Little Rock",
+    "state": "AR",
+    "latitude": 34.37861,
+    "longitude": -92.083248
+  },
+  {
+    "name": "Prime Coffee Studio",
+    "city": "Atlanta",
+    "state": "GA",
+    "latitude": 34.504849,
+    "longitude": -83.32851
+  },
+  {
+    "name": "Prime Coffee Studio",
+    "city": "Manchester",
+    "state": "NH",
+    "latitude": 42.258209,
+    "longitude": -70.055718
+  },
+  {
+    "name": "Prime Coffee Works",
+    "city": "Milwaukee",
+    "state": "WI",
+    "latitude": 43.280425,
+    "longitude": -88.424782
+  },
+  {
+    "name": "Prime Coffee Works",
+    "city": "Eugene",
+    "state": "OR",
+    "latitude": 44.584049,
+    "longitude": -122.823162
+  },
+  {
+    "name": "Prime Coffee Works",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "latitude": 40.364852,
+    "longitude": -79.108218
+  },
+  {
+    "name": "Prime Salon & Co",
+    "city": "Las Vegas",
+    "state": "NV",
+    "latitude": 36.530006,
+    "longitude": -115.702636
+  },
+  {
+    "name": "Prime Salon & Co",
+    "city": "Albany",
+    "state": "NY",
+    "latitude": 43.279858,
+    "longitude": -73.348335
+  },
+  {
+    "name": "Prime Salon Collective",
+    "city": "Billings",
+    "state": "MT",
+    "latitude": 45.993968,
+    "longitude": -110.557789
+  },
+  {
+    "name": "Prime Salon Collective",
+    "city": "Wichita",
+    "state": "KS",
+    "latitude": 37.788208,
+    "longitude": -97.339468
+  },
+  {
+    "name": "Prime Salon Group",
+    "city": "San Antonio",
+    "state": "TX",
+    "latitude": 29.725314,
+    "longitude": -98.446932
+  },
+  {
+    "name": "Prime Salon Group",
+    "city": "Palo Alto",
+    "state": "CA",
+    "latitude": 37.482051,
+    "longitude": -121.616701
+  },
+  {
+    "name": "Prime Salon Group",
+    "city": "St. Louis",
+    "state": "MO",
+    "latitude": 38.120408,
+    "longitude": -89.978123
+  },
+  {
+    "name": "Prime Salon LLC",
+    "city": "Anchorage",
+    "state": "AK",
+    "latitude": 62.302939,
+    "longitude": -150.839005
+  },
+  {
+    "name": "Prime Salon LLC",
+    "city": "Charlotte",
+    "state": "NC",
+    "latitude": 35.962099,
+    "longitude": -79.542325
+  },
+  {
+    "name": "Prime Salon Partners",
+    "city": "New Orleans",
+    "state": "LA",
+    "latitude": 29.218584,
+    "longitude": -89.967125
+  },
+  {
+    "name": "Prime Salon Partners",
+    "city": "Syracuse",
+    "state": "NY",
+    "latitude": 42.745136,
+    "longitude": -77.237144
+  },
+  {
+    "name": "Prime Salon Partners",
+    "city": "Albuquerque",
+    "state": "NM",
+    "latitude": 35.888976,
+    "longitude": -107.315032
+  },
+  {
+    "name": "Prime Salon Studio",
+    "city": "Rapid City",
+    "state": "SD",
+    "latitude": 43.964312,
+    "longitude": -103.111099
+  },
+  {
+    "name": "Prime Salon Studio",
+    "city": "Charleston",
+    "state": "SC",
+    "latitude": 32.57696,
+    "longitude": -80.130044
+  },
+  {
+    "name": "Prime Salon Works",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "latitude": 41.864163,
+    "longitude": -82.499028
+  },
+  {
+    "name": "Prime Salon Works",
+    "city": "Spokane",
+    "state": "WA",
+    "latitude": 46.548618,
+    "longitude": -117.726499
+  },
+  {
+    "name": "Rapid Deli Collective",
+    "city": "Grand Rapids",
+    "state": "MI",
+    "latitude": 42.587784,
+    "longitude": -85.699429
+  },
+  {
+    "name": "Rapid Deli Collective",
+    "city": "Boise",
+    "state": "ID",
+    "latitude": 43.529283,
+    "longitude": -116.871091
+  },
+  {
+    "name": "Rapid Deli Corner",
+    "city": "Des Moines",
+    "state": "IA",
+    "latitude": 40.771829,
+    "longitude": -94.322997
+  },
+  {
+    "name": "Rapid Deli Corner",
+    "city": "San Francisco",
+    "state": "CA",
+    "latitude": 38.13399,
+    "longitude": -123.718497
+  },
+  {
+    "name": "Rapid Deli Corner",
+    "city": "Rochester",
+    "state": "NY",
+    "latitude": 44.350151,
+    "longitude": -77.421732
+  },
+  {
+    "name": "Rapid Deli Group",
+    "city": "Sunnyvale",
+    "state": "CA",
+    "latitude": 38.700503,
+    "longitude": -121.472306
+  },
+  {
+    "name": "Rapid Deli Group",
+    "city": "Milwaukee",
+    "state": "WI",
+    "latitude": 43.033874,
+    "longitude": -87.82757
+  },
+  {
+    "name": "Rapid Deli Inc",
+    "city": "Indianapolis",
+    "state": "IN",
+    "latitude": 40.563111,
+    "longitude": -86.366077
+  },
+  {
+    "name": "Rapid Deli Inc",
+    "city": "Irvine",
+    "state": "CA",
+    "latitude": 34.065448,
+    "longitude": -116.809593
+  },
+  {
+    "name": "Rapid Deli LLC",
+    "city": "Houston",
+    "state": "TX",
+    "latitude": 29.713697,
+    "longitude": -95.47332
+  },
+  {
+    "name": "Rapid Deli LLC",
+    "city": "Newark",
+    "state": "NJ",
+    "latitude": 40.899926,
+    "longitude": -74.359891
+  },
+  {
+    "name": "Rapid Deli LLC",
+    "city": "Philadelphia",
+    "state": "PA",
+    "latitude": 40.221881,
+    "longitude": -74.9095
+  },
+  {
+    "name": "Rapid Deli Lab",
+    "city": "Tampa",
+    "state": "FL",
+    "latitude": 26.830611,
+    "longitude": -81.845698
+  },
+  {
+    "name": "Rapid Deli Lab",
+    "city": "Harrisburg",
+    "state": "PA",
+    "latitude": 39.403065,
+    "longitude": -78.248637
+  },
+  {
+    "name": "Rapid Deli Studio",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "latitude": 40.799162,
+    "longitude": -79.471906
+  },
+  {
+    "name": "Rapid Deli Studio",
+    "city": "Fargo",
+    "state": "ND",
+    "latitude": 46.505875,
+    "longitude": -96.009781
+  },
+  {
+    "name": "Rapid Deli Studio",
+    "city": "Atlanta",
+    "state": "GA",
+    "latitude": 33.033222,
+    "longitude": -84.718181
+  },
+  {
+    "name": "Rapid Grill Collective",
+    "city": "Salt Lake City",
+    "state": "UT",
+    "latitude": 40.768664,
+    "longitude": -110.056681
+  },
+  {
+    "name": "Rapid Grill Collective",
+    "city": "Springfield",
+    "state": "IL",
+    "latitude": 39.739638,
+    "longitude": -89.636255
+  },
+  {
+    "name": "Rapid Grill Corner",
+    "city": "Springfield",
+    "state": "MO",
+    "latitude": 36.95821,
+    "longitude": -92.719824
+  },
+  {
+    "name": "Rapid Grill Corner",
+    "city": "Knoxville",
+    "state": "TN",
+    "latitude": 35.34618,
+    "longitude": -84.126421
+  },
+  {
+    "name": "Rapid Grill Group",
+    "city": "Saint Paul",
+    "state": "MN",
+    "latitude": 45.174594,
+    "longitude": -94.405648
+  },
+  {
+    "name": "Rapid Grill Group",
+    "city": "Tucson",
+    "state": "AZ",
+    "latitude": 33.293512,
+    "longitude": -110.963171
+  },
+  {
+    "name": "Rapid Grill Inc",
+    "city": "Portland",
+    "state": "OR",
+    "latitude": 45.269412,
+    "longitude": -122.663965
+  },
+  {
+    "name": "Rapid Grill Inc",
+    "city": "Santa Monica",
+    "state": "CA",
+    "latitude": 33.920949,
+    "longitude": -118.911007
+  },
+  {
+    "name": "Rapid Grill Inc",
+    "city": "El Paso",
+    "state": "TX",
+    "latitude": 32.179274,
+    "longitude": -106.758616
+  },
+  {
+    "name": "Rapid Grill LLC",
+    "city": "Hartford",
+    "state": "CT",
+    "latitude": 40.81693,
+    "longitude": -71.895638
+  },
+  {
+    "name": "Rapid Grill LLC",
+    "city": "Miami",
+    "state": "FL",
+    "latitude": 24.885638,
+    "longitude": -81.147214
+  },
+  {
+    "name": "Rapid Grill LLC",
+    "city": "San Jose",
+    "state": "CA",
+    "latitude": 38.032067,
+    "longitude": -123.343674
+  },
+  {
+    "name": "Rapid Grill Lab",
+    "city": "Jacksonville",
+    "state": "FL",
+    "latitude": 30.982021,
+    "longitude": -81.889249
+  },
+  {
+    "name": "Rapid Grill Lab",
+    "city": "Stamford",
+    "state": "CT",
+    "latitude": 41.453137,
+    "longitude": -72.623137
+  },
+  {
+    "name": "Rapid Grill Lab",
+    "city": "Birmingham",
+    "state": "AL",
+    "latitude": 32.857856,
+    "longitude": -86.059609
+  },
+  {
+    "name": "Rapid Grill Studio",
+    "city": "Bozeman",
+    "state": "MT",
+    "latitude": 45.736578,
+    "longitude": -111.13336
+  },
+  {
+    "name": "Rapid Grill Studio",
+    "city": "Raleigh",
+    "state": "NC",
+    "latitude": 35.95493,
+    "longitude": -78.51289
+  },
+  {
+    "name": "Rapid Outfitters Collective",
+    "city": "Albuquerque",
+    "state": "NM",
+    "latitude": 35.194464,
+    "longitude": -107.650167
+  },
+  {
+    "name": "Rapid Outfitters Collective",
+    "city": "Fort Wayne",
+    "state": "IN",
+    "latitude": 42.015792,
+    "longitude": -85.257709
+  },
+  {
+    "name": "Rapid Outfitters Collective",
+    "city": "Billings",
+    "state": "MT",
+    "latitude": 46.112673,
+    "longitude": -107.056968
+  },
+  {
+    "name": "Rapid Outfitters Corner",
+    "city": "Louisville",
+    "state": "KY",
+    "latitude": 38.318685,
+    "longitude": -85.72071
+  },
+  {
+    "name": "Rapid Outfitters Corner",
+    "city": "Las Vegas",
+    "state": "NV",
+    "latitude": 36.134353,
+    "longitude": -114.911034
+  },
+  {
+    "name": "Rapid Outfitters Group",
+    "city": "St. Louis",
+    "state": "MO",
+    "latitude": 38.475206,
+    "longitude": -89.738995
+  },
+  {
+    "name": "Rapid Outfitters Group",
+    "city": "Colorado Springs",
+    "state": "CO",
+    "latitude": 38.334099,
+    "longitude": -104.926787
+  },
+  {
+    "name": "Rapid Outfitters Group",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "latitude": 42.235185,
+    "longitude": -84.581589
+  },
+  {
+    "name": "Rapid Outfitters Inc",
+    "city": "Riverside",
+    "state": "CA",
+    "latitude": 34.12055,
+    "longitude": -115.865257
+  },
+  {
+    "name": "Rapid Outfitters Inc",
+    "city": "San Antonio",
+    "state": "TX",
+    "latitude": 28.132117,
+    "longitude": -97.957277
+  },
+  {
+    "name": "Rapid Outfitters LLC",
+    "city": "Seattle",
+    "state": "WA",
+    "latitude": 47.997775,
+    "longitude": -121.530516
+  },
+  {
+    "name": "Rapid Outfitters LLC",
+    "city": "Anchorage",
+    "state": "AK",
+    "latitude": 60.70647,
+    "longitude": -148.683077
+  },
+  {
+    "name": "Rapid Outfitters Lab",
+    "city": "Dover",
+    "state": "DE",
+    "latitude": 39.072733,
+    "longitude": -75.801757
+  },
+  {
+    "name": "Rapid Outfitters Lab",
+    "city": "New Orleans",
+    "state": "LA",
+    "latitude": 30.235788,
+    "longitude": -90.301458
+  },
+  {
+    "name": "Rapid Outfitters Studio",
+    "city": "Richmond",
+    "state": "VA",
+    "latitude": 36.681789,
+    "longitude": -78.297577
+  },
+  {
+    "name": "Rapid Outfitters Studio",
+    "city": "Rapid City",
+    "state": "SD",
+    "latitude": 44.59546,
+    "longitude": -104.770752
+  },
+  {
+    "name": "Royal Deli & Co",
+    "city": "Chicago",
+    "state": "IL",
+    "latitude": 41.855514,
+    "longitude": -87.517215
+  },
+  {
+    "name": "Royal Deli & Co",
+    "city": "New Haven",
+    "state": "CT",
+    "latitude": 41.105753,
+    "longitude": -72.935995
+  },
+  {
+    "name": "Royal Deli & Co",
+    "city": "Phoenix",
+    "state": "AZ",
+    "latitude": 33.383838,
+    "longitude": -112.447564
+  },
+  {
+    "name": "Royal Deli Collective",
+    "city": "Akron",
+    "state": "OH",
+    "latitude": 41.332223,
+    "longitude": -81.172355
+  },
+  {
+    "name": "Royal Deli Collective",
+    "city": "Provo",
+    "state": "UT",
+    "latitude": 39.974732,
+    "longitude": -111.134019
+  },
+  {
+    "name": "Royal Deli Corner",
+    "city": "Lincoln",
+    "state": "NE",
+    "latitude": 41.045842,
+    "longitude": -95.476245
+  },
+  {
+    "name": "Royal Deli Corner",
+    "city": "Los Angeles",
+    "state": "CA",
+    "latitude": 33.103381,
+    "longitude": -117.647608
+  },
+  {
+    "name": "Royal Deli Corner",
+    "city": "Chattanooga",
+    "state": "TN",
+    "latitude": 34.260503,
+    "longitude": -86.391485
+  },
+  {
+    "name": "Royal Deli Group",
+    "city": "Santa Clara",
+    "state": "CA",
+    "latitude": 36.665974,
+    "longitude": -123.466748
+  },
+  {
+    "name": "Royal Deli Group",
+    "city": "Madison",
+    "state": "WI",
+    "latitude": 43.105028,
+    "longitude": -89.441445
+  },
+  {
+    "name": "Royal Deli Inc",
+    "city": "Memphis",
+    "state": "TN",
+    "latitude": 34.467995,
+    "longitude": -90.549803
+  },
+  {
+    "name": "Royal Deli Inc",
+    "city": "Pasadena",
+    "state": "CA",
+    "latitude": 34.423963,
+    "longitude": -119.196182
+  },
+  {
+    "name": "Royal Deli Lab",
+    "city": "Orlando",
+    "state": "FL",
+    "latitude": 29.717303,
+    "longitude": -80.977258
+  },
+  {
+    "name": "Royal Deli Lab",
+    "city": "Worcester",
+    "state": "MA",
+    "latitude": 42.173916,
+    "longitude": -69.988843
+  },
+  {
+    "name": "Royal Deli Studio",
+    "city": "Cleveland",
+    "state": "OH",
+    "latitude": 41.499844,
+    "longitude": -82.389994
+  },
+  {
+    "name": "Royal Deli Studio",
+    "city": "Bismarck",
+    "state": "ND",
+    "latitude": 47.428512,
+    "longitude": -100.995988
+  },
+  {
+    "name": "Royal Deli Studio",
+    "city": "Durham",
+    "state": "NC",
+    "latitude": 36.325181,
+    "longitude": -78.061601
+  },
+  {
+    "name": "Royal Garage & Co",
+    "city": "Austin",
+    "state": "TX",
+    "latitude": 30.334988,
+    "longitude": -98.493256
+  },
+  {
+    "name": "Royal Garage & Co",
+    "city": "Jersey City",
+    "state": "NJ",
+    "latitude": 41.478747,
+    "longitude": -74.170604
+  },
+  {
+    "name": "Royal Garage Collective",
+    "city": "Fayetteville",
+    "state": "AR",
+    "latitude": 35.455591,
+    "longitude": -93.538301
+  },
+  {
+    "name": "Royal Garage Collective",
+    "city": "Lansing",
+    "state": "MI",
+    "latitude": 41.991586,
+    "longitude": -85.307725
+  },
+  {
+    "name": "Royal Garage Collective",
+    "city": "Missoula",
+    "state": "MT",
+    "latitude": 47.284204,
+    "longitude": -115.399406
+  },
+  {
+    "name": "Royal Garage Corner",
+    "city": "Iowa City",
+    "state": "IA",
+    "latitude": 41.638161,
+    "longitude": -91.601282
+  },
+  {
+    "name": "Royal Garage Corner",
+    "city": "San Diego",
+    "state": "CA",
+    "latitude": 32.854969,
+    "longitude": -117.284556
+  },
+  {
+    "name": "Royal Garage Group",
+    "city": "Kansas City",
+    "state": "MO",
+    "latitude": 39.441146,
+    "longitude": -94.782639
+  },
+  {
+    "name": "Royal Garage Group",
+    "city": "Fort Collins",
+    "state": "CO",
+    "latitude": 40.887828,
+    "longitude": -104.572305
+  },
+  {
+    "name": "Royal Garage Group",
+    "city": "Detroit",
+    "state": "MI",
+    "latitude": 41.950698,
+    "longitude": -82.406737
+  },
+  {
+    "name": "Royal Garage Inc",
+    "city": "Bakersfield",
+    "state": "CA",
+    "latitude": 36.092938,
+    "longitude": -120.269714
+  },
+  {
+    "name": "Royal Garage Inc",
+    "city": "Dallas",
+    "state": "TX",
+    "latitude": 34.033157,
+    "longitude": -96.172328
+  },
+  {
+    "name": "Royal Garage Lab",
+    "city": "Wilmington",
+    "state": "DE",
+    "latitude": 39.661233,
+    "longitude": -75.2764
+  },
+  {
+    "name": "Royal Garage Lab",
+    "city": "Tallahassee",
+    "state": "FL",
+    "latitude": 30.108313,
+    "longitude": -84.331673
+  },
+  {
+    "name": "Royal Garage Studio",
+    "city": "Baltimore",
+    "state": "MD",
+    "latitude": 39.444293,
+    "longitude": -75.222366
+  },
+  {
+    "name": "Royal Garage Studio",
+    "city": "Sioux Falls",
+    "state": "SD",
+    "latitude": 42.428547,
+    "longitude": -96.123827
+  },
+  {
+    "name": "Royal Grill & Co",
+    "city": "Providence",
+    "state": "RI",
+    "latitude": 42.904769,
+    "longitude": -71.136424
+  },
+  {
+    "name": "Royal Grill & Co",
+    "city": "Denver",
+    "state": "CO",
+    "latitude": 39.786046,
+    "longitude": -103.40994
+  },
+  {
+    "name": "Royal Grill & Co",
+    "city": "Honolulu",
+    "state": "HI",
+    "latitude": 20.026829,
+    "longitude": -157.466991
+  },
+  {
+    "name": "Royal Grill Collective",
+    "city": "Santa Fe",
+    "state": "NM",
+    "latitude": 36.592452,
+    "longitude": -107.218936
+  },
+  {
+    "name": "Royal Grill Collective",
+    "city": "South Bend",
+    "state": "IN",
+    "latitude": 41.70185,
+    "longitude": -86.233641
+  },
+  {
+    "name": "Royal Grill Corner",
+    "city": "Topeka",
+    "state": "KS",
+    "latitude": 39.526338,
+    "longitude": -95.888
+  },
+  {
+    "name": "Royal Grill Corner",
+    "city": "Lexington",
+    "state": "KY",
+    "latitude": 38.370587,
+    "longitude": -83.832286
+  },
+  {
+    "name": "Royal Grill Group",
+    "city": "Minneapolis",
+    "state": "MN",
+    "latitude": 44.19255,
+    "longitude": -92.537611
+  },
+  {
+    "name": "Royal Grill Group",
+    "city": "Reno",
+    "state": "NV",
+    "latitude": 38.753397,
+    "longitude": -120.73785
+  },
+  {
+    "name": "Royal Grill Inc",
+    "city": "Nashville",
+    "state": "TN",
+    "latitude": 36.33957,
+    "longitude": -86.596332
+  },
+  {
+    "name": "Royal Grill Inc",
+    "city": "Long Beach",
+    "state": "CA",
+    "latitude": 33.612842,
+    "longitude": -117.821496
+  },
+  {
+    "name": "Royal Grill Inc",
+    "city": "Fort Worth",
+    "state": "TX",
+    "latitude": 32.305084,
+    "longitude": -97.458562
+  },
+  {
+    "name": "Royal Grill Lab",
+    "city": "Columbia",
+    "state": "SC",
+    "latitude": 33.398705,
+    "longitude": -81.376443
+  },
+  {
+    "name": "Royal Grill Lab",
+    "city": "Trenton",
+    "state": "NJ",
+    "latitude": 40.379394,
+    "longitude": -75.763042
+  },
+  {
+    "name": "Royal Grill Lab",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "latitude": 31.348527,
+    "longitude": -91.210471
+  },
+  {
+    "name": "Royal Grill Studio",
+    "city": "Tacoma",
+    "state": "WA",
+    "latitude": 47.180705,
+    "longitude": -122.436582
+  },
+  {
+    "name": "Royal Grill Studio",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "latitude": 36.796227,
+    "longitude": -76.202091
+  },
+  {
+    "name": "Urban Coffee & Co",
+    "city": "San Diego",
+    "state": "CA",
+    "latitude": 32.718262,
+    "longitude": -117.195358
+  },
+  {
+    "name": "Urban Coffee & Co",
+    "city": "Buffalo",
+    "state": "NY",
+    "latitude": 43.02965,
+    "longitude": -78.906965
+  },
+  {
+    "name": "Urban Coffee & Co",
+    "city": "Austin",
+    "state": "TX",
+    "latitude": 30.362852,
+    "longitude": -97.462394
+  },
+  {
+    "name": "Urban Coffee Collective",
+    "city": "Missoula",
+    "state": "MT",
+    "latitude": 46.49382,
+    "longitude": -115.18001
+  },
+  {
+    "name": "Urban Coffee Collective",
+    "city": "Cedar Rapids",
+    "state": "IA",
+    "latitude": 42.775009,
+    "longitude": -92.511965
+  },
+  {
+    "name": "Urban Coffee Collective",
+    "city": "Iowa City",
+    "state": "IA",
+    "latitude": 42.536213,
+    "longitude": -90.569075
+  },
+  {
+    "name": "Urban Coffee Group",
+    "city": "San Mateo",
+    "state": "CA",
+    "latitude": 38.3984,
+    "longitude": -121.010171
+  },
+  {
+    "name": "Urban Coffee Group",
+    "city": "Kansas City",
+    "state": "MO",
+    "latitude": 38.211195,
+    "longitude": -93.115427
+  },
+  {
+    "name": "Urban Coffee LLC",
+    "city": "Washington",
+    "state": "DC",
+    "latitude": 39.594743,
+    "longitude": -76.69025
+  },
+  {
+    "name": "Urban Coffee LLC",
+    "city": "Bakersfield",
+    "state": "CA",
+    "latitude": 35.25157,
+    "longitude": -117.983009
+  },
+  {
+    "name": "Urban Coffee Lab",
+    "city": "Savannah",
+    "state": "GA",
+    "latitude": 30.915984,
+    "longitude": -81.244829
+  },
+  {
+    "name": "Urban Coffee Lab",
+    "city": "Wilmington",
+    "state": "DE",
+    "latitude": 39.573311,
+    "longitude": -77.198915
+  },
+  {
+    "name": "Urban Coffee Partners",
+    "city": "Allentown",
+    "state": "PA",
+    "latitude": 40.362244,
+    "longitude": -75.724492
+  },
+  {
+    "name": "Urban Coffee Partners",
+    "city": "Fayetteville",
+    "state": "AR",
+    "latitude": 36.242866,
+    "longitude": -94.652078
+  },
+  {
+    "name": "Urban Coffee Works",
+    "city": "Detroit",
+    "state": "MI",
+    "latitude": 42.40815,
+    "longitude": -82.427577
+  },
+  {
+    "name": "Urban Coffee Works",
+    "city": "Salem",
+    "state": "OR",
+    "latitude": 44.409836,
+    "longitude": -122.717629
+  },
+  {
+    "name": "Urban Coffee Works",
+    "city": "Baltimore",
+    "state": "MD",
+    "latitude": 38.876098,
+    "longitude": -77.330556
+  },
+  {
+    "name": "Urban Market & Co",
+    "city": "Chattanooga",
+    "state": "TN",
+    "latitude": 34.003678,
+    "longitude": -85.322312
+  },
+  {
+    "name": "Urban Market & Co",
+    "city": "Chicago",
+    "state": "IL",
+    "latitude": 41.612791,
+    "longitude": -89.140286
+  },
+  {
+    "name": "Urban Market & Co",
+    "city": "New Haven",
+    "state": "CT",
+    "latitude": 42.449855,
+    "longitude": -73.686208
+  },
+  {
+    "name": "Urban Market Collective",
+    "city": "Peoria",
+    "state": "IL",
+    "latitude": 40.300696,
+    "longitude": -89.304298
+  },
+  {
+    "name": "Urban Market Collective",
+    "city": "Lincoln",
+    "state": "NE",
+    "latitude": 40.432715,
+    "longitude": -97.251353
+  },
+  {
+    "name": "Urban Market Group",
+    "city": "Oklahoma City",
+    "state": "OK",
+    "latitude": 36.103416,
+    "longitude": -98.271364
+  },
+  {
+    "name": "Urban Market Group",
+    "city": "Santa Clara",
+    "state": "CA",
+    "latitude": 38.189818,
+    "longitude": -121.263727
+  },
+  {
+    "name": "Urban Market LLC",
+    "city": "Phoenix",
+    "state": "AZ",
+    "latitude": 33.298078,
+    "longitude": -112.178227
+  },
+  {
+    "name": "Urban Market LLC",
+    "city": "Sacramento",
+    "state": "CA",
+    "latitude": 38.66458,
+    "longitude": -121.84932
+  },
+  {
+    "name": "Urban Market LLC",
+    "city": "Memphis",
+    "state": "TN",
+    "latitude": 35.554015,
+    "longitude": -90.018956
+  },
+  {
+    "name": "Urban Market Lab",
+    "city": "Durham",
+    "state": "NC",
+    "latitude": 36.58006,
+    "longitude": -78.698431
+  },
+  {
+    "name": "Urban Market Lab",
+    "city": "Burlington",
+    "state": "VT",
+    "latitude": 44.445948,
+    "longitude": -72.199082
+  },
+  {
+    "name": "Urban Market Lab",
+    "city": "Orlando",
+    "state": "FL",
+    "latitude": 27.7151,
+    "longitude": -81.193384
+  },
+  {
+    "name": "Urban Market Partners",
+    "city": "Montgomery",
+    "state": "AL",
+    "latitude": 31.683523,
+    "longitude": -84.988669
+  },
+  {
+    "name": "Urban Market Partners",
+    "city": "Akron",
+    "state": "OH",
+    "latitude": 39.71901,
+    "longitude": -82.101231
+  },
+  {
+    "name": "Urban Market Works",
+    "city": "Henderson",
+    "state": "NV",
+    "latitude": 36.053555,
+    "longitude": -114.986107
+  },
+  {
+    "name": "Urban Market Works",
+    "city": "Cleveland",
+    "state": "OH",
+    "latitude": 41.559369,
+    "longitude": -81.539963
+  },
+  {
+    "name": "Urban Salon & Co",
+    "city": "New York",
+    "state": "NY",
+    "latitude": 40.750128,
+    "longitude": -73.224491
+  },
+  {
+    "name": "Urban Salon & Co",
+    "city": "Providence",
+    "state": "RI",
+    "latitude": 41.146177,
+    "longitude": -71.134619
+  },
+  {
+    "name": "Urban Salon Collective",
+    "city": "Cheyenne",
+    "state": "WY",
+    "latitude": 41.14,
+    "longitude": -104.820244
+  },
+  {
+    "name": "Urban Salon Collective",
+    "city": "Topeka",
+    "state": "KS",
+    "latitude": 38.967898,
+    "longitude": -95.566776
+  },
+  {
+    "name": "Urban Salon Group",
+    "city": "Fort Worth",
+    "state": "TX",
+    "latitude": 32.493935,
+    "longitude": -97.115199
+  },
+  {
+    "name": "Urban Salon Group",
+    "city": "Oakland",
+    "state": "CA",
+    "latitude": 37.480419,
+    "longitude": -122.636178
+  },
+  {
+    "name": "Urban Salon Group",
+    "city": "Minneapolis",
+    "state": "MN",
+    "latitude": 45.238421,
+    "longitude": -93.951142
+  },
+  {
+    "name": "Urban Salon LLC",
+    "city": "Honolulu",
+    "state": "HI",
+    "latitude": 20.789279,
+    "longitude": -156.714117
+  },
+  {
+    "name": "Urban Salon LLC",
+    "city": "Nashville",
+    "state": "TN",
+    "latitude": 34.889749,
+    "longitude": -87.120826
+  },
+  {
+    "name": "Urban Salon Lab",
+    "city": "Duluth",
+    "state": "MN",
+    "latitude": 46.816537,
+    "longitude": -92.328918
+  },
+  {
+    "name": "Urban Salon Lab",
+    "city": "Columbia",
+    "state": "SC",
+    "latitude": 34.275437,
+    "longitude": -81.048888
+  },
+  {
+    "name": "Urban Salon Partners",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "latitude": 30.937675,
+    "longitude": -91.85515
+  },
+  {
+    "name": "Urban Salon Partners",
+    "city": "Toledo",
+    "state": "OH",
+    "latitude": 42.424602,
+    "longitude": -83.002076
+  },
+  {
+    "name": "Urban Salon Partners",
+    "city": "Santa Fe",
+    "state": "NM",
+    "latitude": 35.446932,
+    "longitude": -104.764506
+  },
+  {
+    "name": "Urban Salon Works",
+    "city": "Columbus",
+    "state": "OH",
+    "latitude": 39.626145,
+    "longitude": -84.263043
+  },
+  {
+    "name": "Urban Salon Works",
+    "city": "Tacoma",
+    "state": "WA",
+    "latitude": 48.219513,
+    "longitude": -123.352168
+  }
+]
