@@ -34,5 +34,8 @@ test:
 test-search:
 	docker compose run --rm api python manage.py test core.test_search -v 2
 
+test-utils:
+	docker compose run --rm api python manage.py test core.test_utils -v 2
+
 
 	
