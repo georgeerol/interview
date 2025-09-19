@@ -1295,3 +1295,446 @@ class BusinessSearchPhase6Test(APITestCase):
         self.assertEqual(locations[0]["type"], "geo")
         self.assertEqual(locations[0]["lat"], 37.9290)
         self.assertEqual(locations[0]["lng"], -116.7510)
+
+
+class BusinessSearchPhase7Test(APITestCase):
+    """Test cases for Phase 7 - Comprehensive testing of README examples and edge cases"""
+
+    def setUp(self):
+        """Set up test data for comprehensive Phase 7 testing"""
+        self.search_url = reverse('business-search')
+        
+        # Clear existing businesses to have controlled test data
+        Business.objects.all().delete()
+        
+        # Create comprehensive test dataset covering all scenarios
+        
+        # California businesses for README Example 1
+        self.ca_businesses = [
+            Business.objects.create(
+                name="Prime Coffee & Co", city="San Francisco", state="CA",
+                latitude=Decimal("37.7749"), longitude=Decimal("-122.4194")
+            ),
+            Business.objects.create(
+                name="Urban Coffee LLC", city="Los Angeles", state="CA", 
+                latitude=Decimal("34.0522"), longitude=Decimal("-118.2437")  # Exact README coordinates
+            ),
+            Business.objects.create(
+                name="Golden Coffee Shop", city="San Diego", state="CA",
+                latitude=Decimal("32.7157"), longitude=Decimal("-117.1611")
+            ),
+            Business.objects.create(
+                name="CA Restaurant", city="Sacramento", state="CA",  # Non-coffee business
+                latitude=Decimal("38.5816"), longitude=Decimal("-121.4944")
+            ),
+        ]
+        
+        # New York businesses for README Example 1
+        self.ny_businesses = [
+            Business.objects.create(
+                name="NY Coffee Bar", city="New York", state="NY",
+                latitude=Decimal("40.7128"), longitude=Decimal("-74.0060")
+            ),
+            Business.objects.create(
+                name="Buffalo Coffee House", city="Buffalo", state="NY",
+                latitude=Decimal("42.8864"), longitude=Decimal("-78.8784")
+            ),
+            Business.objects.create(
+                name="NY Deli", city="Albany", state="NY",  # Non-coffee business
+                latitude=Decimal("42.6526"), longitude=Decimal("-73.7562")
+            ),
+        ]
+        
+        # Texas businesses (outside CA/NY for testing exclusion)
+        self.tx_businesses = [
+            Business.objects.create(
+                name="Austin Coffee Co", city="Austin", state="TX",
+                latitude=Decimal("30.2672"), longitude=Decimal("-97.7431")
+            ),
+            Business.objects.create(
+                name="Dallas Coffee Shop", city="Dallas", state="TX",
+                latitude=Decimal("32.7767"), longitude=Decimal("-96.7970")
+            ),
+        ]
+        
+        # Nevada businesses for README Example 2 (radius expansion testing)
+        self.nv_businesses = [
+            Business.objects.create(
+                name="Reno Coffee", city="Reno", state="NV",
+                latitude=Decimal("39.5296"), longitude=Decimal("-119.8138")  # ~200 miles from Example 2 point
+            ),
+            Business.objects.create(
+                name="Vegas Cafe", city="Las Vegas", state="NV", 
+                latitude=Decimal("36.1699"), longitude=Decimal("-115.1398")  # ~300 miles from Example 2 point
+            ),
+        ]
+        
+        # Edge case businesses for boundary testing
+        self.edge_businesses = [
+            Business.objects.create(
+                name="Boundary Coffee", city="Bakersfield", state="CA",
+                latitude=Decimal("35.3733"), longitude=Decimal("-119.0187")  # ~49.8 miles from LA
+            ),
+            Business.objects.create(
+                name="Far Coffee", city="Phoenix", state="AZ",
+                latitude=Decimal("33.4484"), longitude=Decimal("-112.0740")  # ~350+ miles from LA
+            ),
+        ]
+
+    def test_readme_example_1_exact_implementation(self):
+        """Test the exact README Example 1 with comprehensive validation"""
+        data = {
+            "locations": [
+                {"state": "CA"},
+                {"state": "NY"}, 
+                {"lat": 34.052235, "lng": -118.243683}  # Exact README coordinates (LA)
+            ],
+            "text": "coffee",
+            "radius_miles": 50
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        metadata = response.data["search_metadata"]
+        
+        # Validate comprehensive response structure
+        self.assertIn("results", response.data)
+        self.assertIn("search_metadata", response.data)
+        
+        # Validate metadata completeness
+        required_metadata = [
+            "total_count", "total_found", "radius_used", "radius_expanded",
+            "filters_applied", "search_locations", "radius_requested"
+        ]
+        for field in required_metadata:
+            self.assertIn(field, metadata)
+        
+        # Validate filters applied
+        self.assertIn("text", metadata["filters_applied"])
+        self.assertIn("state", metadata["filters_applied"]) 
+        self.assertIn("geo", metadata["filters_applied"])
+        
+        # Validate search locations
+        locations = metadata["search_locations"]
+        self.assertEqual(len(locations), 3)
+        
+        location_types = [loc["type"] for loc in locations]
+        self.assertEqual(location_types.count("state"), 2)
+        self.assertEqual(location_types.count("geo"), 1)
+        
+        # Validate business results contain only coffee businesses
+        business_names = [b["name"] for b in results]
+        for name in business_names:
+            self.assertIn("Coffee", name, f"Non-coffee business returned: {name}")
+        
+        # Should include CA and NY coffee businesses
+        ca_coffee_names = {b.name for b in self.ca_businesses if "Coffee" in b.name}
+        ny_coffee_names = {b.name for b in self.ny_businesses if "Coffee" in b.name}
+        
+        returned_names = set(business_names)
+        
+        # Should have businesses from CA and NY states
+        self.assertTrue(ca_coffee_names.intersection(returned_names), "No CA coffee businesses found")
+        self.assertTrue(ny_coffee_names.intersection(returned_names), "No NY coffee businesses found")
+        
+        # Should NOT have TX businesses (not in search criteria)
+        tx_names = {b.name for b in self.tx_businesses}
+        self.assertFalse(tx_names.intersection(returned_names), "TX businesses incorrectly included")
+
+    def test_readme_example_2_exact_implementation(self):
+        """Test the exact README Example 2 with radius expansion validation"""
+        data = {
+            "locations": [{"lat": 37.9290, "lng": -116.7510}],  # Exact README coordinates (Nevada desert)
+            "radius_miles": 5
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        metadata = response.data["search_metadata"]
+        
+        # Should demonstrate radius expansion
+        self.assertEqual(metadata["radius_requested"], 5.0)
+        self.assertGreater(metadata["radius_used"], 5.0)
+        self.assertEqual(metadata["radius_expanded"], True)
+        
+        # Should have expansion sequence
+        self.assertIn("radius_expansion_sequence", metadata)
+        sequence = metadata["radius_expansion_sequence"]
+        
+        # Sequence should start with 5 and expand through the defined sequence
+        self.assertEqual(sequence[0], 5.0)
+        self.assertGreater(len(sequence), 1)
+        
+        # All radii in sequence should be from the expansion sequence [1,5,10,25,50,100,500]
+        valid_radii = {1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 500.0}
+        for radius in sequence:
+            self.assertIn(radius, valid_radii)
+        
+        # Should be in ascending order
+        self.assertEqual(sequence, sorted(sequence))
+        
+        # Final radius should match radius_used
+        self.assertEqual(sequence[-1], metadata["radius_used"])
+        
+        # Should find businesses (from our seeded data or the main dataset)
+        if len(results) > 0:
+            self.assertGreater(metadata["total_count"], 0)
+        
+        # Validate single geo location
+        locations = metadata["search_locations"]
+        self.assertEqual(len(locations), 1)
+        self.assertEqual(locations[0]["type"], "geo")
+        self.assertEqual(locations[0]["lat"], 37.9290)
+        self.assertEqual(locations[0]["lng"], -116.7510)
+
+    def test_edge_case_maximum_locations(self):
+        """Test maximum number of locations (20 per validation)"""
+        # Create 20 different state locations (max allowed)
+        states = ["CA", "NY", "TX", "FL", "IL", "PA", "OH", "GA", "NC", "MI", 
+                 "NJ", "VA", "WA", "AZ", "MA", "TN", "IN", "MO", "MD", "WI"]
+        
+        locations = [{"state": state} for state in states]
+        
+        data = {
+            "locations": locations,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        self.assertEqual(len(metadata["search_locations"]), 20)
+        self.assertIn("state", metadata["filters_applied"])
+
+    def test_edge_case_maximum_locations_plus_one(self):
+        """Test exceeding maximum locations (21 locations should fail)"""
+        states = ["CA", "NY", "TX", "FL", "IL", "PA", "OH", "GA", "NC", "MI", 
+                 "NJ", "VA", "WA", "AZ", "MA", "TN", "IN", "MO", "MD", "WI", "OR"]  # 21 states
+        
+        locations = [{"state": state} for state in states]
+        
+        data = {
+            "locations": locations,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
+
+    def test_edge_case_boundary_radius_values(self):
+        """Test boundary radius values (0.1, 1000.0)"""
+        # Test minimum radius
+        data = {
+            "locations": [{"lat": 34.0522, "lng": -118.2437}],
+            "radius_miles": 0.1  # Minimum allowed
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Test maximum radius
+        data = {
+            "locations": [{"lat": 34.0522, "lng": -118.2437}],
+            "radius_miles": 1000.0  # Maximum allowed
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Test over maximum radius (should fail)
+        data = {
+            "locations": [{"lat": 34.0522, "lng": -118.2437}],
+            "radius_miles": 1001.0  # Over maximum
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_edge_case_coordinate_boundaries(self):
+        """Test coordinate boundary values"""
+        # Test extreme valid coordinates
+        boundary_coords = [
+            {"lat": 90.0, "lng": 180.0},     # North pole, international date line
+            {"lat": -90.0, "lng": -180.0},   # South pole, opposite date line
+            {"lat": 0.0, "lng": 0.0},        # Null island
+        ]
+        
+        for coords in boundary_coords:
+            data = {
+                "locations": [coords],
+                "radius_miles": 50
+            }
+            response = self.client.post(self.search_url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK, 
+                           f"Failed for coordinates: {coords}")
+
+    def test_edge_case_invalid_coordinates(self):
+        """Test invalid coordinate values"""
+        invalid_coords = [
+            {"lat": 91.0, "lng": 0.0},       # Latitude too high
+            {"lat": -91.0, "lng": 0.0},      # Latitude too low
+            {"lat": 0.0, "lng": 181.0},      # Longitude too high
+            {"lat": 0.0, "lng": -181.0},     # Longitude too low
+        ]
+        
+        for coords in invalid_coords:
+            data = {
+                "locations": [coords],
+                "radius_miles": 50
+            }
+            response = self.client.post(self.search_url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST,
+                           f"Should have failed for coordinates: {coords}")
+
+    def test_edge_case_empty_text_search(self):
+        """Test empty and whitespace-only text searches"""
+        # Test valid empty/whitespace text values
+        test_texts = ["", "   ", "\t\n"]
+        
+        for text in test_texts:
+            data = {
+                "locations": [{"state": "CA"}],
+                "text": text
+            }
+            response = self.client.post(self.search_url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            
+            # Should not have text in filters_applied for empty/whitespace text
+            metadata = response.data["search_metadata"]
+            if not text or not text.strip():
+                self.assertNotIn("text", metadata["filters_applied"])
+        
+        # Test that None text value is rejected (serializer validation)
+        data = {
+            "locations": [{"state": "CA"}],
+            "text": None
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
+
+    def test_edge_case_case_insensitive_text_search(self):
+        """Test case insensitive text searching"""
+        variations = ["coffee", "COFFEE", "Coffee", "CoFfEe", "cOfFeE"]
+        
+        base_data = {
+            "locations": [{"state": "CA"}],
+            "radius_miles": 50
+        }
+        
+        expected_results = None
+        
+        for variation in variations:
+            data = {**base_data, "text": variation}
+            response = self.client.post(self.search_url, data, format='json')
+            
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            
+            results = response.data["results"]
+            
+            if expected_results is None:
+                expected_results = {r["id"] for r in results}
+            else:
+                current_results = {r["id"] for r in results}
+                self.assertEqual(expected_results, current_results, 
+                               f"Case variation '{variation}' returned different results")
+
+    def test_edge_case_mixed_location_types_comprehensive(self):
+        """Test all combinations of mixed location types"""
+        # Test state + geo combination
+        data = {
+            "locations": [
+                {"state": "CA"},
+                {"lat": 40.7128, "lng": -74.0060}  # NYC
+            ],
+            "radius_miles": 50,
+            "text": "coffee"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Should have both state and geo filters
+        self.assertIn("state", metadata["filters_applied"])
+        self.assertIn("geo", metadata["filters_applied"])
+        
+        # Should have mixed location types
+        locations = metadata["search_locations"]
+        types = [loc["type"] for loc in locations]
+        self.assertIn("state", types)
+        self.assertIn("geo", types)
+
+    def test_edge_case_duplicate_locations(self):
+        """Test duplicate location handling"""
+        data = {
+            "locations": [
+                {"state": "CA"},
+                {"state": "CA"},  # Duplicate state
+                {"lat": 34.0522, "lng": -118.2437},
+                {"lat": 34.0522, "lng": -118.2437}  # Duplicate coordinates
+            ],
+            "radius_miles": 50
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Should handle duplicates gracefully
+        results = response.data["results"]
+        business_ids = [r["id"] for r in results]
+        
+        # Should not have duplicate businesses in results
+        self.assertEqual(len(business_ids), len(set(business_ids)), 
+                        "Duplicate businesses found in results")
+
+    def test_edge_case_radius_expansion_all_levels(self):
+        """Test radius expansion through all levels [1,5,10,25,50,100,500]"""
+        # Use a very remote location to force expansion to maximum
+        data = {
+            "locations": [{"lat": 0.0, "lng": 0.0}],  # Middle of Atlantic Ocean
+            "radius_miles": 1
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        if metadata["radius_expanded"]:
+            sequence = metadata["radius_expansion_sequence"]
+            
+            # Should start with 1
+            self.assertEqual(sequence[0], 1.0)
+            
+            # Should expand through the sequence
+            expected_sequence = [1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 500.0]
+            
+            # All values in sequence should be from expected sequence
+            for radius in sequence:
+                self.assertIn(radius, expected_sequence)
+
+    def test_performance_large_result_set(self):
+        """Test performance with large result sets (pagination behavior)"""
+        # Search that should return many results
+        data = {
+            "locations": [{"state": "CA"}, {"state": "NY"}, {"state": "TX"}],
+            # No text filter to get more results
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        results = response.data["results"]
+        metadata = response.data["search_metadata"]
+        
+        # Should limit results to 100 (current implementation)
+        self.assertLessEqual(len(results), 100)
+        self.assertLessEqual(metadata["total_count"], 100)
+        
+        # total_found might be higher than total_count (indicating more results available)
+        self.assertGreaterEqual(metadata["total_found"], metadata["total_count"])
