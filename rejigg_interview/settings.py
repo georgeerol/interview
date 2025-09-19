@@ -49,10 +49,55 @@ TEMPLATES = [
 WSGI_APPLICATION = "rejigg_interview.wsgi.application"
 
 DATABASES = {
-	"default": {
-		"ENGINE": "django.db.backends.sqlite3",
-		"NAME": BASE_DIR / "db.sqlite3",
-	}
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
+
+# Phase 8: Production optimizations
+# Caching configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'business-search-cache',
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    }
+}
+
+# Business search specific settings
+BUSINESS_SEARCH_CACHE_TIMEOUT = 300  # 5 minutes
+BUSINESS_SEARCH_MAX_RESULTS = 100
+BUSINESS_SEARCH_ENABLE_PERFORMANCE_LOGGING = True
+
+# Logging configuration for production monitoring
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'json': {
+            'format': '{"level": "%(levelname)s", "time": "%(asctime)s", "module": "%(module)s", "message": "%(message)s"}',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'core.views': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
 }
 
 LANGUAGE_CODE = "en-us"

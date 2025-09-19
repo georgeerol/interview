@@ -37,5 +37,14 @@ test-search:
 test-utils:
 	docker compose run --rm api python manage.py test core.test_utils -v 2
 
+test-phase8:
+	docker compose run --rm api python manage.py test core.test_search.BusinessSearchPhase8Test -v 2
+
+optimize-db:
+	docker compose run --rm api python manage.py optimize_database
+
+optimize-db-dry-run:
+	docker compose run --rm api python manage.py optimize_database --dry-run
+
 
 	

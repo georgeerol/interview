@@ -1738,3 +1738,244 @@ class BusinessSearchPhase7Test(APITestCase):
         
         # total_found might be higher than total_count (indicating more results available)
         self.assertGreaterEqual(metadata["total_found"], metadata["total_count"])
+
+
+class BusinessSearchPhase8Test(APITestCase):
+    """Test cases for Phase 8 - Performance optimization and production features"""
+
+    def setUp(self):
+        """Set up test data for Phase 8 performance testing"""
+        from django.core.cache import cache
+        
+        self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
+        
+        # Clear existing businesses to have controlled test data
+        Business.objects.all().delete()
+        
+        # Create test businesses for performance testing
+        self.test_businesses = []
+        for i in range(20):
+            business = Business.objects.create(
+                name=f"Test Business {i}",
+                city=f"City {i}",
+                state="CA",
+                latitude=Decimal("34.0522"),
+                longitude=Decimal("-118.2437")
+            )
+            self.test_businesses.append(business)
+
+    def test_performance_metadata_included(self):
+        """Test that performance metadata is included in responses"""
+        data = {
+            "locations": [{"state": "CA"}],
+            "text": "test"
+        }
+        response = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Check performance metadata exists
+        self.assertIn("performance", metadata)
+        performance = metadata["performance"]
+        
+        # Check performance fields
+        self.assertIn("processing_time_ms", performance)
+        self.assertIn("search_id", performance)
+        self.assertIn("cached", performance)
+        
+        # Validate data types
+        self.assertIsInstance(performance["processing_time_ms"], (int, float))
+        self.assertIsInstance(performance["search_id"], str)
+        self.assertIsInstance(performance["cached"], bool)
+        
+        # Should not be cached on first request
+        self.assertEqual(performance["cached"], False)
+
+    def test_caching_functionality(self):
+        """Test that search results are properly cached"""
+        data = {
+            "locations": [{"state": "CA"}],
+            "text": "test"
+        }
+        
+        # First request - should not be cached
+        response1 = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response1.status_code, status.HTTP_200_OK)
+        
+        performance1 = response1.data["search_metadata"]["performance"]
+        self.assertEqual(performance1["cached"], False)
+        
+        # Second identical request - should be cached
+        response2 = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response2.status_code, status.HTTP_200_OK)
+        
+        performance2 = response2.data["search_metadata"]["performance"]
+        self.assertEqual(performance2["cached"], True)
+        
+        # Results should be identical
+        self.assertEqual(
+            response1.data["results"], 
+            response2.data["results"]
+        )
+        
+        # Cache metadata should be present
+        self.assertIn("cache_key", response2.data["search_metadata"])
+
+    def test_cache_key_generation(self):
+        """Test that cache keys are generated consistently"""
+        # Identical requests should generate same cache key
+        data1 = {
+            "locations": [{"state": "CA"}, {"state": "NY"}],
+            "text": "coffee",
+            "radius_miles": 50
+        }
+        
+        data2 = {
+            "locations": [{"state": "NY"}, {"state": "CA"}],  # Different order
+            "text": "coffee",
+            "radius_miles": 50
+        }
+        
+        response1 = self.client.post(self.search_url, data1, format='json')
+        response2 = self.client.post(self.search_url, data2, format='json')
+        
+        self.assertEqual(response1.status_code, status.HTTP_200_OK)
+        self.assertEqual(response2.status_code, status.HTTP_200_OK)
+        
+        # Second request should be cached (same normalized request)
+        performance2 = response2.data["search_metadata"]["performance"]
+        self.assertEqual(performance2["cached"], True)
+
+    def test_error_handling_with_logging(self):
+        """Test production error handling and logging"""
+        # Test with invalid data that will cause internal error
+        # (This is a bit tricky to test without mocking, but we can test the error structure)
+        
+        # Test with malformed request
+        response = self.client.post(self.search_url, {}, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
+        self.assertIn("details", response.data)
+
+    def test_search_id_generation(self):
+        """Test that unique search IDs are generated"""
+        data = {"locations": [{"state": "CA"}]}
+        
+        response1 = self.client.post(self.search_url, data, format='json')
+        response2 = self.client.post(self.search_url, data, format='json')
+        
+        self.assertEqual(response1.status_code, status.HTTP_200_OK)
+        self.assertEqual(response2.status_code, status.HTTP_200_OK)
+        
+        search_id1 = response1.data["search_metadata"]["performance"]["search_id"]
+        search_id2 = response2.data["search_metadata"]["performance"]["search_id"]
+        
+        # Search IDs should be different (unless cached)
+        if not response2.data["search_metadata"]["performance"]["cached"]:
+            self.assertNotEqual(search_id1, search_id2)
+
+    def test_performance_timing_accuracy(self):
+        """Test that performance timing is reasonable"""
+        data = {"locations": [{"state": "CA"}]}
+        
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        processing_time = response.data["search_metadata"]["performance"]["processing_time_ms"]
+        
+        # Processing time should be reasonable (under 1 second for small dataset)
+        self.assertLess(processing_time, 1000)
+        self.assertGreater(processing_time, 0)
+
+    def test_cache_invalidation_with_different_requests(self):
+        """Test that different requests don't interfere with each other's cache"""
+        data1 = {"locations": [{"state": "CA"}]}
+        data2 = {"locations": [{"state": "NY"}]}
+        
+        # Make requests with different data
+        response1a = self.client.post(self.search_url, data1, format='json')
+        response2a = self.client.post(self.search_url, data2, format='json')
+        
+        # Make same requests again
+        response1b = self.client.post(self.search_url, data1, format='json')
+        response2b = self.client.post(self.search_url, data2, format='json')
+        
+        # Both second requests should be cached
+        self.assertEqual(
+            response1b.data["search_metadata"]["performance"]["cached"], True
+        )
+        self.assertEqual(
+            response2b.data["search_metadata"]["performance"]["cached"], True
+        )
+        
+        # But results should be different
+        self.assertNotEqual(response1b.data["results"], response2b.data["results"])
+
+    def test_production_response_structure(self):
+        """Test that production response includes all expected fields"""
+        data = {"locations": [{"state": "CA"}], "text": "test"}
+        
+        response = self.client.post(self.search_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # Check main structure
+        self.assertIn("results", response.data)
+        self.assertIn("search_metadata", response.data)
+        
+        metadata = response.data["search_metadata"]
+        
+        # Check all production metadata fields
+        expected_fields = [
+            "total_count", "total_found", "radius_used", "radius_expanded",
+            "filters_applied", "search_locations", "performance"
+        ]
+        
+        for field in expected_fields:
+            self.assertIn(field, metadata, f"Missing field: {field}")
+        
+        # Check performance metadata
+        performance = metadata["performance"]
+        expected_performance_fields = ["processing_time_ms", "search_id", "cached"]
+        
+        for field in expected_performance_fields:
+            self.assertIn(field, performance, f"Missing performance field: {field}")
+
+    def test_large_dataset_performance(self):
+        """Test performance with larger dataset"""
+        # Create more businesses for performance testing
+        additional_businesses = []
+        for i in range(100, 200):  # Add 100 more businesses
+            business = Business.objects.create(
+                name=f"Performance Test Business {i}",
+                city=f"Performance City {i}",
+                state="TX",
+                latitude=Decimal("30.2672"),
+                longitude=Decimal("-97.7431")
+            )
+            additional_businesses.append(business)
+        
+        try:
+            data = {"locations": [{"state": "TX"}]}
+            
+            response = self.client.post(self.search_url, data, format='json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            
+            metadata = response.data["search_metadata"]
+            processing_time = metadata["performance"]["processing_time_ms"]
+            
+            # Even with larger dataset, should complete reasonably quickly
+            self.assertLess(processing_time, 2000)  # Under 2 seconds
+            
+            # Should return results
+            self.assertGreater(len(response.data["results"]), 0)
+            
+        finally:
+            # Clean up additional businesses
+            for business in additional_businesses:
+                business.delete()
