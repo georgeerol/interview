@@ -65,9 +65,14 @@ There are no businesses within 5 miles of this point, so we should expand the se
 ![GEO search UI example](example_ui.png)
 
 ### Getting Started
+
+#### Prerequisites
+- Docker Desktop must be installed and running
+
+#### Setup
 - Build and start:
   - `make build && make up`
-- Apply migrations:
+- Apply migrations (if needed):
   - `make migrate`
 - Access the site:
   - macOS: `open http://localhost:8001`
@@ -75,6 +80,26 @@ There are no businesses within 5 miles of this point, so we should expand the se
   - Windows (PowerShell): `start http://localhost:8001`
 - Health check:
   - `make health` (hits `http://localhost:8001/health/`)
+
+#### Available Endpoints
+- `GET /businesses/` - List all businesses (paginated)
+- `POST /businesses/search/` - Search businesses (currently stubbed - returns empty results)
+- `GET /health/` - Health check endpoint
+
+#### Data
+- The application comes pre-loaded with 3,500+ business records across all US states
+- Data includes business name, city, state, latitude, and longitude
+
+#### Additional Commands
+- `make down` - Stop all services
+- `make logs` - View container logs
+- `make shell` - Access Django shell for debugging
+- `make makemigrations` - Create new migrations (if model changes are made)
+
+#### Troubleshooting
+- If you get "Cannot connect to Docker daemon" error, ensure Docker Desktop is running
+- If containers fail to start, try `make down && make build && make up`
+- Check container logs with `make logs` if the application isn't responding
 
 ### Submission
 
