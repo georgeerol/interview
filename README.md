@@ -96,6 +96,15 @@ There are no businesses within 5 miles of this point, so we should expand the se
 - `make shell` - Access Django shell for debugging
 - `make makemigrations` - Create new migrations (if model changes are made)
 
+#### Testing
+- Run all tests: `make test`
+- Run search tests: `make test-search`
+- Or use Docker Compose directly:
+  - All tests: `docker compose run --rm api python manage.py test`
+  - Search tests: `docker compose run --rm api python manage.py test core.test_search`
+  - Specific test class: `docker compose run --rm api python manage.py test core.test_search.LocationSerializerTest`
+  - With verbose output: `docker compose run --rm api python manage.py test core.test_search -v 2`
+
 #### Troubleshooting
 - If you get "Cannot connect to Docker daemon" error, ensure Docker Desktop is running
 - If containers fail to start, try `make down && make build && make up`

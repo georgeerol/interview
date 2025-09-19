@@ -1,4 +1,4 @@
-.PHONY: build up down logs migrate createsuperuser shell health
+.PHONY: build up down logs migrate createsuperuser shell health test test-search
 
 build:
 	docker compose build
@@ -27,6 +27,12 @@ shell:
 health:
 	@echo "Waiting for app..." && sleep 2
 	@curl -fsS http://localhost:8001/health/
+
+test:
+	docker compose run --rm api python manage.py test
+
+test-search:
+	docker compose run --rm api python manage.py test core.test_search -v 2
 
 
 	
