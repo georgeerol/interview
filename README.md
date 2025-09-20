@@ -1,69 +1,103 @@
 ## Rejigg Interview: Business Search API
 
 ### Overview
-A comprehensive business search API with advanced geospatial capabilities, radius expansion, and multi-filter support. This implementation provides a production-ready search endpoint with comprehensive input validation, intelligent radius expansion, and detailed response metadata.
+Build a search endpoint for the `Business` model, including a radius-expansion feature.
 
+### Your Task
+Implement the `POST /businesses/search/` endpoint (stubbed in `core/views.py`). It should support:
+- multiple location filters which can either be a state, or lat/lng pairs.
+- top-level `radius_miles`, which is applied to all lat/lng entries.
+- optional `text` filter on business name
+
+
+### Implementation Status:
+1. Multiple location filters (state and/or lat/lng pairs)
+2. Intelligent radius expansion with fallback sequence \[1, 5, 10, 25, 50, 100, 500]
+3. Optional text filtering on business names (case-insensitive)
+4. Comprehensive input validation and error handling
+5. Detailed response metadata with search transparency
+6.  Tests covering all scenarios and edge cases
+7. Performance optimizations with caching and monitoring
+8. Logging and error handling**
+9. Database optimization tools** for production scaling
+
+### Requirements
+- Users can search by (lat/lng + radius) and/or (state). If multiple lat/lng pairs are used, apply a single radius to all lat/lng pairs.
+- Radius expansion and fallback:
+  - If no results are found within the provided `radius_miles`, expand the radius incrementally to [1, 5, 10, 25, 50, 100, 500], in order, until matches are found; if there are still no matches at max radius, return an empty result.  Your response should also communicate back to the client how the search was expanded so it can be explained to the user.
+
+### Assumptions
+- Inputs are well-formed:
+  - no address geocoding is required
+  - lat/lng coordinates will be provided for geo queries
+- Only US cities/states need to be considered
+- You don't need to handle auth
+
+### Examples
+
+**Input 1**:
+
+_(You can change the shape of the input payload if you'd like)_
+
+```json
+{
+  "locations": [
+    { "state": "CA" },
+    { "state": "NY" },
+    { "lat": 34.052235, "lng": -118.243683 }
+  ],
+  "radius_miles": 50,
+  "text": "coffee"
+}
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    🏢 Business Search API                      │
-│                     Production Ready v1.0                      │
-├─────────────────────────────────────────────────────────────────┤
-│  📍 Multi-Modal Search  │  🎯 Smart Expansion  │  ⚡ Performance │
-│  • State Filtering     │  • Radius Fallback   │  • Caching      │
-│  • Geo-Spatial        │  • [1,5,10,25,50,    │  • Monitoring   │
-│  • Text Search        │    100,500] Miles     │  • Logging      │
-│  • Combined Filters    │  • Transparent       │  • Optimization │
-└─────────────────────────────────────────────────────────────────┘
+
+**Output 1**:
+
+All businesses containing "coffee" within the states of, NY, CA, or within 50 miles of lat 34.052235, lng: -118.243683
+
+**Input 2**
+
+```json
+{
+    "locations": [
+        { "lat": 37.9290, "lng": -116.7510 }
+    ],
+    "radius_miles": 5
+}
 ```
 
-### 🎯 Implementation Status: **COMPLETE** ✅
+**Output 2**:
 
-**All requirements have been fully implemented and tested:**
-- ✅ Multiple location filters (state and/or lat/lng pairs)
-- ✅ Intelligent radius expansion with fallback sequence [1, 5, 10, 25, 50, 100, 500]
-- ✅ Optional text filtering on business names (case-insensitive)
-- ✅ Comprehensive input validation and error handling
-- ✅ Detailed response metadata with search transparency
-- ✅ **106 comprehensive tests** covering all scenarios and edge cases
-- ✅ **Production-ready performance optimizations** with caching and monitoring
-- ✅ **Enterprise-grade logging and error handling**
-- ✅ **Database optimization tools** for production scaling
+There are no businesses within 5 miles of this point, so we should expand the search radius 5->10->25->50->100->500 until a match is found.  The response should also explain the radius at which a match was found.
 
-### 🚀 Key Features
 
-#### **Multi-Modal Search**
-- **State-based filtering**: Search businesses within specific US states
-- **Geospatial search**: Find businesses within radius of lat/lng coordinates
-- **Text filtering**: Case-insensitive business name search
-- **Combined searches**: Mix and match all filter types with OR logic
+**Example GEO Search UI (illustrative only; you don't need to implement this)**
 
-#### **Intelligent Radius Expansion**
-- **Automatic fallback**: Expands search radius when no results found
-- **Sequence-based**: [1, 5, 10, 25, 50, 100, 500] mile expansion
-- **Transparent**: Full expansion sequence reported in response metadata
-- **Performance optimized**: Stops at first successful radius
+![GEO search UI example](example_ui.png)
 
-#### **Enterprise-Grade Validation**
-- **Input validation**: Comprehensive request validation with detailed error messages
-- **Coordinate validation**: Proper lat/lng boundary checking (±90, ±180)
-- **State validation**: US state code validation against official list
-- **Radius limits**: 0.1 to 1000 mile radius constraints
-- **Location limits**: Maximum 20 location filters per request
+### Getting Started
+- Build and start:
+  - `make build && make up`
+- Apply migrations:
+  - `make migrate`
+- Access the site:
+  - macOS: `open http://localhost:8001`
+  - Linux: `xdg-open http://localhost:8001`
+  - Windows (PowerShell): `start http://localhost:8001`
+- Health check:
+  - `make health` (hits `http://localhost:8001/health/`)
 
-#### **Rich Response Metadata**
-- **Search transparency**: Complete details of filters applied and radius expansion
-- **Location summary**: Breakdown of all search locations by type
-- **Performance metrics**: Result counts, radius usage, and expansion tracking
-- **Debugging support**: Full context for troubleshooting and optimization
+### Submission
 
-#### **🚀 Production Performance Features (Phase 8)**
-- **Intelligent caching**: 5-minute cache for frequent search patterns
-- **Performance monitoring**: Request timing, search IDs, and cache hit tracking
-- **Structured logging**: JSON logging with search context and performance data
-- **Error tracking**: Production-grade exception handling with detailed logging
-- **Database optimization**: Automated index management and performance tuning
+- Email your submisson to `barrett@rejigg.com`.  It should include:
+  - A link to a repository with your code (or you can include it as an attachment if you prefer)
+  - Include brief notes or comments if you made tradeoffs or assumptions (as if you were writing a pull request).
+  - Discuss how you would productionize your submission (including how you would think about performance as the number of businesses scales)
 
-## 📚 API Documentation
+----
+George My note
+
+## API Documentation
 
 ### **POST /businesses/search/**
 
@@ -87,14 +121,14 @@ Comprehensive business search with multi-modal filtering and intelligent radius 
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `locations` | Array | ✅ | Array of location filters (1-20 items) |
-| `locations[].state` | String | ⚠️* | US state code (e.g., "CA", "NY") |
-| `locations[].lat` | Number | ⚠️* | Latitude (-90 to 90) |
-| `locations[].lng` | Number | ⚠️* | Longitude (-180 to 180) |
-| `radius_miles` | Number | ❌ | Radius in miles (0.1-1000, default: 50 for geo searches) |
-| `text` | String | ❌ | Case-insensitive business name filter |
+| `locations` | Array | Yes      | Array of location filters (1-20 items) |
+| `locations[].state` | String | Cond*    | US state code (e.g., "CA", "NY") |
+| `locations[].lat` | Number | Cond*    | Latitude (-90 to 90) |
+| `locations[].lng` | Number | Cond*    | Longitude (-180 to 180) |
+| `radius_miles` | Number | Optional | Radius in miles (0.1-1000, default: 50 for geo searches) |
+| `text` | String | Optional | Case-insensitive business name filter |
 
-*Each location must have either `state` OR `lat`+`lng`, not both.
+*Conditional(Cond).Each location must have either `state` OR `lat`+`lng`, not both.
 
 #### **Response Format**
 
@@ -145,99 +179,15 @@ Comprehensive business search with multi-modal filtering and intelligent radius 
 | `radius_expansion_sequence` | Array | All radii tried during expansion |
 | `filters_applied` | Array | List of filters used: `["text", "state", "geo"]` |
 | `search_locations` | Array | Summary of all search locations by type |
-| `performance` | Object | **Phase 8**: Performance metrics and monitoring |
+| `performance` | Object | Performance metrics and monitoring |
 | `performance.processing_time_ms` | Number | Request processing time in milliseconds |
 | `performance.search_id` | String | Unique identifier for request tracking |
 | `performance.cached` | Boolean | Whether response was served from cache |
-| `cache_key` | String | **Phase 8**: Cache key for debugging (when cached) |
+| `cache_key` | String | Cache key for debugging (when cached) |
 
-## 🔄 Search Flow Architecture
 
-```
-                           📥 API Request
-                                 │
-                      ┌──────────▼──────────┐
-                      │   Input Validation   │
-                      │   • Locations       │
-                      │   • Radius          │
-                      │   • Text            │
-                      └──────────┬──────────┘
-                                 │
-                      ┌──────────▼──────────┐
-                      │   Cache Check       │
-                      │   🔍 Search ID      │
-                      └─────┬────────────┬──┘
-                           │            │
-                      ✅ Cache Hit   ❌ Cache Miss
-                           │            │
-                      ┌────▼───┐       ┌▼──────────────────┐
-                      │ Return │       │  Search Processing │
-                      │ Cached │       │  ┌──────────────┐  │
-                      │ Result │       │  │ State Filter │  │
-                      └────────┘       │  └──────────────┘  │
-                                      │  ┌──────────────┐  │
-                                      │  │ Text Filter  │  │
-                                      │  └──────────────┘  │
-                                      │  ┌──────────────┐  │
-                                      │  │ Geo + Radius │  │
-                                      │  │  Expansion   │  │
-                                      │  └──────────────┘  │
-                                      └─────────┬─────────┘
-                                                │
-                                      ┌─────────▼─────────┐
-                                      │   Result Build    │
-                                      │   • Deduplication │
-                                      │   • Metadata      │
-                                      │   • Performance   │
-                                      └─────────┬─────────┘
-                                                │
-                                      ┌─────────▼─────────┐
-                                      │   Cache & Return  │
-                                      │   ⚡ 5min timeout │
-                                      └───────────────────┘
-```
 
-## 🎯 Radius Expansion Logic
-
-```
-     Initial Search (radius_miles)
-              │
-              ▼
-         🔍 Find businesses within radius
-              │
-         ┌────▼────┐
-         │ Found?  │
-         └─┬─────┬─┘
-      ✅ Yes│     │No ❌
-           │     │
-           ▼     ▼
-      📊 Return  🔄 Expand Radius
-       Results     │
-                   ▼
-              [1, 5, 10, 25, 50, 100, 500]
-                   │
-                   ▼
-              ┌─────────────────────────────┐
-              │  Try next radius in sequence │
-              │  ┌─────────────────────────┐ │
-              │  │ radius = 1   → 🔍      │ │
-              │  │ radius = 5   → 🔍      │ │
-              │  │ radius = 10  → 🔍      │ │
-              │  │ radius = 25  → 🔍 ✅   │ │
-              │  │ Found at 25 miles!     │ │
-              │  └─────────────────────────┘ │
-              └─────────────────────────────┘
-                   │
-                   ▼
-              📊 Return with expansion metadata:
-              {
-                "radius_used": 25.0,
-                "radius_expanded": true,
-                "radius_expansion_sequence": [10, 25]
-              }
-```
-
-### 🎯 **Example 1: Multi-Filter Search**
+### **Example 1: Multi-Filter Search**
 
 **Request:**
 ```bash
@@ -256,7 +206,7 @@ curl -X POST http://localhost:8001/businesses/search/ \
 
 **Response:** Returns all businesses containing "coffee" within CA state, NY state, OR within 50 miles of Los Angeles coordinates.
 
-### 🎯 **Example 2: Radius Expansion**
+### **Example 2: Radius Expansion**
 
 **Request:**
 ```bash
@@ -271,11 +221,8 @@ curl -X POST http://localhost:8001/businesses/search/ \
 **Response:** Demonstrates automatic radius expansion from 5 → 10 → 25 → 50 → 100 → 500 miles until businesses are found in the Nevada desert location.
 
 
-**Example GEO Search UI (illustrative only; you don't need to implement this)**
 
-![GEO search UI example](example_ui.png)
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **Docker Desktop** must be installed and running
@@ -298,17 +245,13 @@ curl -X POST http://localhost:8001/businesses/search/ \
 ### Available Endpoints
 
 | Endpoint | Method | Description | Status |
-|----------|--------|-------------|---------|
-| `/businesses/` | GET | List all businesses (paginated) | ✅ Active |
-| `/businesses/search/` | POST | **Advanced business search** | ✅ **Fully Implemented** |
-| `/health/` | GET | Health check endpoint | ✅ Active |
+|----------|--------|-------------|--------|
+| `/businesses/` | GET | List all businesses (paginated) | Done   |
+| `/businesses/search/` | POST | **Advanced business search** | Done   |
+| `/health/` | GET | Health check endpoint | Done   |
 
-### Data
-- **3,500+ business records** pre-loaded across all US states
-- **Complete data**: Business name, city, state, latitude, longitude
-- **Production-ready**: Realistic test dataset for comprehensive testing
 
-## 🛠️ Development Commands
+## Development Commands
 
 ### Essential Commands
 ```bash
@@ -326,18 +269,18 @@ make migrate           # Apply database migrations
 make makemigrations   # Create new migrations
 ```
 
-### 🚀 Production Commands (Phase 8)
+###  Production Commands 
 ```bash
 make optimize-db          # Apply database optimizations for production
 make optimize-db-dry-run  # Preview database optimizations (safe)
 make test-phase8          # Run Phase 8 performance tests
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Quick Testing
 ```bash
-make test              # Run all 106 tests
+make test              # Run all tests
 make test-search       # Run search-specific tests
 make test-utils        # Run utility function tests
 make test-phase8       # Run Phase 8 performance tests
@@ -356,58 +299,7 @@ docker compose run --rm api python manage.py test core.test_search -v 2
 docker compose run --rm api python manage.py test --parallel --keepdb
 ```
 
-### Test Coverage Summary
-
-```
-                     🧪 Testing Architecture (106 Tests)
-┌─────────────────────────────────────────────────────────────────────────┐
-│                          Phase-Based Testing                           │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Phase 1: Input Validation (30 tests)                                  │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │ ✅ Location validation  ✅ Radius limits  ✅ Text validation    │   │
-│  │ ✅ State code checking  ✅ Coordinate bounds  ✅ Error handling  │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Phase 2: Distance Calculations (20 tests)                             │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │ ✅ Haversine accuracy  ✅ Edge coordinates  ✅ Performance      │   │
-│  │ ✅ Distance validation  ✅ Radius filtering  ✅ Boundary tests  │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Phase 3-4: Search Logic (16 tests)                                    │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │ ✅ State filtering     ✅ Text search       ✅ Geo-spatial      │   │
-│  │ ✅ Combined filters    ✅ OR logic         ✅ Deduplication     │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Phase 5-6: Advanced Features (18 tests)                               │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │ ✅ Radius expansion    ✅ Metadata format   ✅ Response struct  │   │
-│  │ ✅ Expansion sequence  ✅ Performance data  ✅ Cache tracking   │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Phase 7-8: Production Ready (22 tests)                                │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │ ✅ Edge cases          ✅ Caching system    ✅ Error handling   │   │
-│  │ ✅ README examples     ✅ Performance       ✅ Production logs  │   │
-│  │ ✅ Boundary testing    ✅ Search tracking   ✅ Optimization     │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-**Test Distribution:**
-- **106 total tests** across all functionality
-- **Phase 1**: Input validation (30 tests)
-- **Phase 2**: Distance calculations (20 tests)  
-- **Phase 3**: Basic search logic (8 tests)
-- **Phase 4**: Geo-location search (8 tests)
-- **Phase 5**: Radius expansion (8 tests)
-- **Phase 6**: Response format (10 tests)
-- **Phase 7**: Comprehensive edge cases (13 tests)
-- **Phase 8**: Performance & production features (9 tests)
-
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 | Issue | Solution |
@@ -426,7 +318,7 @@ docker compose ps     # Check container status
 docker compose logs api  # View API container logs only
 ```
 
-## 🏗️ Technical Implementation
+## Technical Implementation
 
 ### System Architecture
 
@@ -679,18 +571,3 @@ As the number of businesses scales to millions of records:
 
 ---
 
-## 📝 Submission Notes
-
-### Implementation Highlights
-- **100% requirement coverage**: All original requirements fully implemented
-- **Production-ready code**: Comprehensive error handling, validation, and testing
-- **Performance optimized**: Efficient algorithms and database usage
-- **Extensible architecture**: Easy to add new features and scale
-- **Comprehensive documentation**: Clear API docs and implementation details
-
-### Key Design Decisions
-- **OR logic for locations**: Allows flexible search combinations
-- **Intelligent radius expansion**: Automatic fallback improves user experience  
-- **Rich response metadata**: Provides complete search transparency
-- **Comprehensive validation**: Prevents invalid requests and provides clear error messages
-- **Phase-based testing**: Ensures each component works correctly in isolation and integration
