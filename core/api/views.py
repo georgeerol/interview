@@ -1,10 +1,9 @@
 """
 Business Search API Views
 
-SOLID-compliant view implementation with dependency injection.
-Follows all SOLID principles for maintainable, testable code.
+REST API endpoints for business search functionality with multi-modal filtering,
+radius expansion, and performance optimization.
 """
-from typing import Dict, Any
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -20,22 +19,19 @@ from ..container import get_container
 
 class BusinessViewSet(viewsets.ModelViewSet):
 	"""
-	Business ViewSet following SOLID principles.
+	ViewSet for Business model with advanced search capabilities.
 	
-	Single Responsibility: Handle HTTP requests/responses only.
-	Dependency Inversion: Depends on abstractions, not concretions.
-	Open/Closed: Easy to extend without modification.
-	Interface Segregation: Uses focused interfaces for each concern.
-	Liskov Substitution: Can be substituted with any compatible implementation.
+	Provides standard CRUD operations plus a specialized search endpoint
+	that supports state filtering, geospatial search, text search, and
+	intelligent radius expansion.
 	"""
 	queryset = Business.objects.all().order_by("name")
 	serializer_class = BusinessSerializer
 	permission_classes = [AllowAny]
 
 	def __init__(self, *args, **kwargs):
-		"""Initialize with dependency injection."""
+		"""Initialize ViewSet and inject required services."""
 		super().__init__(*args, **kwargs)
-		# Dependency Inversion: Depend on abstractions, not concretions
 		container = get_container()
 		self.search_service = container.search_service
 		self.cache_service = container.cache_service
@@ -46,20 +42,26 @@ class BusinessViewSet(viewsets.ModelViewSet):
 	@action(detail=False, methods=["post"], url_path="search")
 	def search(self, request):
 		"""
-		Search businesses - SOLID compliant thin HTTP layer.
+		Advanced business search with multi-modal filtering.
 		
-		Single Responsibility: Handle HTTP request/response only.
-		All business logic delegated to services via dependency injection.
+		Supports state filtering, geospatial search with radius expansion,
+		and text search. Includes caching and performance monitoring.
 		
-		Expected input:
-		{
-			"locations": [
-				{"state": "CA"},
-				{"lat": 34.052235, "lng": -118.243683}
-			],
-			"radius_miles": 50,
-			"text": "coffee"
-		}
+		Args:
+			request: HTTP request containing search parameters
+			
+		Returns:
+			Response: JSON response with businesses and search metadata
+			
+		Request Body:
+			{
+				"locations": [
+					{"state": "CA"},
+					{"lat": 34.052235, "lng": -118.243683}
+				],
+				"radius_miles": 50,
+				"text": "coffee"
+			}
 		"""
 		# Step 1: Start tracking (delegated to metrics service)
 		search_id = self.metrics_service.start_tracking(request)
@@ -113,14 +115,3 @@ class BusinessViewSet(viewsets.ModelViewSet):
 		except Exception as e:
 			# Error handling (delegated to response builder)
 			return self.response_builder.build_server_error_response(e, search_id)
-
-	# Note: All helper methods have been moved to dedicated services
-	# following Single Responsibility Principle. The view now only
-	# handles HTTP concerns and delegates everything else to services.
-	#
-	# SOLID Principles Achieved:
-	# ✅ S - Single Responsibility: View only handles HTTP
-	# ✅ O - Open/Closed: Easy to extend services without changing view
-	# ✅ L - Liskov Substitution: Services can be swapped via interfaces
-	# ✅ I - Interface Segregation: Focused interfaces for each concern
-	# ✅ D - Dependency Inversion: View depends on abstractions, not concretions
