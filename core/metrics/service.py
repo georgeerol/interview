@@ -1,7 +1,9 @@
+
 """
 Metrics Service Implementation
 
-Performance monitoring service following SOLID principles.
+Performance monitoring service for tracking business search operations
+with timing measurements and structured logging.
 """
 import time
 from typing import Dict
@@ -13,17 +15,35 @@ from ..logging import Logger
 
 class SearchMetricsService(MetricsService):
     """
-    Performance monitoring service.
+    Performance monitoring service implementation for business search operations.
     
-    Single Responsibility: Handle performance tracking only.
+    Tracks search request timing, logs performance metrics, and provides
+    structured monitoring data for debugging and optimization.
     """
     
     def __init__(self, logger: Logger):
+        """
+        Initialize metrics service with logger dependency.
+        
+        Args:
+            logger: Logger instance for structured logging
+        """
         self.logger = logger
         self._start_times: Dict[str, float] = {}
     
     def start_tracking(self, request) -> str:
-        """Start performance tracking and return search ID."""
+        """
+        Start performance tracking for a search request.
+        
+        Creates a unique search ID based on timestamp and logs the start
+        of the search operation with request metadata.
+        
+        Args:
+            request: HTTP request object to track
+            
+        Returns:
+            Unique search ID string for tracking this request
+        """
         start_time = time.time()
         search_id = f"search_{int(start_time * 1000)}"
         
@@ -38,7 +58,16 @@ class SearchMetricsService(MetricsService):
         return search_id
     
     def log_success(self, search_id: str, result: SearchResult) -> None:
-        """Log successful search completion."""
+        """
+        Log successful completion of a search operation.
+        
+        Records performance metrics and search result details for
+        monitoring and debugging purposes.
+        
+        Args:
+            search_id: Unique search ID from start_tracking
+            result: Search result object containing operation details
+        """
         processing_time = self.get_processing_time(search_id)
         
         self.logger.info(f"[{search_id}] Search completed successfully", extra={
@@ -51,7 +80,18 @@ class SearchMetricsService(MetricsService):
         })
     
     def get_processing_time(self, search_id: str) -> float:
-        """Get processing time for a search ID."""
+        """
+        Get processing time for a completed search operation.
+        
+        Calculates the elapsed time from start_tracking to now,
+        returning the result in milliseconds.
+        
+        Args:
+            search_id: Unique search ID from start_tracking
+            
+        Returns:
+            Processing time in milliseconds, or 0.0 if search ID not found
+        """
         start_time = self._start_times.get(search_id)
         if start_time is None:
             return 0.0

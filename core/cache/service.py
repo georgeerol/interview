@@ -1,7 +1,7 @@
 """
 Cache Service Implementation
 
-Django cache implementation following SOLID principles.
+Django-based caching service for business search results.
 """
 import hashlib
 import json
@@ -13,21 +13,48 @@ from .interface import CacheService
 
 class DjangoCacheService(CacheService):
     """
-    Django cache implementation.
+    Django cache backend implementation for business search caching.
     
-    Single Responsibility: Handle caching operations only.
+    Uses Django's cache framework to store and retrieve search results
+    with MD5-based key generation for consistent caching.
     """
     
     def get(self, key: str) -> Optional[Dict[str, Any]]:
-        """Get cached value by key."""
+        """
+        Retrieve cached search results by key.
+        
+        Args:
+            key: Cache key string
+            
+        Returns:
+            Cached search results dictionary or None if not found
+        """
         return cache.get(key)
     
     def set(self, key: str, value: Dict[str, Any], timeout: int) -> None:
-        """Set cached value with timeout."""
+        """
+        Store search results in cache with expiration.
+        
+        Args:
+            key: Cache key string
+            value: Search results data to cache
+            timeout: Cache expiration timeout in seconds
+        """
         cache.set(key, value, timeout)
     
     def generate_key(self, data: Dict[str, Any]) -> str:
-        """Generate cache key from request data."""
+        """
+        Generate unique cache key from search request data.
+        
+        Normalizes the request data (sorts locations, lowercases text) and
+        creates an MD5 hash for consistent cache key generation.
+        
+        Args:
+            data: Search request data dictionary
+            
+        Returns:
+            Unique cache key string with 'business_search:' prefix
+        """
         # Create a normalized version of the request for consistent caching
         normalized_data = {
             'locations': sorted(data.get('locations', []), key=str),

@@ -1,7 +1,8 @@
 """
 Business Search Service Implementation
 
-Concrete implementation of business search operations following SOLID principles.
+Core business search service implementing multi-modal filtering,
+radius expansion, and result deduplication logic.
 """
 from .interface import BusinessSearchService
 from .value_objects import SearchParams, SearchResult
@@ -13,12 +14,33 @@ class BusinessSearchServiceImpl(BusinessSearchService):
     """
     Core business search service implementation.
     
-    Single Responsibility: Handle business search logic only.
-    No dependencies on HTTP, caching, or logging concerns.
+    Implements multi-modal business search with state filtering, geospatial
+    search with intelligent radius expansion, text filtering, and result
+    deduplication. Uses OR logic to combine different location types.
     """
     
     def search(self, params: SearchParams) -> SearchResult:
-        """Perform business search based on provided parameters."""
+        """
+        Perform comprehensive business search with multi-modal filtering.
+        
+        Applies text filtering, state filtering, and geospatial filtering with
+        intelligent radius expansion. Combines results using OR logic and
+        removes duplicates while preserving order.
+        
+        Search Process:
+        1. Apply text filtering if provided
+        2. Separate state and geo locations
+        3. Apply state filtering for state locations
+        4. Apply geospatial search with radius expansion for geo locations
+        5. Combine results using OR logic
+        6. Remove duplicates and limit to 100 results
+        
+        Args:
+            params: Search parameters containing locations, radius, and text filters
+            
+        Returns:
+            SearchResult with businesses, metadata, and operation details
+        """
         # Initialize search state
         businesses = Business.objects.all()
         filters_applied = []

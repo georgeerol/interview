@@ -1,8 +1,8 @@
 """
 Dependency Injection Container
 
-Manages all dependencies and their lifecycles following SOLID principles.
-Implements Dependency Inversion Principle by providing abstractions to consumers.
+Service container that manages and provides access to all application services
+with proper dependency resolution and lifecycle management.
 """
 from typing import Dict, Any
 
@@ -15,11 +15,10 @@ from ..logging import Logger, DjangoLogger
 
 class ServiceContainer:
     """
-    Dependency injection container following SOLID principles.
+    Service container for dependency injection and service management.
     
-    - Single Responsibility: Manage service dependencies
-    - Open/Closed: Easy to add new services without modification
-    - Dependency Inversion: Provides abstractions, not concretions
+    Manages the creation and lifecycle of all application services,
+    handling dependency resolution and providing access through properties.
     """
     
     def __init__(self):
@@ -27,7 +26,12 @@ class ServiceContainer:
         self._initialize_services()
     
     def _initialize_services(self) -> None:
-        """Initialize all services with proper dependency injection."""
+        """
+        Initialize all application services with dependency resolution.
+        
+        Creates services in dependency order: logger first, then services
+        that depend on it, ensuring proper initialization sequence.
+        """
         # Create logger first (no dependencies)
         logger = DjangoLogger()
         self._services['logger'] = logger
@@ -50,27 +54,52 @@ class ServiceContainer:
     
     @property
     def search_service(self) -> BusinessSearchService:
-        """Get business search service."""
+        """
+        Get the business search service instance.
+        
+        Returns:
+            BusinessSearchService: Core search logic implementation
+        """
         return self._services['search_service']
     
     @property
     def cache_service(self) -> CacheService:
-        """Get cache service."""
+        """
+        Get the cache service instance.
+        
+        Returns:
+            CacheService: Caching operations for performance optimization
+        """
         return self._services['cache_service']
     
     @property
     def metrics_service(self) -> MetricsService:
-        """Get metrics service."""
+        """
+        Get the metrics service instance.
+        
+        Returns:
+            MetricsService: Performance tracking and monitoring
+        """
         return self._services['metrics_service']
     
     @property
     def response_builder(self) -> ResponseBuilder:
-        """Get response builder service."""
+        """
+        Get the response builder service instance.
+        
+        Returns:
+            ResponseBuilder: Structured API response construction
+        """
         return self._services['response_builder']
     
     @property
     def logger(self) -> Logger:
-        """Get logger service."""
+        """
+        Get the logger service instance.
+        
+        Returns:
+            Logger: Centralized logging for debugging and monitoring
+        """
         return self._services['logger']
 
 
@@ -82,7 +111,11 @@ def get_container() -> ServiceContainer:
     """
     Get the global service container instance.
     
-    Implements singleton pattern for dependency management.
+    Uses singleton pattern to ensure only one container instance exists
+    throughout the application lifecycle.
+    
+    Returns:
+        ServiceContainer: The global service container instance
     """
     global _container
     if _container is None:

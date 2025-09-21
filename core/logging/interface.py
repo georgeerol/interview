@@ -1,27 +1,46 @@
 """
 Logger Interface
 
-Abstract interface for logging operations following SOLID principles.
+Abstract interface defining logging operations for business search application.
 """
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 
 
 class Logger(ABC):
-    """Interface for logging operations."""
+    """Abstract base class for logging operations with structured metadata support."""
     
     @abstractmethod
     def info(self, message: str, extra: Optional[Dict[str, Any]] = None) -> None:
-        """Log info message."""
+        """
+        Log informational message.
+        
+        Args:
+            message: Log message text
+            extra: Optional structured metadata dictionary
+        """
         pass
     
     @abstractmethod
     def warning(self, message: str, extra: Optional[Dict[str, Any]] = None) -> None:
-        """Log warning message."""
+        """
+        Log warning message.
+        
+        Args:
+            message: Warning message text
+            extra: Optional structured metadata dictionary
+        """
         pass
     
     @abstractmethod
     def error(self, message: str, extra: Optional[Dict[str, Any]] = None, 
               exc_info: bool = False) -> None:
-        """Log error message."""
+        """
+        Log error message.
+        
+        Args:
+            message: Error message text
+            extra: Optional structured metadata dictionary
+            exc_info: Whether to include exception traceback information
+        """
         pass
