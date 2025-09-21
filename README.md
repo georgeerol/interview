@@ -123,7 +123,6 @@ Excalidraw: [Radius Expansion Logic](imgs/RadiusExpansionLogic.excalidraw)
 
 #### **2. Geospatial Engine (`core/infrastructure/utils.py`)**
 - **Haversine distance**: Accurate earth-surface distance calculations
-- **Bounding box optimization**: Pre-filter by rectangular bounds for performance
 - **Radius expansion**: Intelligent fallback through [1,5,10,25,50,100,500] sequence
 - **Multi-location support**: Handles multiple geo points with deduplication
 
