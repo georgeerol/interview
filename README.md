@@ -104,55 +104,17 @@ There are no businesses within 5 miles of this point, so we should expand the se
 ## System Architecture
 
 ![Business Search API Architecture](imgs/BusinessSearchAPI.png)
+Excalidraw: [Business Search API Architecture](imgs/SearchFlowArchitecture.excalidraw)
 
 ### Search Flow Architecture
 
-```
-                           API Request
-                                 |
-                      +----------v----------+
-                      |   Input Validation   |
-                      |   • Locations       |
-                      |   • Radius          |
-                      |   • Text            |
-                      +----------+---------+
-                                 |
-                      +----------v----------+
-                      |   Cache Check       |
-                      |   Search ID         |
-                      +-----+--------+-----+
-                           |            |
-                      Cache Hit   Cache Miss
-                           |            |
-                      +----v---+       +v------------------+
-                      | Return |       |  Search Processing |
-                      | Cached |       |  +--------------+  |
-                      | Result |       |  | State Filter |  |
-                      +--------+       |  +--------------+  |
-                                      |  +--------------+  |
-                                      |  | Text Filter  |  |
-                                      |  +--------------+  |
-                                      |  +--------------+  |
-                                      |  | Geo + Radius |  |
-                                      |  |  Expansion   |  |
-                                      |  +--------------+  |
-                                      +---------+---------+
-                                                |
-                                      +---------v---------+
-                                      |   Result Build    |
-                                      |   • Deduplication |
-                                      |   • Metadata      |
-                                      |   • Performance   |
-                                      +---------+---------+
-                                                |
-                                      +---------v---------+
-                                      |   Cache & Return  |
-                                      |   5min timeout    |
-                                      +-------------------+
-```
+![Search Flow Architecture](imgs/SearchFlowArchitecture.png)
+Excalidraw: [Search Flow Architecture](imgs/SearchFlowArchitecture.excalidraw)
 
 ### Radius Expansion Logic
 
+![Radius Expansion Logic](imgs/RadiusExpansionLogic.png)
+Excalidraw: [Radius Expansion Logic](imgs/RadiusExpansionLogic.excalidraw)
 ```
      Initial Search (radius_miles)
               |
