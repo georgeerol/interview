@@ -242,13 +242,131 @@ curl -X POST http://localhost:8001/businesses/search/ \
   -d '{"locations": [{"state": "CA"}], "text": "coffee"}'
 ```
 
+## **Step-by-Step Setup Guide**
+
+### **Step 1: Start the Application**
+
+First, let's build and start the Docker containers:
+
+```bash
+# Build the Docker containers
+make build
+
+# Start the application in detached mode
+make up
+```
+
+If you don't have `make`, you can use the Docker commands directly:
+```bash
+docker compose build
+docker compose up -d
+```
+
+### **Step 2: Health Check**
+
+Let's verify the application is running:
+
+```bash
+make health
+```
+
+Or manually:
+```bash
+curl -fsS http://localhost:8001/health/
+```
+
+You should see: `{"status": "ok"}`
+
+### **Step 3: Database Setup**
+
+Make sure the database is migrated and seeded with business data:
+
+```bash
+make migrate
+```
+
+Or:
+```bash
+docker compose run --rm api python manage.py migrate --noinput
+```
+
+### **Step 4: Run Tests**
+
+Let's run the comprehensive test suite to verify everything works:
+
+```bash
+# Run all tests (106 tests)
+make test
+```
+
+For more detailed output:
+```bash
+# Run search-specific tests with verbose output
+make test-search
+```
+
+### **Step 5: Test the API Endpoints**
+
+#### **Test 1: Basic Health Check**
+```bash
+curl http://localhost:8001/health/
+```
+
+#### **Test 2: List Businesses**
+```bash
+curl http://localhost:8001/businesses/
+```
+
+#### **Test 3: Search by State**
+```bash
+curl -X POST http://localhost:8001/businesses/search/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "locations": [{"state": "CA"}],
+    "text": "coffee"
+  }'
+```
+
+#### **Test 4: Geospatial Search with Radius**
+```bash
+curl -X POST http://localhost:8001/businesses/search/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "locations": [{"lat": 34.052235, "lng": -118.243683}],
+    "radius_miles": 50
+  }'
+```
+
+#### **Test 5: Multi-Location Search (README Example)**
+```bash
+curl -X POST http://localhost:8001/businesses/search/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "locations": [
+      {"state": "CA"},
+      {"state": "NY"},
+      {"lat": 34.052235, "lng": -118.243683}
+    ],
+    "radius_miles": 50,
+    "text": "coffee"
+  }'
+```
+
+### **Step 6: Check Logs**
+
+If anything isn't working, check the logs:
+
+```bash
+make logs
+```
+
 ### Available Endpoints
 
 | Endpoint | Method | Description | Status |
 |----------|--------|-------------|--------|
-| `/businesses/` | GET | List all businesses (paginated) | Done   |
-| `/businesses/search/` | POST | **Advanced business search** | Done   |
-| `/health/` | GET | Health check endpoint | Done   |
+| `/businesses/` | GET | List all businesses (paginated) | ✅ Active |
+| `/businesses/search/` | POST | **Advanced business search** | ✅ **Fully Implemented** |
+| `/health/` | GET | Health check endpoint | ✅ Active |
 
 
 ## Development Commands
@@ -260,7 +378,6 @@ make up            # Start all services
 make down          # Stop all services
 make health        # Check application health
 make logs          # View container logs
-make shell         # Access Django shell
 ```
 
 ### Database Commands
@@ -289,11 +406,11 @@ make test-phase8       # Run Phase 8 performance tests
 ### Detailed Testing
 ```bash
 # Run specific test phases
-docker compose run --rm api python manage.py test core.test_search.BusinessSearchPhase1Test
-docker compose run --rm api python manage.py test core.test_search.BusinessSearchPhase7Test
+docker compose run --rm api python manage.py test tests.test_search.BusinessSearchPhase1Test
+docker compose run --rm api python manage.py test tests.test_search.BusinessSearchPhase7Test
 
 # Verbose output
-docker compose run --rm api python manage.py test core.test_search -v 2
+docker compose run --rm api python manage.py test tests.test_search -v 2
 
 # Run all tests with coverage
 docker compose run --rm api python manage.py test --parallel --keepdb
