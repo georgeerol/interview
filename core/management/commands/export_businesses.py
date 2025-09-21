@@ -6,7 +6,7 @@ from typing import Any
 
 from django.core.management.base import BaseCommand
 
-from core.models import Business
+from core.domain import Business
 
 
 class Command(BaseCommand):
