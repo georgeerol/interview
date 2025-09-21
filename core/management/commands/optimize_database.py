@@ -1,7 +1,7 @@
-"""
-Management command to optimize database for production performance.
+"""Django management command to optimize database for production performance.
 
-This command creates indexes and optimizes the database for business search operations.
+Create indexes and optimize the database for business search operations.
+Supports dry-run mode to preview changes before applying them.
 """
 
 from django.core.management.base import BaseCommand
@@ -10,9 +10,12 @@ from django.conf import settings
 
 
 class Command(BaseCommand):
+    """Django management command to create production database indexes for business search."""
+    
     help = 'Optimize database for production business search performance'
 
     def add_arguments(self, parser):
+        """Add command line arguments."""
         parser.add_argument(
             '--dry-run',
             action='store_true',
@@ -20,6 +23,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        """Execute the database optimization command."""
         dry_run = options['dry_run']
         
         # Production database optimizations
@@ -52,7 +56,7 @@ class Command(BaseCommand):
         ]
         
         self.stdout.write(
-            self.style.SUCCESS('🚀 Database Optimization for Business Search API')
+            self.style.SUCCESS('Database Optimization for Business Search API')
         )
         self.stdout.write('=' * 60)
         
@@ -62,7 +66,7 @@ class Command(BaseCommand):
             )
             
         for optimization in optimizations:
-            self.stdout.write(f"\n📊 {optimization['name']}")
+            self.stdout.write(f"\n{optimization['name']}")
             self.stdout.write(f"   Description: {optimization['description']}")
             self.stdout.write(f"   SQL: {optimization['sql']}")
             
@@ -71,20 +75,20 @@ class Command(BaseCommand):
                     with connection.cursor() as cursor:
                         cursor.execute(optimization['sql'])
                     self.stdout.write(
-                        self.style.SUCCESS('   ✅ Applied successfully')
+                        self.style.SUCCESS('   Applied successfully')
                     )
                 except Exception as e:
                     self.stdout.write(
-                        self.style.ERROR(f'   ❌ Failed: {e}')
+                        self.style.ERROR(f'   Failed: {e}')
                     )
             else:
                 self.stdout.write(
-                    self.style.WARNING('   ⏸️  Would be applied (dry run)')
+                    self.style.WARNING('   Would be applied (dry run)')
                 )
         
         # Database statistics
         self.stdout.write('\n' + '=' * 60)
-        self.stdout.write('📈 Database Statistics:')
+        self.stdout.write('Database Statistics:')
         
         try:
             with connection.cursor() as cursor:
@@ -104,7 +108,7 @@ class Command(BaseCommand):
         
         # Performance recommendations
         self.stdout.write('\n' + '=' * 60)
-        self.stdout.write('💡 Additional Production Recommendations:')
+        self.stdout.write('Additional Production Recommendations:')
         
         recommendations = [
             "Enable query logging to monitor slow queries",
@@ -123,9 +127,9 @@ class Command(BaseCommand):
         self.stdout.write('\n' + '=' * 60)
         if dry_run:
             self.stdout.write(
-                self.style.SUCCESS('✅ Dry run completed. Use --dry-run=false to apply changes.')
+                self.style.SUCCESS('Dry run completed. Use --dry-run=false to apply changes.')
             )
         else:
             self.stdout.write(
-                self.style.SUCCESS('✅ Database optimization completed!')
+                self.style.SUCCESS('Database optimization completed!')
             )
