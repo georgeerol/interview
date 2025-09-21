@@ -14,7 +14,7 @@ from django.conf import settings
 
 from ..domain import Business
 from .serializers import BusinessSerializer, BusinessSearchRequestSerializer
-from ..interfaces import SearchParams
+from ..search import SearchParams
 from ..container import get_container
 
 

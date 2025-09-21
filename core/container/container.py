@@ -5,19 +5,12 @@ Manages all dependencies and their lifecycles following SOLID principles.
 Implements Dependency Inversion Principle by providing abstractions to consumers.
 """
 from typing import Dict, Any
-from django.conf import settings
 
-from ..interfaces import (
-    BusinessSearchService as BusinessSearchServiceInterface,
-    CacheService as CacheServiceInterface, 
-    MetricsService as MetricsServiceInterface,
-    ResponseBuilder as ResponseBuilderInterface, 
-    Logger as LoggerInterface
-)
-from ..services import (
-    BusinessSearchService, DjangoCacheService, SearchMetricsService,
-    SearchResponseBuilder, DjangoLogger
-)
+from ..search import BusinessSearchService, BusinessSearchServiceImpl
+from ..cache import CacheService, DjangoCacheService
+from ..metrics import MetricsService, SearchMetricsService
+from ..response import ResponseBuilder, SearchResponseBuilder
+from ..logging import Logger, DjangoLogger
 
 
 class ServiceContainer:
@@ -48,7 +41,7 @@ class ServiceContainer:
         self._services['metrics_service'] = metrics_service
         
         # Create search service (no dependencies - pure business logic)
-        search_service = BusinessSearchService()
+        search_service = BusinessSearchServiceImpl()
         self._services['search_service'] = search_service
         
         # Create response builder (depends on metrics and logger)
@@ -56,27 +49,27 @@ class ServiceContainer:
         self._services['response_builder'] = response_builder
     
     @property
-    def search_service(self) -> BusinessSearchServiceInterface:
+    def search_service(self) -> BusinessSearchService:
         """Get business search service."""
         return self._services['search_service']
     
     @property
-    def cache_service(self) -> CacheServiceInterface:
+    def cache_service(self) -> CacheService:
         """Get cache service."""
         return self._services['cache_service']
     
     @property
-    def metrics_service(self) -> MetricsServiceInterface:
+    def metrics_service(self) -> MetricsService:
         """Get metrics service."""
         return self._services['metrics_service']
     
     @property
-    def response_builder(self) -> ResponseBuilderInterface:
+    def response_builder(self) -> ResponseBuilder:
         """Get response builder service."""
         return self._services['response_builder']
     
     @property
-    def logger(self) -> LoggerInterface:
+    def logger(self) -> Logger:
         """Get logger service."""
         return self._services['logger']
 
