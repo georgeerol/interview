@@ -95,7 +95,7 @@ There are no businesses within 5 miles of this point, so we should expand the se
 | 3 | Optional text filtering on business names (case-insensitive) | Done |
 | 4 | Comprehensive input validation and error handling | Done |
 | 5 | Detailed response metadata with search transparency | Done |
-| 6 | Comprehensive testing with unit + integration architecture (129 tests) | Done |
+| 6 | Comprehensive testing with unit + integration architecture (158 tests) | Done |
 | 7 | Performance optimizations with caching and monitoring | Done |
 | 8 | Logging and error handling | Done |
 | 9 | Database optimization tools for production scaling | Done |
@@ -211,8 +211,8 @@ There are no businesses within 5 miles of this point, so we should expand the se
 - **Rich metadata**: Complete search transparency and debugging info
 
 #### **4. Comprehensive Testing (Unit + Integration Architecture)**
-- **129 tests** covering all functionality and edge cases (`tests/`)
-- **Unit tests (69)**: Individual component validation in isolation (`tests/unit/`)
+- **158 tests** covering all functionality and edge cases (`tests/`)
+- **Unit tests (98)**: Individual component validation in isolation (`tests/unit/`)
 - **Integration tests (60)**: Complete API workflow validation (`tests/integration/`)
 - **Edge case coverage**: Boundary conditions, invalid inputs, performance limits
 - **Production validation**: Tests against actual README examples
@@ -388,15 +388,15 @@ make test-phase8          # Run Phase 8 performance tests
 
 ### **Test Commands**
 ```bash
-make test              # Run all 129 tests
+make test              # Run all 158 tests
 make test-fast         # Run unit + integration tests (recommended)
 make test-unit         # Run unit tests only (fast feedback)
 make test-integration  # Run integration tests only
 ```
 
 ### **Test Architecture**
-- **129 total tests** across unit and integration suites
-- **Unit tests (69):** Serializers, distance calculations, utilities
+- **158 total tests** across unit and integration suites
+- **Unit tests (98):** Serializers, distance calculations, utilities
 - **Integration tests (60):** API validation, search logic, production features
 - **Coverage:** All functionality, edge cases, and production scenarios
 
@@ -415,7 +415,6 @@ make test-integration  # Run integration tests only
 ### Debug Commands
 ```bash
 make logs              # View all container logs
-make shell            # Access Django shell for debugging
 docker compose ps     # Check container status
 docker compose logs api  # View API container logs only
 ```
