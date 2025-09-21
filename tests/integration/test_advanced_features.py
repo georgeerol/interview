@@ -1,12 +1,6 @@
-"""
-Phase 5-6: Advanced Features Tests (18 tests)
+"""Integration tests for advanced search features.
 
-Test cases for advanced search functionality including:
-- Radius expansion with intelligent fallback sequence
-- Metadata format and response structure validation
-- Performance data and cache tracking
-- Expansion sequence tracking and reporting
-- Complex search location summaries
+Test radius expansion, metadata validation, and response structure.
 """
 from django.test import TestCase
 from django.urls import reverse
@@ -18,10 +12,10 @@ from core.models import Business
 
 
 class RadiusExpansionTest(APITestCase):
-    """Test cases for Phase 5 - Radius expansion logic"""
+    """Test radius expansion logic."""
 
     def setUp(self):
-        """Set up test data for Phase 5"""
+        """Set up test data for radius expansion tests."""
         from django.core.cache import cache
         
         self.search_url = reverse('business-search')
@@ -90,7 +84,7 @@ class RadiusExpansionTest(APITestCase):
         )
 
     def test_no_expansion_needed(self):
-        """Test when initial radius finds results (no expansion needed)"""
+        """Test when initial radius finds results (no expansion needed)."""
         # Search within 50 miles of Vegas - should find results without expansion
         data = {
             "locations": [{"lat": 36.1699, "lng": -115.1398}],
@@ -246,10 +240,10 @@ class RadiusExpansionTest(APITestCase):
 
 
 class ResponseMetadataTest(APITestCase):
-    """Test cases for Phase 6 - Enhanced response format and metadata"""
+    """Test response format and metadata structure."""
 
     def setUp(self):
-        """Set up test data for Phase 6"""
+        """Set up test data for metadata tests."""
         from django.core.cache import cache
         
         self.search_url = reverse('business-search')

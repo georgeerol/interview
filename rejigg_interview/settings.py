@@ -55,7 +55,9 @@ DATABASES = {
     }
 }
 
-# Phase 8: Production optimizations
+# Added Below: Production optimizations
+
+
 # Caching configuration
 CACHES = {
     'default': {

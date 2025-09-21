@@ -1,18 +1,9 @@
-"""
-Phase 2: Distance Calculations Tests (20 tests)
+"""Unit tests for geospatial distance calculations.
 
-Test cases for geospatial distance calculations including:
-- Haversine formula accuracy and precision
-- Edge coordinate cases and boundary conditions
-- Performance optimization validation
-- Distance validation and radius filtering
-- Coordinate boundary testing
-- Decimal and float input handling
+Test Haversine formula accuracy, coordinate validation, and radius filtering.
 """
 from django.test import TestCase
 from decimal import Decimal
-import math
-
 from core.utils import (
     haversine_distance, 
     is_within_radius, 
@@ -23,16 +14,16 @@ from core.models import Business
 
 
 class HaversineDistanceTest(TestCase):
-    """Test cases for Haversine distance calculation"""
+    """Test Haversine distance calculation accuracy."""
 
     def test_same_point_distance(self):
-        """Test distance between same point is 0"""
+        """Test distance between same point is 0."""
         lat, lon = 34.052235, -118.243683
         distance = haversine_distance(lat, lon, lat, lon)
         self.assertAlmostEqual(distance, 0, places=2)
 
     def test_known_distance_la_to_sf(self):
-        """Test known distance: LA to San Francisco (~347 miles)"""
+        """Test known distance: LA to San Francisco (~347 miles)."""
         # Los Angeles coordinates
         la_lat, la_lon = 34.052235, -118.243683
         # San Francisco coordinates  
@@ -102,7 +93,7 @@ class HaversineDistanceTest(TestCase):
 
 
 class IsWithinRadiusTest(TestCase):
-    """Test cases for radius checking functionality"""
+    """Test radius checking functionality."""
 
     def test_point_within_radius(self):
         """Test point clearly within radius"""
@@ -161,10 +152,10 @@ class IsWithinRadiusTest(TestCase):
 
 
 class GetBusinessesWithinRadiusTest(TestCase):
-    """Test cases for filtering businesses by radius"""
+    """Test filtering businesses by radius."""
 
     def setUp(self):
-        """Set up test businesses"""
+        """Set up test businesses."""
         # Create businesses at known locations
         self.la_business = Business.objects.create(
             name="LA Business",
@@ -282,7 +273,7 @@ class GetBusinessesWithinRadiusTest(TestCase):
 
 
 class ValidateCoordinatesTest(TestCase):
-    """Test cases for coordinate validation"""
+    """Test coordinate validation."""
 
     def test_valid_coordinates(self):
         """Test valid coordinate ranges"""

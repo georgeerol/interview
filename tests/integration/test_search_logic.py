@@ -1,13 +1,6 @@
-"""
-Phase 3-4: Search Logic Tests (16 tests)
+"""Integration tests for core search functionality.
 
-Test cases for core search functionality including:
-- State filtering with OR logic
-- Text search (case-insensitive)
-- Geo-spatial search with radius filtering
-- Combined filter logic and deduplication
-- Multi-location support
-- Mixed location type handling
+Test state filtering, text search, geospatial search, and combined filter logic.
 """
 from django.test import TestCase
 from django.urls import reverse
@@ -19,10 +12,10 @@ from core.models import Business
 
 
 class BasicSearchLogicTest(APITestCase):
-    """Test cases for Phase 3 - Basic search logic (state + text filtering)"""
+    """Test basic search logic with state and text filtering."""
 
     def setUp(self):
-        """Set up test data for Phase 3"""
+        """Set up test data for basic search testing."""
         from django.core.cache import cache
         
         self.search_url = reverse('business-search')
@@ -71,7 +64,7 @@ class BasicSearchLogicTest(APITestCase):
         )
 
     def test_state_only_search(self):
-        """Test search by state only"""
+        """Test search by state only."""
         data = {"locations": [{"state": "CA"}]}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -93,7 +86,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertNotIn("text", metadata["filters_applied"])
 
     def test_multi_state_search(self):
-        """Test search by multiple states"""
+        """Test search by multiple states."""
         data = {"locations": [{"state": "CA"}, {"state": "NY"}]}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -114,7 +107,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertIn("state", metadata["filters_applied"])
 
     def test_text_only_search(self):
-        """Test search by text only (requires at least one location)"""
+        """Test search by text only (requires at least one location)."""
         # Note: Our API requires locations, so we'll search all states with text
         # In a real implementation, we might allow text-only searches
         data = {"locations": [{"state": "CA"}, {"state": "NY"}, {"state": "TX"}], "text": "coffee"}
@@ -137,7 +130,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertIn("state", metadata["filters_applied"])
 
     def test_state_and_text_search(self):
-        """Test search by state and text combined"""
+        """Test search by state and text combined."""
         data = {"locations": [{"state": "CA"}], "text": "book"}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -156,7 +149,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertIn("state", metadata["filters_applied"])
 
     def test_case_insensitive_text_search(self):
-        """Test that text search is case-insensitive"""
+        """Test that text search is case-insensitive."""
         data = {"locations": [{"state": "CA"}, {"state": "NY"}], "text": "COFFEE"}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -170,7 +163,7 @@ class BasicSearchLogicTest(APITestCase):
             self.assertIn("Coffee", business["name"])
 
     def test_no_results_found(self):
-        """Test when no businesses match the criteria"""
+        """Test when no businesses match the criteria."""
         data = {"locations": [{"state": "CA"}], "text": "pizza"}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -185,7 +178,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertEqual(metadata["total_count"], 0)
 
     def test_geo_location_now_implemented(self):
-        """Test that geo locations now work (Phase 4 implemented)"""
+        """Test that geo locations work correctly."""
         data = {"locations": [{"lat": 34.052235, "lng": -118.243683}], "radius_miles": 50}
         response = self.client.post(self.search_url, data, format='json')
         
@@ -201,7 +194,7 @@ class BasicSearchLogicTest(APITestCase):
         self.assertNotIn("note", metadata)  # No Phase 4 note anymore
 
     def test_mixed_state_and_geo_locations(self):
-        """Test mixed state and geo locations"""
+        """Test mixed state and geo locations."""
         data = {
             "locations": [
                 {"state": "CA"},
@@ -226,10 +219,10 @@ class BasicSearchLogicTest(APITestCase):
 
 
 class GeospatialSearchTest(APITestCase):
-    """Test cases for Phase 4 - Geo-location search with radius filtering"""
+    """Test geospatial search with radius filtering."""
 
     def setUp(self):
-        """Set up test data for Phase 4"""
+        """Set up test data for geospatial testing."""
         from django.core.cache import cache
         
         self.search_url = reverse('business-search')
@@ -286,7 +279,7 @@ class GeospatialSearchTest(APITestCase):
         )
 
     def test_geo_location_only_search(self):
-        """Test search by geo location only"""
+        """Test search by geo location only."""
         # Search within 50 miles of downtown LA
         data = {
             "locations": [{"lat": 34.052235, "lng": -118.243683}],
@@ -314,7 +307,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertNotIn("state", metadata["filters_applied"])
 
     def test_geo_location_with_text_search(self):
-        """Test geo location + text filtering"""
+        """Test geo location + text filtering."""
         # Search for coffee within 50 miles of downtown LA
         data = {
             "locations": [{"lat": 34.052235, "lng": -118.243683}],
@@ -337,7 +330,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertIn("text", metadata["filters_applied"])
 
     def test_multiple_geo_locations(self):
-        """Test search with multiple geo locations"""
+        """Test search with multiple geo locations."""
         # Search near both LA and SF
         data = {
             "locations": [
@@ -361,7 +354,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertNotIn("NY Coffee Bar", business_names)  # Too far
 
     def test_mixed_state_and_geo_locations(self):
-        """Test mixed state and geo location filtering"""
+        """Test mixed state and geo location filtering."""
         # Search in NY state AND within 50 miles of LA
         data = {
             "locations": [
@@ -385,7 +378,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertNotIn("SF Coffee House", business_names) # Not in NY, not near LA
 
     def test_small_radius_search(self):
-        """Test search with very small radius"""
+        """Test search with very small radius."""
         # Search within 5 miles of downtown LA (should only get exact location)
         data = {
             "locations": [{"lat": 34.052235, "lng": -118.243683}],
@@ -401,7 +394,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertEqual(results[0]["name"], "LA Coffee Shop")
 
     def test_large_radius_search(self):
-        """Test search with very large radius"""
+        """Test search with very large radius."""
         # Search within 1000 miles of downtown LA (should get most US businesses)
         data = {
             "locations": [{"lat": 34.052235, "lng": -118.243683}],
@@ -423,7 +416,7 @@ class GeospatialSearchTest(APITestCase):
         self.assertNotIn("NY Coffee Bar", business_names)     # Too far (2445 miles)
 
     def test_no_geo_results_found(self):
-        """Test when no businesses are within the specified radius"""
+        """Test when no businesses are within the specified radius."""
         # Search in middle of Nevada desert with small radius
         data = {
             "locations": [{"lat": 39.5, "lng": -116.5}],  # Nevada desert
@@ -448,7 +441,7 @@ class GeospatialSearchTest(APITestCase):
             self.assertEqual(metadata["radius_expanded"], True)
 
     def test_readme_example_1_implementation(self):
-        """Test the exact README Example 1 with actual results"""
+        """Test the exact README Example 1 with actual results."""
         data = {
             "locations": [
                 {"state": "CA"},

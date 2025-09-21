@@ -1,21 +1,16 @@
-"""
-Integration Tests: API Input Validation
+"""Integration tests for API input validation.
 
-Test cases for API-level input validation including:
-- HTTP request validation
-- API error responses
-- Content-Type handling
-- Method validation
+Test HTTP request validation, error responses, and method handling.
 """
 from rest_framework.test import APITestCase
 from rest_framework import status
 
 
 class BusinessSearchAPIValidationTest(APITestCase):
-    """Test cases for API-level input validation"""
+    """Test API-level input validation."""
 
     def test_invalid_json(self):
-        """Test API response for invalid JSON"""
+        """Test API response for invalid JSON."""
         response = self.client.post(
             '/businesses/search/',
             data='{"invalid": json}',  # Invalid JSON
@@ -24,7 +19,7 @@ class BusinessSearchAPIValidationTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_missing_locations(self):
-        """Test API response for missing locations field"""
+        """Test API response for missing locations field."""
         response = self.client.post(
             '/businesses/search/',
             data={"text": "coffee"},  # Missing locations
@@ -34,7 +29,7 @@ class BusinessSearchAPIValidationTest(APITestCase):
         self.assertIn("locations", response.data["details"])
 
     def test_empty_locations(self):
-        """Test API response for empty locations array"""
+        """Test API response for empty locations array."""
         response = self.client.post(
             '/businesses/search/',
             data={"locations": []},
@@ -44,7 +39,7 @@ class BusinessSearchAPIValidationTest(APITestCase):
         self.assertIn("At least one location filter is required", str(response.data))
 
     def test_invalid_state_code(self):
-        """Test API response for invalid state code"""
+        """Test API response for invalid state code."""
         response = self.client.post(
             '/businesses/search/',
             data={"locations": [{"state": "ZZ"}]},
@@ -54,7 +49,7 @@ class BusinessSearchAPIValidationTest(APITestCase):
         self.assertIn("Invalid state code", str(response.data))
 
     def test_missing_coordinates(self):
-        """Test API response for incomplete coordinates"""
+        """Test API response for incomplete coordinates."""
         response = self.client.post(
             '/businesses/search/',
             data={"locations": [{"lat": 34.052235}]},  # Missing lng
@@ -63,6 +58,6 @@ class BusinessSearchAPIValidationTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_method_not_allowed(self):
-        """Test that GET method returns 405 Method Not Allowed"""
+        """Test that GET method returns 405 Method Not Allowed."""
         response = self.client.get('/businesses/search/')
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

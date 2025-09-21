@@ -1,11 +1,6 @@
-"""
-Unit Tests: Serializer Validation
+"""Unit tests for serializer validation.
 
-Test cases for serializer validation in isolation:
-- LocationSerializer validation (state vs lat/lng)
-- BusinessSearchRequestSerializer validation
-- Input validation logic
-- Data transformation and cleaning
+Test LocationSerializer and BusinessSearchRequestSerializer validation logic.
 """
 from django.test import TestCase
 from decimal import Decimal
@@ -14,24 +9,24 @@ from core.serializers import BusinessSearchRequestSerializer, LocationSerializer
 
 
 class LocationSerializerTest(TestCase):
-    """Test cases for LocationSerializer validation"""
+    """Test LocationSerializer validation logic."""
 
     def test_valid_state_location(self):
-        """Test valid state location"""
+        """Test valid state location."""
         data = {"state": "CA"}
         serializer = LocationSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         self.assertEqual(serializer.validated_data["state"], "CA")
 
     def test_valid_state_lowercase(self):
-        """Test state gets converted to uppercase"""
+        """Test state gets converted to uppercase."""
         data = {"state": "ca"}
         serializer = LocationSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         self.assertEqual(serializer.validated_data["state"], "CA")
 
     def test_valid_coordinate_location(self):
-        """Test valid lat/lng coordinates"""
+        """Test valid lat/lng coordinates."""
         data = {"lat": Decimal("34.052235"), "lng": Decimal("-118.243683")}
         serializer = LocationSerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -96,10 +91,10 @@ class LocationSerializerTest(TestCase):
 
 
 class BusinessSearchRequestSerializerTest(TestCase):
-    """Test cases for BusinessSearchRequestSerializer validation"""
+    """Test BusinessSearchRequestSerializer validation logic."""
 
     def test_valid_state_only_search(self):
-        """Test valid search with state only"""
+        """Test valid search with state only."""
         data = {
             "locations": [{"state": "CA"}],
             "text": "coffee"

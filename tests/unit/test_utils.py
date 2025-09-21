@@ -1,5 +1,6 @@
-"""
-Test cases for utility functions (distance calculations, etc.)
+"""Unit tests for utility functions.
+
+Test distance calculations, coordinate validation, and radius filtering.
 """
 from django.test import TestCase
 from decimal import Decimal
@@ -15,10 +16,10 @@ from core.models import Business
 
 
 class HaversineDistanceTest(TestCase):
-    """Test cases for Haversine distance calculation"""
+    """Test Haversine distance calculation."""
 
     def test_same_point_distance(self):
-        """Test distance between same point is 0"""
+        """Test distance between same point is 0."""
         lat, lon = 34.052235, -118.243683
         distance = haversine_distance(lat, lon, lat, lon)
         self.assertAlmostEqual(distance, 0, places=2)
@@ -77,7 +78,7 @@ class HaversineDistanceTest(TestCase):
 
 
 class IsWithinRadiusTest(TestCase):
-    """Test cases for is_within_radius function"""
+    """Test is_within_radius function."""
 
     def test_point_within_radius(self):
         """Test point within radius returns True"""
@@ -114,10 +115,10 @@ class IsWithinRadiusTest(TestCase):
 
 
 class GetBusinessesWithinRadiusTest(TestCase):
-    """Test cases for get_businesses_within_radius function"""
+    """Test get_businesses_within_radius function."""
 
     def setUp(self):
-        """Set up test businesses"""
+        """Set up test businesses."""
         # Clear existing businesses to isolate our tests
         Business.objects.all().delete()
         
@@ -216,7 +217,7 @@ class GetBusinessesWithinRadiusTest(TestCase):
 
 
 class ValidateCoordinatesTest(TestCase):
-    """Test cases for coordinate validation"""
+    """Test coordinate validation."""
 
     def test_valid_coordinates(self):
         """Test valid coordinate ranges"""
