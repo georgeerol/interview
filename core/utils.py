@@ -3,7 +3,7 @@ Utility functions for business search functionality
 """
 import math
 from decimal import Decimal
-from typing import Union, List, Tuple, Optional
+from typing import Union, List, Tuple
 
 from .constants import RADIUS_EXPANSION_SEQUENCE
 

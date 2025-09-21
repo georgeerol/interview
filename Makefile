@@ -32,13 +32,13 @@ test:
 	docker compose run --rm api python manage.py test
 
 test-search:
-	docker compose run --rm api python manage.py test core.test_search -v 2
+	docker compose run --rm api python manage.py test tests.test_search -v 2
 
 test-utils:
-	docker compose run --rm api python manage.py test core.test_utils -v 2
+	docker compose run --rm api python manage.py test tests.test_utils -v 2
 
 test-phase8:
-	docker compose run --rm api python manage.py test core.test_search.BusinessSearchPhase8Test -v 2
+	docker compose run --rm api python manage.py test tests.test_search.BusinessSearchPhase8Test -v 2
 
 optimize-db:
 	docker compose run --rm api python manage.py optimize_database
