@@ -1,4 +1,4 @@
-.PHONY: build up down logs migrate createsuperuser shell health test test-unit test-integration test-utils test-phase8
+.PHONY: build up down logs migrate createsuperuser shell health test test-unit test-integration
 
 build:
 	docker compose build
