@@ -52,6 +52,6 @@ US_STATES = [
 	("WY", "Wyoming"),
 ]
 
-RADIUS_EXPANSION_SEQUENCE = [1, 5, 10, 25, 50, 100, 500]
+RADIUS_EXPANSION_SEQUENCE = [1, 5, 10, 25, 50, 100, 500] # Added 500
 
 
