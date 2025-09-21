@@ -105,6 +105,91 @@ There are no businesses within 5 miles of this point, so we should expand the se
 
 ![Business Search API Architecture](imgs/BusinessSearchAPI.png)
 
+### Search Flow Architecture
+
+```
+                           API Request
+                                 |
+                      +----------v----------+
+                      |   Input Validation   |
+                      |   • Locations       |
+                      |   • Radius          |
+                      |   • Text            |
+                      +----------+---------+
+                                 |
+                      +----------v----------+
+                      |   Cache Check       |
+                      |   Search ID         |
+                      +-----+--------+-----+
+                           |            |
+                      Cache Hit   Cache Miss
+                           |            |
+                      +----v---+       +v------------------+
+                      | Return |       |  Search Processing |
+                      | Cached |       |  +--------------+  |
+                      | Result |       |  | State Filter |  |
+                      +--------+       |  +--------------+  |
+                                      |  +--------------+  |
+                                      |  | Text Filter  |  |
+                                      |  +--------------+  |
+                                      |  +--------------+  |
+                                      |  | Geo + Radius |  |
+                                      |  |  Expansion   |  |
+                                      |  +--------------+  |
+                                      +---------+---------+
+                                                |
+                                      +---------v---------+
+                                      |   Result Build    |
+                                      |   • Deduplication |
+                                      |   • Metadata      |
+                                      |   • Performance   |
+                                      +---------+---------+
+                                                |
+                                      +---------v---------+
+                                      |   Cache & Return  |
+                                      |   5min timeout    |
+                                      +-------------------+
+```
+
+### Radius Expansion Logic
+
+```
+     Initial Search (radius_miles)
+              |
+              v
+         Find businesses within radius
+              |
+         +----v----+
+         | Found?  |
+         +-+-----+-+
+      Yes |     | No
+          |     |
+          v     v
+      Return   Expand Radius
+      Results     |
+                  v
+              [1, 5, 10, 25, 50, 100, 500]
+                  |
+                  v
+              +-----------------------------+
+              |  Try next radius in sequence |
+              |  +-----------------------+  |
+              |  | radius = 1   -> Search |  |
+              |  | radius = 5   -> Search |  |
+              |  | radius = 10  -> Search |  |
+              |  | radius = 25  -> Found! |  |
+              |  +-----------------------+  |
+              +-----------------------------+
+                  |
+                  v
+              Return with expansion metadata:
+              {
+                "radius_used": 25.0,
+                "radius_expanded": true,
+                "radius_expansion_sequence": [10, 25]
+              }
+```
+
 ### Key Components
 
 #### **1. Input Validation (`core/serializers.py`)**
