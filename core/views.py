@@ -1,37 +1,55 @@
-import time
-import logging
-from typing import Dict, Any, List
+"""
+Business Search API Views
+
+SOLID-compliant view implementation with dependency injection.
+Follows all SOLID principles for maintainable, testable code.
+"""
+from typing import Dict, Any
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.db.models import Q
-from django.core.cache import cache
 from django.conf import settings
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_headers
 
 from .models import Business
 from .serializers import BusinessSerializer, BusinessSearchRequestSerializer
-from .utils import get_businesses_within_radius, expand_radius_search_multiple_locations
-
-# Configure logging
-logger = logging.getLogger(__name__)
+from .interfaces import SearchParams
+from .container import get_container
 
 
 class BusinessViewSet(viewsets.ModelViewSet):
+	"""
+	Business ViewSet following SOLID principles.
+	
+	Single Responsibility: Handle HTTP requests/responses only.
+	Dependency Inversion: Depends on abstractions, not concretions.
+	Open/Closed: Easy to extend without modification.
+	Interface Segregation: Uses focused interfaces for each concern.
+	Liskov Substitution: Can be substituted with any compatible implementation.
+	"""
 	queryset = Business.objects.all().order_by("name")
 	serializer_class = BusinessSerializer
 	permission_classes = [AllowAny]
 
+	def __init__(self, *args, **kwargs):
+		"""Initialize with dependency injection."""
+		super().__init__(*args, **kwargs)
+		# Dependency Inversion: Depend on abstractions, not concretions
+		container = get_container()
+		self.search_service = container.search_service
+		self.cache_service = container.cache_service
+		self.metrics_service = container.metrics_service
+		self.response_builder = container.response_builder
+		self.logger = container.logger
+
 	@action(detail=False, methods=["post"], url_path="search")
 	def search(self, request):
 		"""
-		Search businesses by location filters (states and/or lat/lng + radius) and optional text.
+		Search businesses - SOLID compliant thin HTTP layer.
 		
-		Production-optimized with caching, performance monitoring, and error handling.
+		Single Responsibility: Handle HTTP request/response only.
+		All business logic delegated to services via dependency injection.
 		
 		Expected input:
 		{
@@ -43,214 +61,66 @@ class BusinessViewSet(viewsets.ModelViewSet):
 			"text": "coffee"
 		}
 		"""
-		# Phase 8: Performance monitoring
-		start_time = time.time()
-		search_id = f"search_{int(start_time * 1000)}"
+		# Step 1: Start tracking (delegated to metrics service)
+		search_id = self.metrics_service.start_tracking(request)
 		
 		try:
-			logger.info(f"[{search_id}] Business search started", extra={
-				'search_id': search_id,
-				'user_agent': request.META.get('HTTP_USER_AGENT', 'Unknown')
-			})
-			
-			# Phase 1: Validate input
+			# Step 2: Validate input (using existing serializer)
 			serializer = BusinessSearchRequestSerializer(data=request.data)
 			if not serializer.is_valid():
-				logger.warning(f"[{search_id}] Invalid input", extra={
-					'search_id': search_id,
-					'validation_errors': serializer.errors
-				})
-				return Response(
-					{"error": "Invalid input", "details": serializer.errors},
-					status=status.HTTP_400_BAD_REQUEST
+				return self.response_builder.build_validation_error_response(
+					serializer.errors, search_id
 				)
 			
-			# Phase 8: Check cache for frequent searches
-			cache_key = self._generate_cache_key(request.data)
-			cached_result = cache.get(cache_key)
+			# Step 3: Check cache (delegated to cache service)
+			cache_key = self.cache_service.generate_key(request.data)
+			cached_result = self.cache_service.get(cache_key)
 			if cached_result:
-				logger.info(f"[{search_id}] Cache hit", extra={
-					'search_id': search_id,
-					'cache_key': cache_key
-				})
-				# Update cache metadata
+				# Update cache metadata with current search ID
 				cached_result['search_metadata']['performance']['cached'] = True
 				cached_result['search_metadata']['performance']['search_id'] = search_id
 				cached_result['search_metadata']['cache_key'] = cache_key
+				
+				self.logger.info(f"[{search_id}] Cache hit", extra={
+					'search_id': search_id,
+					'cache_key': cache_key
+				})
+				
 				return Response(cached_result, status=status.HTTP_200_OK)
 			
-			# Continue with search logic
-			validated_data = serializer.validated_data
-			locations = validated_data.get("locations", [])
-			text = validated_data.get("text", "")
-			radius_miles = validated_data.get("radius_miles")
+			# Step 4: Perform search (delegated to search service)
+			search_params = SearchParams(
+				locations=serializer.validated_data.get("locations", []),
+				radius_miles=serializer.validated_data.get("radius_miles"),
+				text=serializer.validated_data.get("text", "")
+			)
+			search_result = self.search_service.search(search_params)
 			
-			# Phase 3: Basic search logic - start with all businesses
-			businesses = Business.objects.all()
-			filters_applied = []
+			# Step 5: Build response (delegated to response builder)
+			response_data = self.response_builder.build_success_response(
+				search_result, search_id
+			)
 			
-			# Apply text filtering if provided
-			if text:
-				businesses = businesses.filter(name__icontains=text)
-				filters_applied.append("text")
-			
-			# Apply state filtering
-			state_locations = [loc for loc in locations if "state" in loc]
-			geo_locations = [loc for loc in locations if "lat" in loc and "lng" in loc]
-			
-			if state_locations:
-				# Filter by states using OR logic
-				state_codes = [loc["state"] for loc in state_locations]
-				businesses = businesses.filter(state__in=state_codes)
-				filters_applied.append("state")
-			
-			# Phase 4 & 5: Handle geo-location filtering with radius expansion
-			final_businesses = []
-			radius_used = radius_miles if radius_miles is not None else 50.0  # Default for state-only searches
-			radius_expanded = False
-			radii_tried = []
-			
-			if geo_locations:
-				filters_applied.append("geo")
-				
-				# Start with all businesses for geo filtering (apply text filter if needed)
-				base_businesses = Business.objects.all()
-				if text:
-					base_businesses = base_businesses.filter(name__icontains=text)
-				
-				# Phase 5: Use radius expansion for geo locations
-				geo_businesses, radius_used, radius_expanded, radii_tried = expand_radius_search_multiple_locations(
-					base_businesses, 
-					geo_locations, 
-					radius_miles
-				)
-				
-				# Combine state-filtered and geo-filtered results (OR logic)
-				if state_locations:
-					# Add state-filtered businesses to geo results
-					state_businesses = list(businesses)  # Already filtered by state and text
-					final_businesses = geo_businesses + state_businesses
-				else:
-					# Only geo filtering
-					final_businesses = geo_businesses
-				
-				# Remove duplicates while preserving order
-				seen_ids = set()
-				unique_businesses = []
-				for business in final_businesses:
-					if business.id not in seen_ids:
-						seen_ids.add(business.id)
-						unique_businesses.append(business)
-				
-				business_list = unique_businesses[:100]  # Limit to 100
-				
-			else:
-				# No geo locations, use existing state/text filtered results
-				business_list = list(businesses[:100])  # Limit to 100 for now
-		
-			# Phase 6: Build comprehensive search metadata
-			total_found = len(final_businesses) if geo_locations else len(list(businesses))
-			
-			# Build search locations summary
-			search_locations_summary = []
-			for loc in locations:
-				if "state" in loc:
-					search_locations_summary.append({
-						"type": "state",
-						"state": loc["state"]
-					})
-				elif "lat" in loc and "lng" in loc:
-					search_locations_summary.append({
-						"type": "geo",
-						"lat": float(loc["lat"]),
-						"lng": float(loc["lng"])
-					})
-			
-			# Build metadata with performance metrics
-			end_time = time.time()
-			processing_time = round((end_time - start_time) * 1000, 2)  # ms
-			
-			search_metadata = {
-				"total_count": len(business_list),
-				"total_found": min(total_found, 100),  # Cap at 100 for now
-				"radius_used": float(radius_used),
-				"radius_expanded": radius_expanded,
-				"filters_applied": filters_applied,
-				"search_locations": search_locations_summary,
-				"performance": {
-					"processing_time_ms": processing_time,
-					"search_id": search_id,
-					"cached": False
-				}
-			}
-			
-			# Add radius-specific metadata if geo search was performed
-			if geo_locations:
-				search_metadata["radius_requested"] = float(radius_miles)
-				if radii_tried:
-					search_metadata["radius_expansion_sequence"] = radii_tried
-			
-			# Phase 8: Cache the result for frequent searches
-			result_data = {
-				"results": BusinessSerializer(business_list, many=True).data,
-				"search_metadata": search_metadata
-			}
-			
-			# Cache for 5 minutes for frequently accessed searches
+			# Step 6: Cache result (delegated to cache service)
 			cache_timeout = getattr(settings, 'BUSINESS_SEARCH_CACHE_TIMEOUT', 300)
-			cache.set(cache_key, result_data, cache_timeout)
+			self.cache_service.set(cache_key, response_data, cache_timeout)
 			
-			# Log successful search
-			logger.info(f"[{search_id}] Search completed successfully", extra={
-				'search_id': search_id,
-				'processing_time_ms': processing_time,
-				'total_results': len(business_list),
-				'filters_applied': filters_applied,
-				'radius_expanded': radius_expanded,
-				'cached': False
-			})
+			# Step 7: Log success (delegated to metrics service)
+			self.metrics_service.log_success(search_id, search_result)
 			
-			return Response(result_data, status=status.HTTP_200_OK)
+			return Response(response_data, status=status.HTTP_200_OK)
 			
 		except Exception as e:
-			# Phase 8: Production error handling for unexpected errors only
-			# Don't catch DRF validation/parsing errors - let them bubble up
-			from rest_framework.exceptions import ValidationError, ParseError
-			
-			if isinstance(e, (ValidationError, ParseError)):
-				raise  # Let DRF handle these
-			
-			end_time = time.time()
-			processing_time = round((end_time - start_time) * 1000, 2)
-			
-			logger.error(f"[{search_id}] Search failed", extra={
-				'search_id': search_id,
-				'processing_time_ms': processing_time,
-				'error': str(e),
-				'error_type': type(e).__name__
-			}, exc_info=True)
-			
-			return Response({
-				"error": "Internal server error",
-				"search_id": search_id,
-				"message": "An error occurred while processing your search. Please try again."
-			}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-	
-	def _generate_cache_key(self, request_data: Dict[str, Any]) -> str:
-		"""Generate a cache key for the search request"""
-		import hashlib
-		import json
-		
-		# Create a normalized version of the request for consistent caching
-		normalized_data = {
-			'locations': sorted(request_data.get('locations', []), key=str),
-			'radius_miles': request_data.get('radius_miles'),
-			'text': request_data.get('text', '').strip().lower()
-		}
-		
-		# Create hash of the normalized request
-		data_str = json.dumps(normalized_data, sort_keys=True)
-		cache_key = f"business_search:{hashlib.md5(data_str.encode()).hexdigest()}"
-		return cache_key
+			# Error handling (delegated to response builder)
+			return self.response_builder.build_server_error_response(e, search_id)
 
-
+	# Note: All helper methods have been moved to dedicated services
+	# following Single Responsibility Principle. The view now only
+	# handles HTTP concerns and delegates everything else to services.
+	#
+	# SOLID Principles Achieved:
+	# ✅ S - Single Responsibility: View only handles HTTP
+	# ✅ O - Open/Closed: Easy to extend services without changing view
+	# ✅ L - Liskov Substitution: Services can be swapped via interfaces
+	# ✅ I - Interface Segregation: Focused interfaces for each concern
+	# ✅ D - Dependency Inversion: View depends on abstractions, not concretions
