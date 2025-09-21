@@ -418,34 +418,20 @@ Built a production-ready system to demonstrate enterprise-level architectural th
 ### Production Scaling Strategy
 
 #### Current State vs Production Target
-- **Database:** SQLite (500 businesses) → PostgreSQL + PostGIS (10M+ businesses)
-- **Performance:** ~12ms response time → <50ms response time at scale
-- **Capacity:** Hundreds of requests → 1000+ req/sec with 99.9% uptime
+| Aspect | Current (Demo) | Production Target |
+|--------|----------------|-------------------|
+| **Database** | SQLite (500 records) | PostgreSQL + PostGIS (10M+) |
+| **Caching** | In-memory (1K entries) | Redis Cluster |
+| **Performance** | ~12ms response | <50ms at scale |
+| **Capacity** | Hundreds req/sec | 1000+ req/sec |
 
-#### Scaling Plan
-
-**Phase 1: Database Optimization (0-100K businesses)**
-- **Indexes:** Already implemented via management command
-- **Query optimization:** Efficient Django ORM usage
-- **Connection pooling:** PgBouncer for PostgreSQL
-
-**Phase 2: Distributed Architecture (100K-1M businesses)**
-- **PostgreSQL + PostGIS:** Native geospatial support
-- **Redis Cluster:** Distributed caching layer
-- **Read replicas:** Separate read/write operations
-- **API Gateway:** Rate limiting and load balancing
-
-**Phase 3: Microservices (1M+ businesses)**
-- **Service extraction:** Independent search microservice
-- **Elasticsearch:** Advanced text search and geospatial queries
-- **Event sourcing:** Track business updates
-- **Container orchestration:** Kubernetes deployment
-
-**Phase 4: Global Scale (10M+ businesses)**
-- **Geographic sharding:** Database partitioning by region
-- **CDN integration:** Cache static business data
-- **Machine learning:** Personalized search ranking
-- **Multi-region deployment:** Global availability
+#### Next Steps
+1. **PostgreSQL + PostGIS** for native geospatial support
+2. **Redis Cluster** for distributed caching
+3. **Elasticsearch** for advanced text search
+4. **Kubernetes** for container orchestration
+5. **Monitoring** with Grafana/Prometheus
+6.  **Read replicas:** Separate read/write operations
 
 ### Performance Optimization Strategy
 
@@ -527,20 +513,6 @@ Built a production-ready system to demonstrate enterprise-level architectural th
    - Blue-green deployment strategy
    - Infrastructure as Code (Terraform/CloudFormation)
    - Container orchestration (Kubernetes)
-
-### Performance Benchmarks
-
-#### Current (SQLite) vs Production Targets (PostgreSQL + PostGIS)
-- **State search:** ~2ms → <1ms
-- **Text search:** ~5ms → <5ms (with full-text search)
-- **Geospatial search:** ~10ms → <10ms (with spatial indexes)
-- **Complex queries:** ~12ms average → <50ms (99th percentile)
-
-### Conclusion
-
-This implementation demonstrates production-ready thinking while fulfilling all interview requirements. The architecture choices prioritize maintainability, testability, and scalability, showing how a search endpoint can be designed for enterprise-grade systems.
-
-The trade-offs between simplicity and production-readiness showcase both problem-solving skills and architectural expertise appropriate for senior-level engineering roles.
 
 ---
 
