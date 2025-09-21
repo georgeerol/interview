@@ -115,42 +115,7 @@ Excalidraw: [Search Flow Architecture](imgs/SearchFlowArchitecture.excalidraw)
 
 ![Radius Expansion Logic](imgs/RadiusExpansionLogic.png)
 Excalidraw: [Radius Expansion Logic](imgs/RadiusExpansionLogic.excalidraw)
-```
-     Initial Search (radius_miles)
-              |
-              v
-         Find businesses within radius
-              |
-         +----v----+
-         | Found?  |
-         +-+-----+-+
-      Yes |     | No
-          |     |
-          v     v
-      Return   Expand Radius
-      Results     |
-                  v
-              [1, 5, 10, 25, 50, 100, 500]
-                  |
-                  v
-              +-----------------------------+
-              |  Try next radius in sequence |
-              |  +-----------------------+  |
-              |  | radius = 1   -> Search |  |
-              |  | radius = 5   -> Search |  |
-              |  | radius = 10  -> Search |  |
-              |  | radius = 25  -> Found! |  |
-              |  +-----------------------+  |
-              +-----------------------------+
-                  |
-                  v
-              Return with expansion metadata:
-              {
-                "radius_used": 25.0,
-                "radius_expanded": true,
-                "radius_expansion_sequence": [10, 25]
-              }
-```
+
 
 ### Key Components
 
