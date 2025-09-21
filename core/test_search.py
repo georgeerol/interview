@@ -202,7 +202,12 @@ class BusinessSearchAPITest(APITestCase):
 
     def setUp(self):
         """Set up test data"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Create some test businesses
         Business.objects.create(
@@ -325,7 +330,12 @@ class BusinessSearchPhase3Test(APITestCase):
 
     def setUp(self):
         """Set up test data for Phase 3"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Clear existing businesses to isolate our tests
         Business.objects.all().delete()
@@ -527,7 +537,12 @@ class BusinessSearchPhase4Test(APITestCase):
 
     def setUp(self):
         """Set up test data for Phase 4"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Clear existing businesses to isolate our tests
         Business.objects.all().delete()
@@ -776,7 +791,12 @@ class BusinessSearchPhase5Test(APITestCase):
 
     def setUp(self):
         """Set up test data for Phase 5"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Clear existing businesses to isolate our tests
         Business.objects.all().delete()
@@ -999,7 +1019,12 @@ class BusinessSearchPhase6Test(APITestCase):
 
     def setUp(self):
         """Set up test data for Phase 6"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Clear existing businesses to isolate our tests
         Business.objects.all().delete()
@@ -1302,7 +1327,12 @@ class BusinessSearchPhase7Test(APITestCase):
 
     def setUp(self):
         """Set up test data for comprehensive Phase 7 testing"""
+        from django.core.cache import cache
+        
         self.search_url = reverse('business-search')
+        
+        # Clear cache between tests to ensure clean state
+        cache.clear()
         
         # Clear existing businesses to have controlled test data
         Business.objects.all().delete()

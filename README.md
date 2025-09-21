@@ -128,7 +128,7 @@ Comprehensive business search with multi-modal filtering and intelligent radius 
 | `radius_miles` | Number | Optional | Radius in miles (0.1-1000, default: 50 for geo searches) |
 | `text` | String | Optional | Case-insensitive business name filter |
 
-*Conditional(Cond).Each location must have either `state` OR `lat`+`lng`, not both.
+*Conditional(Cond): Each location must have either `state` OR `lat`+`lng`, not both.
 
 #### **Response Format**
 
