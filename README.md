@@ -192,19 +192,19 @@ There are no businesses within 5 miles of this point, so we should expand the se
 
 ### Key Components
 
-#### **1. Input Validation (`core/serializers.py`)**
+#### **1. Input Validation (`core/api/serializers.py`)**
 - **LocationSerializer**: Validates individual location objects (state OR lat/lng)
 - **BusinessSearchRequestSerializer**: Validates complete search payload
 - **Conditional validation**: Different rules for state vs geo locations
 - **Error handling**: Detailed error messages for debugging
 
-#### **2. Geospatial Engine (`core/utils.py`)**
+#### **2. Geospatial Engine (`core/infrastructure/utils.py`)**
 - **Haversine distance**: Accurate earth-surface distance calculations
 - **Bounding box optimization**: Pre-filter by rectangular bounds for performance
 - **Radius expansion**: Intelligent fallback through [1,5,10,25,50,100,500] sequence
 - **Multi-location support**: Handles multiple geo points with deduplication
 
-#### **3. Search Logic (`core/views.py`)**
+#### **3. Search Logic (`core/api/views.py`)**
 - **Multi-modal filtering**: Combines state, geo, and text filters
 - **OR logic**: Results from any matching filter type
 - **Performance limits**: 100 result limit with pagination support
