@@ -410,17 +410,12 @@ docker compose logs api  # View API container logs only
 
 ### Security & Monitoring
 
-#### Current Implementation
-- **Input validation:** Comprehensive parameter validation
-- **SQL injection prevention:** Django ORM parameterized queries
-- **Performance monitoring:** Request tracking and timing
-- **Structured logging:** JSON format with correlation IDs
+| Security Area | Current Implementation | Production Enhancement |
+|---------------|------------------------|------------------------|
+| **Input Protection** | Comprehensive parameter validation | JWT tokens with rate limiting |
+| **Data Security** | Django ORM parameterized queries prevent SQL injection | HTTPS enforcement with TLS 1.3 certificates |
+| **Performance Tracking** | Assign unique IDs to each search request and measure how long they take | APM, metrics dashboards, alerting |
 
-#### Production Security
-- **API Authentication:** JWT tokens with rate limiting
-- **HTTPS enforcement:** TLS 1.3 with proper certificates
-- **Audit logging:** Track all search requests
-- **Monitoring:** APM, metrics dashboards, alerting
 
 ### Alternative Approaches Considered
 
