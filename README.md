@@ -370,60 +370,25 @@ docker compose logs api  # View API container logs only
 
 ## Technical Decisions & Trade-offs
 
-### Requirements Analysis
-
-**Core Requirements:** (See detailed requirements in the original task section above)
-
-**Implementation Approach:**
-Built a production-ready system to demonstrate enterprise-level architectural thinking and scalability considerations.
-
 ### Key Architectural Decisions
 
-#### 1. Clean Architecture with Service Layers
+| Decision | Approach                                                        | Pros | Cons                                                   | Rationale                          |
+|----------|-----------------------------------------------------------------|------|--------------------------------------------------------|------------------------------------|
+| **Architecture** | Layered architecture with dependency injection                  | Testable, maintainable, follows SOLID principles | More complex than single-file solution                 | Modular, maintainable and scalable |
+| **Geospatial** | Custom Haversine distance calculation                           | No external dependencies, works with SQLite| Less efficient than database-native geospatial queries | Keeps setup simple                 |
+| **Validation** | Detailed serializer input validation with custom error messages | Robust error handling, clear user feedback | More code than basic validation. Can use a library     | Good Validation                    |
+| **Caching** | In-memory Django cache (5min TTL)                               | Simple setup, immediate performance boost | Doesn't scale across servers                           | Project Simplicity                 |
 
-**Decision:** Implemented layered architecture with dependency injection
-
-**Trade-offs:**
-- **Pros:** Testable, maintainable, follows SOLID principles
-- **Cons:** More complex than single-file solution
-- **Rationale:** Demonstrates production-ready thinking and makes future scaling easier
-
-#### 2. Custom Geospatial Implementation
-
-**Decision:** Custom Haversine distance calculation vs. PostGIS
-
-**Trade-offs:**
-- **Pros:** No external dependencies, works with SQLite, demonstrates algorithm knowledge
-- **Cons:** Less efficient than database-native geospatial queries
-- **Rationale:** Keeps setup simple while showing technical depth
-
-#### 3. Comprehensive Input Validation
-
-**Decision:** Detailed serializer validation with custom error messages
-
-**Trade-offs:**
-- **Pros:** Robust error handling, clear user feedback
-- **Cons:** More code than basic validation
-- **Rationale:** Production APIs need comprehensive validation
-
-#### 4. Caching Strategy
-
-**Decision:** In-memory Django cache with 5-minute TTL
-
-**Trade-offs:**
-- **Pros:** Simple setup, immediate performance boost
-- **Cons:** Doesn't scale across multiple servers
-- **Rationale:** Good for demo, shows caching awareness
 
 ### Production Scaling Strategy
 
 #### Current State vs Production Target
-| Aspect | Current (Demo) | Production Target |
-|--------|----------------|-------------------|
-| **Database** | SQLite (500 records) | PostgreSQL + PostGIS (10M+) |
-| **Caching** | In-memory (1K entries) | Redis Cluster |
-| **Performance** | ~12ms response | <50ms at scale |
-| **Capacity** | Hundreds req/sec | 1000+ req/sec |
+| Aspect | Current                | Production Target                   |
+|--------|------------------------|-------------------------------------|
+| **Database** | SQLite (500 records)   | PostgreSQL + PostGIS (10M+ records) |
+| **Caching** | In-memory (1K entries) | Redis Cluster                       |
+| **Performance** | ~12ms response         | <50ms at scale                      |
+| **Capacity** | Hundreds req/sec       | 1000+ req/sec                       |
 
 #### Next Steps
 1. **PostgreSQL + PostGIS** for native geospatial support
