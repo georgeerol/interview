@@ -400,17 +400,13 @@ docker compose logs api  # View API container logs only
 
 ### Performance Optimization Strategy
 
-#### Current Optimizations (Implemented)
-- **Bounding box pre-filtering:** Reduces geospatial calculations by ~90%
-- **Early radius termination:** Stops at first successful expansion
-- **Result limiting:** 100 business cap prevents memory issues
-- **Intelligent caching:** Response caching with normalization
-
-#### Production Optimizations (Next Steps)
-- **Spatial indexes:** PostGIS GiST indexes for geospatial queries
-- **Query caching:** Cache frequent search patterns
-- **Async processing:** Celery for complex multi-location searches
-- **Database tuning:** Connection pooling, query optimization
+| What We're Optimizing | What We Do Now (Simple) | What We'd Do in Production (Advanced) |
+|----------------------|--------------------------|---------------------------------------|
+| **Geospatial** | Calculate exact distance for all businesses using Haversine formula | Use PostgreSQL's built-in geospatial features that are much faster than custom calculations |
+| **Search Logic** | Stop radius expansion as soon as we find any businesses | Handle complex searches in background so users don't wait |
+| **Result Management** | Never return more than 100 businesses to avoid overwhelming user/system | Cache common search results so we don't recalculate them every time |
+| **Caching** | Store search results in memory for 5 minutes for instant repeated searches | Use shared cache system that works across multiple servers |
+| **Database** | Use Django's built-in database tools efficiently | Use advanced database features like connection pools and query optimization |
 
 ### Security & Monitoring
 
