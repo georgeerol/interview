@@ -2,7 +2,7 @@
 Core Container Package
 
 Dependency injection container for managing service lifecycles.
-Implements the Service Locator pattern with SOLID principles.
+Implements the Service Locator pattern.
 """
 
 from .container import ServiceContainer, get_container

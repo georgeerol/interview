@@ -2,7 +2,7 @@
 Core API Package
 
 HTTP layer components including views and serializers.
-Handles request/response processing following SOLID principles.
+Handles request/response processing.
 """
 
 from .views import BusinessViewSet

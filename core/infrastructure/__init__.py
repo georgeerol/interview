@@ -2,7 +2,6 @@
 Core Infrastructure Package
 
 Infrastructure components including utilities and constants.
-Provides supporting functionality for the application.
 """
 
 from .utils import (
