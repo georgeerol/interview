@@ -686,7 +686,7 @@ As the number of businesses scales to millions of records:
 - Production-grade logging and error handling
 - Database optimization tools and index management
 
-## 🚀 **Future Enhancements**
+##  **Future Enhancements**
 
 *The following improvements would be considered for a production system at scale:*
 
