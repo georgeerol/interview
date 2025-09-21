@@ -293,7 +293,7 @@ curl -X POST http://localhost:8001/businesses/search/ \
 | Endpoint              | Method | Description                     |
 | --------------------- | ------ | ------------------------------- |
 | `/businesses/`        | GET    | List all businesses (paginated) |
-| `/businesses/search/` | POST   | **Advanced business search**    |
+| `/businesses/search/` | POST   | **Business search with filters** |
 | `/health/`            | GET    | Health check endpoint           |
 
 ---
@@ -371,7 +371,7 @@ docker compose logs api  # View API container logs only
 |----------|-----------------------------------------------------------------|------|--------------------------------------------------------|------------------------------------|
 | **Architecture** | Layered architecture with dependency injection                  | Testable, maintainable, follows SOLID principles | More complex than single-file solution                 | Modular, maintainable and scalable |
 | **Geospatial** | Custom Haversine distance calculation                           | No external dependencies, works with SQLite| Less efficient than database-native geospatial queries | Keeps setup simple                 |
-| **Validation** | Detailed serializer input validation with custom error messages | Robust error handling, clear user feedback | More code than basic validation. Can use a library     | Good Validation                    |
+| **Validation** | Detailed serializer input validation with custom error messages | Good error handling, clear user feedback | More code than basic validation. Can use a library     | Better user experience             |
 | **Caching** | In-memory Django cache (5min TTL)                               | Simple setup, immediate performance boost | Doesn't scale across servers                           | Project Simplicity                 |
 
 ### Production Scaling Strategy
@@ -387,26 +387,26 @@ docker compose logs api  # View API container logs only
 #### Next Steps
 1. **PostgreSQL + PostGIS** for native geospatial support
 2. **Redis Cluster** for distributed caching
-3. **Elasticsearch** for advanced text search
+3. **Elasticsearch** for better text search
 4. **Kubernetes** for container orchestration
 5. **Monitoring** with Grafana/Prometheus
 6.  **Read replicas:** Separate read/write operations
 
 ### Performance Optimization Strategy
 
-| What We're Optimizing | What We Do Now (Simple) | What We'd Do in Production (Advanced) |
+| What We're Optimizing | What We Do Now (Simple) | What We'd Do in Production (Better) |
 |----------------------|--------------------------|---------------------------------------|
 | **Geospatial** | Calculate exact distance for all businesses using Haversine formula | Use PostgreSQL's built-in geospatial features that are much faster than custom calculations |
 | **Search Logic** | Stop radius expansion as soon as we find any businesses | Handle complex searches in background so users don't wait |
 | **Result Management** | Never return more than 100 businesses to avoid overwhelming user/system | Cache common search results so we don't recalculate them every time |
 | **Caching** | Store search results in memory for 5 minutes for instant repeated searches | Use shared cache system that works across multiple servers |
-| **Database** | Use Django's built-in database tools efficiently | Use advanced database features like connection pools and query optimization |
+| **Database** | Use Django's built-in database tools efficiently | Use better database features like connection pools and query optimization |
 
 ### Security & Monitoring
 
 | Security Area | Current Implementation | Production Enhancement |
 |---------------|------------------------|------------------------|
-| **Input Protection** | Comprehensive parameter validation | JWT tokens with rate limiting |
+| **Input Protection** | Thorough parameter validation | JWT tokens with rate limiting |
 | **Data Security** | Django ORM parameterized queries prevent SQL injection | HTTPS enforcement with TLS 1.3 certificates |
 | **Performance Tracking** | Assign unique IDs to each search request and measure how long they take | APM, metrics dashboards, alerting |
 
@@ -436,7 +436,7 @@ docker compose logs api  # View API container logs only
 | Analytics | Search pattern analysis and recommendations |
 | Mobile Optimization | Simplified response format for mobile apps |
 
-#### Advanced Features for Enterprise Scale
+#### More Features for Large Scale
 
 ##### Search Enhancements
 | Feature | Description |
