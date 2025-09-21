@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from core.views import BusinessViewSet
+from core.api import BusinessViewSet
 
 
 def health(request):

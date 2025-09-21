@@ -6,8 +6,8 @@ from rest_framework import serializers
 from typing import Dict, Any, List
 from decimal import Decimal
 
-from .models import Business
-from .constants import US_STATES
+from ..domain import Business
+from ..infrastructure import US_STATES
 
 
 class LocationSerializer(serializers.Serializer):

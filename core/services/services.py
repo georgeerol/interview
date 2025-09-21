@@ -13,16 +13,20 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 
-from .interfaces import (
-    IBusinessSearchService, ICacheService, IMetricsService, 
-    IResponseBuilder, ILogger, SearchParams, SearchResult
+from ..interfaces import (
+    BusinessSearchService as BusinessSearchServiceInterface, 
+    CacheService as CacheServiceInterface, 
+    MetricsService as MetricsServiceInterface,
+    ResponseBuilder as ResponseBuilderInterface, 
+    Logger as LoggerInterface, 
+    SearchParams, SearchResult
 )
-from .models import Business
-from .serializers import BusinessSerializer
-from .utils import expand_radius_search_multiple_locations
+from ..domain import Business
+from ..api.serializers import BusinessSerializer
+from ..infrastructure import expand_radius_search_multiple_locations
 
 
-class BusinessSearchService(IBusinessSearchService):
+class BusinessSearchService(BusinessSearchServiceInterface):
     """
     Core business search service.
     
@@ -108,7 +112,7 @@ class BusinessSearchService(IBusinessSearchService):
         )
 
 
-class DjangoCacheService(ICacheService):
+class DjangoCacheService(CacheServiceInterface):
     """
     Django cache implementation.
     
@@ -138,14 +142,14 @@ class DjangoCacheService(ICacheService):
         return cache_key
 
 
-class SearchMetricsService(IMetricsService):
+class SearchMetricsService(MetricsServiceInterface):
     """
     Performance monitoring service.
     
     Single Responsibility: Handle performance tracking only.
     """
     
-    def __init__(self, logger: ILogger):
+    def __init__(self, logger: LoggerInterface):
         self.logger = logger
         self._start_times: Dict[str, float] = {}
     
@@ -187,14 +191,14 @@ class SearchMetricsService(IMetricsService):
         return round((end_time - start_time) * 1000, 2)  # ms
 
 
-class SearchResponseBuilder(IResponseBuilder):
+class SearchResponseBuilder(ResponseBuilderInterface):
     """
     Response building service.
     
     Single Responsibility: Build API responses only.
     """
     
-    def __init__(self, metrics_service: IMetricsService, logger: ILogger):
+    def __init__(self, metrics_service: MetricsServiceInterface, logger: LoggerInterface):
         self.metrics_service = metrics_service
         self.logger = logger
     
@@ -287,7 +291,7 @@ class SearchResponseBuilder(IResponseBuilder):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class DjangoLogger(ILogger):
+class DjangoLogger(LoggerInterface):
     """
     Django logging implementation.
     

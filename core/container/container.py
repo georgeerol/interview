@@ -7,11 +7,14 @@ Implements Dependency Inversion Principle by providing abstractions to consumers
 from typing import Dict, Any
 from django.conf import settings
 
-from .interfaces import (
-    IBusinessSearchService, ICacheService, IMetricsService, 
-    IResponseBuilder, ILogger
+from ..interfaces import (
+    BusinessSearchService as BusinessSearchServiceInterface,
+    CacheService as CacheServiceInterface, 
+    MetricsService as MetricsServiceInterface,
+    ResponseBuilder as ResponseBuilderInterface, 
+    Logger as LoggerInterface
 )
-from .services import (
+from ..services import (
     BusinessSearchService, DjangoCacheService, SearchMetricsService,
     SearchResponseBuilder, DjangoLogger
 )
@@ -53,27 +56,27 @@ class ServiceContainer:
         self._services['response_builder'] = response_builder
     
     @property
-    def search_service(self) -> IBusinessSearchService:
+    def search_service(self) -> BusinessSearchServiceInterface:
         """Get business search service."""
         return self._services['search_service']
     
     @property
-    def cache_service(self) -> ICacheService:
+    def cache_service(self) -> CacheServiceInterface:
         """Get cache service."""
         return self._services['cache_service']
     
     @property
-    def metrics_service(self) -> IMetricsService:
+    def metrics_service(self) -> MetricsServiceInterface:
         """Get metrics service."""
         return self._services['metrics_service']
     
     @property
-    def response_builder(self) -> IResponseBuilder:
+    def response_builder(self) -> ResponseBuilderInterface:
         """Get response builder service."""
         return self._services['response_builder']
     
     @property
-    def logger(self) -> ILogger:
+    def logger(self) -> LoggerInterface:
         """Get logger service."""
         return self._services['logger']
 

@@ -12,10 +12,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.conf import settings
 
-from .models import Business
+from ..domain import Business
 from .serializers import BusinessSerializer, BusinessSearchRequestSerializer
-from .interfaces import SearchParams
-from .container import get_container
+from ..interfaces import SearchParams
+from ..container import get_container
 
 
 class BusinessViewSet(viewsets.ModelViewSet):

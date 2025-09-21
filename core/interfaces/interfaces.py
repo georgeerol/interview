@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from django.http import HttpRequest
 from rest_framework.response import Response
 
-from .models import Business
+from ..domain import Business
 
 
 @dataclass
@@ -35,7 +35,7 @@ class SearchResult:
     radius_miles: Optional[float]
 
 
-class IBusinessSearchService(ABC):
+class BusinessSearchService(ABC):
     """Interface for business search operations."""
     
     @abstractmethod
@@ -52,7 +52,7 @@ class IBusinessSearchService(ABC):
         pass
 
 
-class ICacheService(ABC):
+class CacheService(ABC):
     """Interface for caching operations."""
     
     @abstractmethod
@@ -71,7 +71,7 @@ class ICacheService(ABC):
         pass
 
 
-class IMetricsService(ABC):
+class MetricsService(ABC):
     """Interface for performance monitoring and metrics."""
     
     @abstractmethod
@@ -90,7 +90,7 @@ class IMetricsService(ABC):
         pass
 
 
-class IResponseBuilder(ABC):
+class ResponseBuilder(ABC):
     """Interface for building API responses."""
     
     @abstractmethod
@@ -112,7 +112,7 @@ class IResponseBuilder(ABC):
         pass
 
 
-class ILogger(ABC):
+class Logger(ABC):
     """Interface for logging operations."""
     
     @abstractmethod

@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from decimal import Decimal
 
-from core.models import Business
+from core.domain import Business
 
 
 class EdgeCaseAndBoundaryTest(APITestCase):

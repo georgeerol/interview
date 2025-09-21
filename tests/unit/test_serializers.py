@@ -5,7 +5,7 @@ Test LocationSerializer and BusinessSearchRequestSerializer validation logic.
 from django.test import TestCase
 from decimal import Decimal
 
-from core.serializers import BusinessSearchRequestSerializer, LocationSerializer
+from core.api.serializers import BusinessSearchRequestSerializer, LocationSerializer
 
 
 class LocationSerializerTest(TestCase):

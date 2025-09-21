@@ -6,13 +6,13 @@ from django.test import TestCase
 from decimal import Decimal
 import math
 
-from core.utils import (
+from core.infrastructure import (
     haversine_distance, 
     is_within_radius, 
     get_businesses_within_radius,
     validate_coordinates
 )
-from core.models import Business
+from core.domain import Business
 
 
 class HaversineDistanceTest(TestCase):
