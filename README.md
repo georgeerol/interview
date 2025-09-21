@@ -123,10 +123,9 @@ There are no businesses within 5 miles of this point, so we should expand the se
 - **Rich metadata**: Complete search transparency and debugging info
 
 #### **4. Comprehensive Testing (Unit + Integration Architecture)**
-- **215 tests** covering all functionality and edge cases (`tests/`)
+- **129 tests** covering all functionality and edge cases (`tests/`)
 - **Unit tests (69)**: Individual component validation in isolation (`tests/unit/`)
 - **Integration tests (60)**: Complete API workflow validation (`tests/integration/`)
-- **Legacy tests (86)**: Original phase-based comprehensive suite (`tests/test_search.py`)
 - **Edge case coverage**: Boundary conditions, invalid inputs, performance limits
 - **Production validation**: Tests against actual README examples
 
@@ -339,9 +338,6 @@ make test-unit
 
 # Run integration tests for API validation
 make test-integration
-
-# Run legacy comprehensive test suite with verbose output
-make test-search
 ```
 
 ### **Step 5: Test the API Endpoints**
@@ -472,10 +468,6 @@ make test-production              # Production workflows
 # Run specific test files with verbose output
 docker compose run --rm api python manage.py test tests.unit.test_serializers -v 2
 docker compose run --rm api python manage.py test tests.integration.test_search_logic -v 2
-
-# Legacy phase-based testing (maintained for compatibility)
-make test-search                   # Original comprehensive test suite
-make test-phase8                   # Phase 8 performance tests
 
 # Parallel execution for faster CI/CD
 docker compose run --rm api python manage.py test tests.unit tests.integration --parallel

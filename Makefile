@@ -1,4 +1,4 @@
-.PHONY: build up down logs migrate createsuperuser shell health test test-unit test-integration test-search test-utils test-phase8
+.PHONY: build up down logs migrate createsuperuser shell health test test-unit test-integration test-utils test-phase8
 
 build:
 	docker compose build
@@ -40,9 +40,6 @@ test-integration:
 
 test-fast:
 	docker compose run --rm api python manage.py test tests.unit tests.integration --parallel
-
-test-search:
-	docker compose run --rm api python manage.py test tests.test_search -v 2
 
 test-utils:
 	docker compose run --rm api python manage.py test tests.unit.test_utils -v 2
