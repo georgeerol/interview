@@ -88,7 +88,7 @@
 ### Test Coverage Summary
 
 ```
-                     🧪 Testing Architecture (106 Tests)
+                     🧪 Testing Architecture (129 Tests)
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                          Phase-Based Testing                           │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -126,7 +126,7 @@
 ```
 
 **Test Distribution:**
-- **106 total tests** across all functionality
+- **129 total tests** across all functionality
 - **Phase 1**: Input validation (30 tests)
 - **Phase 2**: Distance calculations (20 tests)  
 - **Phase 3**: Basic search logic (8 tests)
@@ -235,8 +235,8 @@
 - **Performance limits**: 100 result limit with pagination support
 - **Rich metadata**: Complete search transparency and debugging info
 
-#### **4. Comprehensive Testing (`core/test_search.py`)**
-- **97 tests** covering all functionality and edge cases
+#### **4. Comprehensive Testing (`tests/`)**
+- **129 tests** covering all functionality and edge cases
 - **Phase-based testing**: Validates each implementation phase
 - **Edge case coverage**: Boundary conditions, invalid inputs, performance limits
 - **Production validation**: Tests against actual README examples
@@ -383,7 +383,7 @@ As the number of businesses scales to millions of records:
 
 ## 📊 Implementation Phases & Testing Architecture
 
-### 🧪 **Modern Test Organization** (215 tests total)
+### 🧪 **Modern Test Organization** (129 tests total)
 
 The implementation is validated through a comprehensive **unit + integration** test architecture:
 

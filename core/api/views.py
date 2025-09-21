@@ -67,7 +67,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
 		search_id = self.metrics_service.start_tracking(request)
 		
 		try:
-			# Step 2: Validate input (using existing serializer)
+			# Step 2: Validate input (using serializer)
 			serializer = BusinessSearchRequestSerializer(data=request.data)
 			if not serializer.is_valid():
 				return self.response_builder.build_validation_error_response(
