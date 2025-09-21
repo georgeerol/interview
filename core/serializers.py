@@ -1,3 +1,7 @@
+"""Business Search API Serializers.
+
+Validate search requests and format responses for the business search endpoint.
+"""
 from rest_framework import serializers
 from typing import Dict, Any, List
 from decimal import Decimal
@@ -7,13 +11,13 @@ from .constants import US_STATES
 
 
 class LocationSerializer(serializers.Serializer):
-	"""Serializer for individual location filter - either state or lat/lng"""
+	"""Validate location filters - either state OR lat/lng coordinates, not both."""
 	state = serializers.CharField(max_length=2, required=False)
 	lat = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
 	lng = serializers.DecimalField(max_digits=9, decimal_places=6, required=False)
 	
 	def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
-		"""Validate that location has either state OR lat/lng, but not both or neither"""
+		"""Ensure location has either state OR lat/lng, validate bounds and state codes."""
 		has_state = 'state' in data and data['state'] is not None
 		has_coords = ('lat' in data and data['lat'] is not None and 
 					  'lng' in data and data['lng'] is not None)
@@ -53,7 +57,7 @@ class LocationSerializer(serializers.Serializer):
 
 
 class BusinessSearchRequestSerializer(serializers.Serializer):
-	"""Serializer for business search request validation"""
+	"""Validate business search requests. Auto-sets 50mi radius for geo searches."""
 	locations = LocationSerializer(many=True, required=True)
 	radius_miles = serializers.DecimalField(
 		max_digits=6, 
@@ -71,7 +75,7 @@ class BusinessSearchRequestSerializer(serializers.Serializer):
 	)
 	
 	def validate_locations(self, locations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-		"""Validate locations array"""
+		"""Ensure 1-20 locations provided."""
 		if not locations:
 			raise serializers.ValidationError("At least one location filter is required")
 		
@@ -81,7 +85,7 @@ class BusinessSearchRequestSerializer(serializers.Serializer):
 		return locations
 	
 	def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
-		"""Cross-field validation"""
+		"""Set default 50mi radius for geo searches if not provided."""
 		locations = data.get('locations', [])
 		radius_miles = data.get('radius_miles')
 		
@@ -99,6 +103,7 @@ class BusinessSearchRequestSerializer(serializers.Serializer):
 
 
 class BusinessSerializer(serializers.ModelSerializer):
+	"""Serialize Business model objects."""
 	class Meta:
 		model = Business
 		fields = [
@@ -112,7 +117,7 @@ class BusinessSerializer(serializers.ModelSerializer):
 
 
 class SearchMetadataSerializer(serializers.Serializer):
-	"""Serializer for detailed search metadata"""
+	"""Search result metadata including radius expansion and performance info."""
 	total_count = serializers.IntegerField(help_text="Number of businesses returned")
 	total_found = serializers.IntegerField(help_text="Total businesses found before pagination")
 	radius_requested = serializers.DecimalField(
@@ -146,7 +151,7 @@ class SearchMetadataSerializer(serializers.Serializer):
 
 
 class BusinessSearchResponseSerializer(serializers.Serializer):
-	"""Serializer for business search response with comprehensive metadata"""
+	"""Complete search response with results and metadata."""
 	results = BusinessSerializer(many=True)
 	search_metadata = SearchMetadataSerializer()
 
