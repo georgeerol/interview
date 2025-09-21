@@ -62,8 +62,8 @@ test-advanced:
 test-production:
 	docker compose run --rm api python manage.py test tests.integration.test_production_ready -v 2
 
-test-phase8:
-	docker compose run --rm api python manage.py test tests.test_search.BusinessSearchPhase8Test -v 2
+test-performance:
+	docker compose run --rm api python manage.py test tests.integration.test_production_ready.ProductionPerformanceTest -v 2
 
 # Database Commands
 optimize-db:

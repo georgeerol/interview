@@ -308,7 +308,7 @@ make makemigrations   # Create new migrations
 ```bash
 make optimize-db          # Apply database optimizations for production
 make optimize-db-dry-run  # Preview database optimizations (safe)
-make test-phase8          # Run Phase 8 performance tests
+make test-performance     # Run performance optimization tests
 ```
 
 ## Testing
