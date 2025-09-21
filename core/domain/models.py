@@ -1,5 +1,5 @@
 from django.db import models
-from .constants import US_STATES
+from ..infrastructure import US_STATES
 
 
 class Business(models.Model):
