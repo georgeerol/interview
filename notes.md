@@ -35,7 +35,7 @@
        │
        ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    🗄️ Database (3,500+ businesses)            │
+│                    🗄️ Database (500 businesses)               │
 │  • SQLite with optimized indexes                               │
 │  • 49 US states with lat/lng coordinates                       │
 └─────────────────────────────────────────────────────────────────┘
@@ -70,11 +70,11 @@
 │  Found: 12 │ ────────────────▶ │
 └────────────┘                   ▼
                             📊 Return with metadata:
-                            {
-                              "radius_used": 25.0,
-                              "radius_expanded": true,
-                              "radius_expansion_sequence": [10, 25]
-                            }
+              {
+                "radius_used": 25.0,
+                "radius_expanded": true,
+                "radius_expansion_sequence": [10, 25]
+              }
 ```
 
 ---
@@ -265,7 +265,7 @@ make optimize-db          # Apply indexes
 ### Current → Production
 | Aspect | Current (Demo) | Production Target |
 |--------|----------------|-------------------|
-| **Database** | SQLite (3.5K records) | PostgreSQL + PostGIS (10M+) |
+| **Database** | SQLite (500 records) | PostgreSQL + PostGIS (10M+) |
 | **Caching** | In-memory (1K entries) | Redis Cluster |
 | **Performance** | ~12ms response | <50ms at scale |
 | **Capacity** | Hundreds req/sec | 1000+ req/sec |

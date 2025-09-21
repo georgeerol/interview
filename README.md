@@ -86,6 +86,17 @@ There are no businesses within 5 miles of this point, so we should expand the se
 
 # Implementation Response: Business Search API
 
+## 📋 Quick Overview
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| **API Endpoint** | `POST /businesses/search/` | ✅ Complete |
+| **Multi-Modal Search** | State + Geo + Text filtering | ✅ Complete |
+| **Radius Expansion** | Auto-expand [1,5,10,25,50,100,500] | ✅ Complete |
+| **Performance** | Caching + Monitoring + Optimization | ✅ Complete |
+| **Testing** | 158 tests (98 unit + 60 integration) | ✅ Complete |
+| **Database** | 500 businesses across 49 US states | ✅ Complete |
+
 ## Implementation Summary
 
 | # | Implementation Item | Status |
@@ -149,6 +160,15 @@ Excalidraw: [Radius Expansion Logic](imgs/RadiusExpansionLogic.excalidraw)
 ### **POST /businesses/search/**
 
 Business search with multi-modal filtering and intelligent radius expansion.
+
+#### **Search Types**
+
+| Type | Example | Logic |
+|------|---------|-------|
+| **State** | `{"state": "CA"}` | Filter by US state code |
+| **Geo** | `{"lat": 34.05, "lng": -118.24}` | Haversine distance + radius |
+| **Text** | `"text": "coffee"` | Case-insensitive name search |
+| **Combined** | State + Geo + Text | **OR logic** between location types |
 
 #### **Request Format**
 
@@ -398,7 +418,7 @@ Built a production-ready system to demonstrate enterprise-level architectural th
 ### Production Scaling Strategy
 
 #### Current State vs Production Target
-- **Database:** SQLite (3,500 businesses) → PostgreSQL + PostGIS (10M+ businesses)
+- **Database:** SQLite (500 businesses) → PostgreSQL + PostGIS (10M+ businesses)
 - **Performance:** ~12ms response time → <50ms response time at scale
 - **Capacity:** Hundreds of requests → 1000+ req/sec with 99.9% uptime
 
