@@ -419,23 +419,11 @@ docker compose logs api  # View API container logs only
 
 ### Alternative Approaches Considered
 
-#### 1. Third-Party Geospatial Services
-**Considered:** Google Maps API, Mapbox for distance calculations
-- **Pros:** More accurate, handles edge cases
-- **Cons:** External dependencies, API costs
-- **Decision:** Custom implementation shows algorithm knowledge
-
-#### 2. NoSQL Database
-**Considered:** MongoDB with geospatial indexes
-- **Pros:** Native geospatial support, horizontal scaling
-- **Cons:** Different from existing Django setup
-- **Decision:** Stayed with relational model for consistency
-
-#### 3. GraphQL API
-**Considered:** GraphQL instead of REST
-- **Pros:** Flexible queries, better for complex data fetching
-- **Cons:** More complex setup, learning curve
-- **Decision:** REST is simpler and meets requirements
+| Alternative | What We Considered | Pros | Cons | Why We Didn't Choose It                                |
+|-------------|-------------------|------|------|--------------------------------------------------------|
+| **Geospatial Services** | Google Maps API, Mapbox for distance calculations | More accurate, handles edge cases | External dependencies, API costs | Simple Custom implementation  |
+| **NoSQL Database** | MongoDB with geospatial indexes | Native geospatial support, horizontal scaling | Different from existing Django setup | Stayed with relational model for consistency           |
+| **GraphQL API** | GraphQL instead of REST | Flexible queries, better for complex data fetching | More complex setup, learning curve | REST is simpler and meets requirements                 |
 
 ### What I'd Do Differently
 
