@@ -221,38 +221,9 @@ Business search with multi-modal filtering and intelligent radius expansion.
 | `cache_key` | String | Cache key for debugging (when cached) |
 
 
-### **Example 1: Multi-Filter Search**
+### **API Examples**
 
-**Request:**
-```bash
-curl -X POST http://localhost:8001/businesses/search/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "locations": [
-      { "state": "CA" },
-      { "state": "NY" },
-      { "lat": 34.052235, "lng": -118.243683 }
-    ],
-    "radius_miles": 50,
-    "text": "coffee"
-  }'
-```
-
-**Response:** Returns all businesses containing "coffee" within CA state, NY state, OR within 50 miles of Los Angeles coordinates.
-
-### **Example 2: Radius Expansion**
-
-**Request:**
-```bash
-curl -X POST http://localhost:8001/businesses/search/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "locations": [{ "lat": 37.9290, "lng": -116.7510 }],
-    "radius_miles": 5
-  }'
-```
-
-**Response:** Demonstrates automatic radius expansion from 5 → 10 → 25 → 50 → 100 → 500 miles until businesses are found in the Nevada desert location.
+See the original requirements section above for detailed input/output examples.
 
 ## Getting Started
 
@@ -265,137 +236,35 @@ curl -X POST http://localhost:8001/businesses/search/ \
 # 1. Build and start the application
 make build && make up
 
-# 2. Verify it's working
+# 2. Apply database migrations
+make migrate
+
+# 3. Verify it's working
 make health
 
-# 3. Test the search API
+# 4. Test the search API
 curl -X POST http://localhost:8001/businesses/search/ \
   -H "Content-Type: application/json" \
   -d '{"locations": [{"state": "CA"}], "text": "coffee"}'
 ```
 
-## **Step-by-Step Setup Guide**
-
-### **Step 1: Start the Application**
-
-First, let's build and start the Docker containers:
-
+### API Testing Examples
 ```bash
-# Build the Docker containers
-make build
-
-# Start the application in detached mode
-make up
-```
-
-If you don't have `make`, you can use the Docker commands directly:
-```bash
-docker compose build
-docker compose up -d
-```
-
-### **Step 2: Health Check**
-
-Let's verify the application is running:
-
-```bash
-make health
-```
-
-Or manually:
-```bash
-curl -fsS http://localhost:8001/health/
-```
-
-You should see: `{"status": "ok"}`
-
-### **Step 3: Database Setup**
-
-Make sure the database is migrated and seeded with business data:
-
-```bash
-make migrate
-```
-
-Or:
-```bash
-docker compose run --rm api python manage.py migrate --noinput
-```
-
-### **Step 4: Run Tests**
-
-Let's run the comprehensive test suite to verify everything works:
-
-```bash
-# Run all tests
-make test
-
-# Or run fast unit + integration tests
-make test-fast
-```
-
-For more detailed output:
-```bash
-# Run unit tests
-make test-unit
-
-# Run integration tests for API validation
-make test-integration
-```
-
-### **Step 5: Test the API Endpoints**
-
-#### **Test 1: Basic Health Check**
-```bash
+# Health check
 curl http://localhost:8001/health/
-```
 
-#### **Test 2: List Businesses**
-```bash
+# List all businesses
 curl http://localhost:8001/businesses/
-```
 
-#### **Test 3: Search by State**
-```bash
+# Search by state
 curl -X POST http://localhost:8001/businesses/search/ \
   -H "Content-Type: application/json" \
-  -d '{
-    "locations": [{"state": "CA"}],
-    "text": "coffee"
-  }'
-```
+  -d '{"locations": [{"state": "CA"}], "text": "coffee"}'
 
-#### **Test 4: Geospatial Search with Radius**
-```bash
+# Geospatial search with radius
 curl -X POST http://localhost:8001/businesses/search/ \
   -H "Content-Type: application/json" \
-  -d '{
-    "locations": [{"lat": 34.052235, "lng": -118.243683}],
-    "radius_miles": 50
-  }'
-```
-
-#### **Test 5: Multi-Location Search (README Example)**
-```bash
-curl -X POST http://localhost:8001/businesses/search/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "locations": [
-      {"state": "CA"},
-      {"state": "NY"},
-      {"lat": 34.052235, "lng": -118.243683}
-    ],
-    "radius_miles": 50,
-    "text": "coffee"
-  }'
-```
-
-### **Step 6: Check Logs**
-
-If anything isn't working, check the logs:
-
-```bash
-make logs
+  -d '{"locations": [{"lat": 34.052235, "lng": -118.243683}], "radius_miles": 50}'
 ```
 
 ### Available Endpoints
@@ -432,49 +301,19 @@ make test-phase8          # Run Phase 8 performance tests
 
 ## Testing
 
-
-###  **Quick Testing Commands**
-
+### **Test Commands**
 ```bash
-# Fast development feedback (unit tests only)
-make test-unit                     
-
-# Full API validation (integration tests)
-make test-integration              
-
-# Combined fast testing (recommended for CI/CD)
-make test-fast                     
-
-# Complete test suite
-make test                          # All tests
+make test              # Run all 129 tests
+make test-fast         # Run unit + integration tests (recommended)
+make test-unit         # Run unit tests only (fast feedback)
+make test-integration  # Run integration tests only
 ```
 
-### **Test Organization**
-
-#### **Unit Tests** (`tests/unit/`)
-```bash
-make test-serializers              # Input validation
-make test-distance                 # Geospatial calculations
-make test-utils                    # Utility functions
-```
-
-#### **Integration Tests** (`tests/integration/` - 60 tests)
-```bash
-make test-api-validation          # API input validation
-make test-search-logic            # Search endpoints
-make test-advanced                # Advanced features
-make test-production              # Production workflows
-```
-
-### **Detailed Testing**
-```bash
-# Run specific test files with verbose output
-docker compose run --rm api python manage.py test tests.unit.test_serializers -v 2
-docker compose run --rm api python manage.py test tests.integration.test_search_logic -v 2
-
-# Parallel execution for faster CI/CD
-docker compose run --rm api python manage.py test tests.unit tests.integration --parallel
-```
+### **Test Architecture**
+- **129 total tests** across unit and integration suites
+- **Unit tests (69):** Serializers, distance calculations, utilities
+- **Integration tests (60):** API validation, search logic, production features
+- **Coverage:** All functionality, edge cases, and production scenarios
 
 
 ## Troubleshooting
@@ -502,12 +341,7 @@ docker compose logs api  # View API container logs only
 
 ### Requirements Analysis
 
-**Core Requirements:**
-- POST /businesses/search/ endpoint
-- Multi-location filtering (state OR lat/lng + radius)
-- Radius expansion: [1, 5, 10, 25, 50, 100, 500]
-- Optional text search on business names
-- Return expansion metadata
+**Core Requirements:** (See detailed requirements in the original task section above)
 
 **Implementation Approach:**
 Built a production-ready system to demonstrate enterprise-level architectural thinking and scalability considerations.
@@ -552,15 +386,10 @@ Built a production-ready system to demonstrate enterprise-level architectural th
 
 ### Production Scaling Strategy
 
-#### Current State (Demo)
-- **Database:** SQLite with 3,500 businesses
-- **Performance:** ~12ms response time, ~1ms with cache
-- **Capacity:** Handles hundreds of concurrent requests
-
-#### Production Scale Target
-- **Database:** 10M+ businesses across multiple regions
-- **Performance:** <50ms response time, 1000+ req/sec
-- **Availability:** 99.9% uptime with global distribution
+#### Current State vs Production Target
+- **Database:** SQLite (3,500 businesses) → PostgreSQL + PostGIS (10M+ businesses)
+- **Performance:** ~12ms response time → <50ms response time at scale
+- **Capacity:** Hundreds of requests → 1000+ req/sec with 99.9% uptime
 
 #### Scaling Plan
 
@@ -670,18 +499,11 @@ Built a production-ready system to demonstrate enterprise-level architectural th
 
 ### Performance Benchmarks
 
-#### Current Performance (SQLite)
-- **State search:** ~2ms (indexed)
-- **Text search:** ~5ms (case-insensitive)
-- **Geospatial search:** ~10ms (with bounding box)
-- **Radius expansion:** ~15ms (worst case, 7 radii)
-- **Combined search:** ~12ms average
-
-#### Production Targets (PostgreSQL + PostGIS)
-- **State search:** <1ms
-- **Text search:** <5ms (with full-text search)
-- **Geospatial search:** <10ms (with spatial indexes)
-- **Complex queries:** <50ms (99th percentile)
+#### Current (SQLite) vs Production Targets (PostgreSQL + PostGIS)
+- **State search:** ~2ms → <1ms
+- **Text search:** ~5ms → <5ms (with full-text search)
+- **Geospatial search:** ~10ms → <10ms (with spatial indexes)
+- **Complex queries:** ~12ms average → <50ms (99th percentile)
 
 ### Conclusion
 
