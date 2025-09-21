@@ -97,53 +97,61 @@ There are no businesses within 5 miles of this point, so we should expand the se
 | **Testing** | 158 tests (98 unit + 60 integration) | Completed |
 | **Database** | 500 businesses across 49 US states | Provided  |
 
+---
+
 ## System Architecture
 
 ![Business Search API Architecture](imgs/BusinessSearchAPI.png)
 Excalidraw: [Business Search API Architecture](imgs/SearchFlowArchitecture.excalidraw)
+
+---
 
 ### Search Flow Architecture
 
 ![Search Flow Architecture](imgs/SearchFlowArchitecture.png)
 Excalidraw: [Search Flow Architecture](imgs/SearchFlowArchitecture.excalidraw)
 
+---
+
 ### Radius Expansion Logic
 
 ![Radius Expansion Logic](imgs/RadiusExpansionLogic.png)
 Excalidraw: [Radius Expansion Logic](imgs/RadiusExpansionLogic.excalidraw)
 
-
+---
 ### Key Components
 
 #### **1. Input Validation (`core/api/serializers.py`)**
-- **LocationSerializer**: Validates individual location objects (state OR lat/lng)
-- **BusinessSearchRequestSerializer**: Validates complete search payload
-- **Conditional validation**: Different rules for state vs geo locations
-- **Error handling**: Detailed error messages for debugging
+- **LocationSerializer**: Checks location objects (either state OR lat/lng)
+- **BusinessSearchRequestSerializer**: Validates the full search request
+- **Smart validation**: Different rules for state vs geo locations
+- **Clear errors**: Helpful error messages for debugging
 
 #### **2. Geospatial Engine (`core/infrastructure/utils.py`)**
-- **Haversine distance**: Accurate earth-surface distance calculations
-- **Radius expansion**: Intelligent fallback through [1,5,10,25,50,100,500] sequence
-- **Multi-location support**: Handles multiple geo points with deduplication
+- **Distance calculations**: Uses Haversine formula for accurate distances
+- **Radius expansion**: Tries [1, 5, 10, 25, 50, 100, 500] miles until results found
+- **Multiple locations**: Handles several geo points and removes duplicates
 
 #### **3. Search Logic (`core/api/views.py`)**
-- **Multi-modal filtering**: Combines state, geo, and text filters
-- **OR logic**: Results from any matching filter type
-- **Performance limits**: 100 result limit with pagination support
-- **Rich metadata**: Complete search transparency and debugging info
+- **Combined filtering**: Mixes state, geo, and text searches
+- **OR logic**: Returns results from any matching filter type
+- **Result limits**: Caps at 100 results for performance
+- **Search details**: Shows exactly what was searched and how
 
-#### **4. Comprehensive Testing (Unit + Integration Architecture)**
+#### **4. Testing Suite**
 - **158 tests** covering all functionality and edge cases (`tests/`)
-- **Unit tests (98)**: Individual component validation in isolation (`tests/unit/`)
-- **Integration tests (60)**: Complete API workflow validation (`tests/integration/`)
-- **Edge case coverage**: Boundary conditions, invalid inputs, performance limits
-- **Production validation**: Tests against actual README examples
+- **Unit tests (98)**: Test individual components separately (`tests/unit/`)
+- **Integration tests (60)**: Test the full API workflow (`tests/integration/`)
+- **Edge cases**: Boundary conditions, bad inputs, performance limits
+- **Real examples**: Tests the actual README examples
+
+---
 
 ## API Documentation
 
 ### **POST /businesses/search/**
 
-Business search with multi-modal filtering and intelligent radius expansion.
+Business search with multi-modal filtering and automatic radius expansion.
 
 #### **Search Types**
 
@@ -236,10 +244,7 @@ Business search with multi-modal filtering and intelligent radius expansion.
 | `performance.cached` | Boolean | Whether response was served from cache |
 | `cache_key` | String | Cache key for debugging (when cached) |
 
-
-### **API Examples**
-
-See the original requirements section above for detailed input/output examples.
+---
 
 ## Getting Started
 
@@ -288,8 +293,10 @@ curl -X POST http://localhost:8001/businesses/search/ \
 | Endpoint              | Method | Description                     |
 | --------------------- | ------ | ------------------------------- |
 | `/businesses/`        | GET    | List all businesses (paginated) |
-| `/businesses/search/` | POST   | **Advanced business search**    |
+| `/businesses/search/` | POST   | **Business search with filters** |
 | `/health/`            | GET    | Health check endpoint           |
+
+---
 
 ## Development Commands
 
@@ -315,6 +322,8 @@ make optimize-db-dry-run  # Preview database optimizations (safe)
 make test-performance     # Run performance optimization tests
 ```
 
+---
+
 ## Testing
 
 ### **Test Commands**
@@ -331,6 +340,8 @@ make test-integration  # Run integration tests only
 - **Integration tests (60):** API validation, search logic, production features
 - **Coverage:** All functionality, edge cases, and production scenarios
 
+
+---
 
 ## Troubleshooting
 
@@ -350,7 +361,7 @@ docker compose ps     # Check container status
 docker compose logs api  # View API container logs only
 ```
 
-
+---
 
 ## Technical Decisions & Trade-offs
 
@@ -360,9 +371,8 @@ docker compose logs api  # View API container logs only
 |----------|-----------------------------------------------------------------|------|--------------------------------------------------------|------------------------------------|
 | **Architecture** | Layered architecture with dependency injection                  | Testable, maintainable, follows SOLID principles | More complex than single-file solution                 | Modular, maintainable and scalable |
 | **Geospatial** | Custom Haversine distance calculation                           | No external dependencies, works with SQLite| Less efficient than database-native geospatial queries | Keeps setup simple                 |
-| **Validation** | Detailed serializer input validation with custom error messages | Robust error handling, clear user feedback | More code than basic validation. Can use a library     | Good Validation                    |
+| **Validation** | Detailed serializer input validation with custom error messages | Good error handling, clear user feedback | More code than basic validation. Can use a library     | Better user experience             |
 | **Caching** | In-memory Django cache (5min TTL)                               | Simple setup, immediate performance boost | Doesn't scale across servers                           | Project Simplicity                 |
-
 
 ### Production Scaling Strategy
 
@@ -377,26 +387,26 @@ docker compose logs api  # View API container logs only
 #### Next Steps
 1. **PostgreSQL + PostGIS** for native geospatial support
 2. **Redis Cluster** for distributed caching
-3. **Elasticsearch** for advanced text search
+3. **Elasticsearch** for better text search
 4. **Kubernetes** for container orchestration
 5. **Monitoring** with Grafana/Prometheus
 6.  **Read replicas:** Separate read/write operations
 
 ### Performance Optimization Strategy
 
-| What We're Optimizing | What We Do Now (Simple) | What We'd Do in Production (Advanced) |
+| What We're Optimizing | What We Do Now (Simple) | What We'd Do in Production (Better) |
 |----------------------|--------------------------|---------------------------------------|
 | **Geospatial** | Calculate exact distance for all businesses using Haversine formula | Use PostgreSQL's built-in geospatial features that are much faster than custom calculations |
 | **Search Logic** | Stop radius expansion as soon as we find any businesses | Handle complex searches in background so users don't wait |
 | **Result Management** | Never return more than 100 businesses to avoid overwhelming user/system | Cache common search results so we don't recalculate them every time |
 | **Caching** | Store search results in memory for 5 minutes for instant repeated searches | Use shared cache system that works across multiple servers |
-| **Database** | Use Django's built-in database tools efficiently | Use advanced database features like connection pools and query optimization |
+| **Database** | Use Django's built-in database tools efficiently | Use better database features like connection pools and query optimization |
 
 ### Security & Monitoring
 
 | Security Area | Current Implementation | Production Enhancement |
 |---------------|------------------------|------------------------|
-| **Input Protection** | Comprehensive parameter validation | JWT tokens with rate limiting |
+| **Input Protection** | Thorough parameter validation | JWT tokens with rate limiting |
 | **Data Security** | Django ORM parameterized queries prevent SQL injection | HTTPS enforcement with TLS 1.3 certificates |
 | **Performance Tracking** | Assign unique IDs to each search request and measure how long they take | APM, metrics dashboards, alerting |
 
@@ -426,7 +436,7 @@ docker compose logs api  # View API container logs only
 | Analytics | Search pattern analysis and recommendations |
 | Mobile Optimization | Simplified response format for mobile apps |
 
-#### Advanced Features for Enterprise Scale
+#### More Features for Large Scale
 
 ##### Search Enhancements
 | Feature | Description |
